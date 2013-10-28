@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">QuiroGest</string>
+    <string name="title_cliente_detail">cliente Detail</string>
+    <string name="movil">Móvil</string>
+    <string name="email">Email</string>
+    <string name="direccion">Dirección</string>
+    <string name="fechaNacimiento">Fecha de Nacimiento</string>
+    <string name="profesion">Profesión</string>
+    <string name="actividadFisica">Actividad física</string>
+    <string name="alergia">Alergia</string>
+    <string name="operaciones">Operaciones</string>
+    <string name="notas">Notas</string>
+    <string name="motivosDeConsultaText">Motivos de connsulta</string>
+
+</resources>
