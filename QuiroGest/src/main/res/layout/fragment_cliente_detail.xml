@@ -5,10 +5,10 @@
           android:orientation="vertical">
 
     <ImageView
+        android:contentDescription="@string/descripciónFotoPaciente"
             android:id="@+id/imageViewFoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:src="@drawable/ic_launcher"
             android:minHeight="@android:dimen/thumbnail_height"
             android:minWidth="@android:dimen/thumbnail_width"
@@ -23,155 +23,209 @@
         android:textAlignment="viewEnd"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/ExtraLargeText"
-        android:text="Nombre"
         android:layout_toRightOf="@+id/imageViewFoto"/>
 
     <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
             android:layout_below="@+id/imageViewFoto"
             android:id="@+id/ScrollViewClientes">
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+            android:minWidth="900dp">
 
 
+            <!--movil-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/movil"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
 
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/movil"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:id="@+id/EditTextMovil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
+
+
+
+            <!--fijo-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fijo"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
 
             <TextView
-                    android:id="@+id/EditTextMovil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:id="@+id/EditTextFijo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
 
 
+
+            <!--email-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
 
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/email"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:id="@+id/EditTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
 
+
+
+            <!--direccción-->
             <TextView
-                    android:id="@+id/EditTextEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/direccion"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/direccion"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
             
             <TextView
-                    android:id="@+id/EditTextDireccion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:id="@+id/EditTextDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
 
 
+
+            <!--C.P.-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cp"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
 
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/fechaNacimiento"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:id="@+id/EditTextCP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
+
+
+
+            <!--localidad-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/localidad"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
+
+            <TextView
+                android:id="@+id/EditTextLocalidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
+
+
+
+            <!--Provincia-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/provincia"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
+
+            <TextView
+                android:id="@+id/EditTextProvincia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
+
+
+
+            <!--Fecha de nacimiento-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fechaNacimiento"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
             
             <TextView
-                    android:id="@+id/EditTextFechaNacimiento"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:id="@+id/EditTextFechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
 
 
 
+            <!--Profesión-->
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profesion"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/profesion"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
             
             <TextView
-                    android:id="@+id/EditTextProfesion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:id="@+id/EditTextProfesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
 
 
 
+            <!--Enfermedades-->
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/actividadFisica"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/enfermedades"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
+            <TextView
+                android:id="@+id/EditTextEnfermedades"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
+
+
+            <!--Alergias-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/alergias"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
             
             <TextView
-                    android:id="@+id/EditTextActividad"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:id="@+id/EditTextAlergias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
 
 
 
+            <!--Observaciones-->
             <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/alergia"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/observaciones"
+                android:textAppearance="?android:attr/textAppearanceSmall"  />
             
             <TextView
-                    android:id="@+id/EditTextAlergias"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:id="@+id/EditTextObservaciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:maxWidth="800dp" />
 
-
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/operaciones"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
-            
-            <TextView
-                    android:id="@+id/EditTextOperaciones"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/notas"
-                            android:textAppearance="?android:attr/textAppearanceSmall"  />
-            
-            <TextView
-                    android:id="@+id/EditTextNotas"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
         </LinearLayout>
     </ScrollView>
 
@@ -179,25 +233,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/motivosDeConsultaText"
+        android:text="@string/motivosDeConsulta"
         android:id="@+id/textView"
         android:layout_below="@+id/imageViewFoto"
         android:layout_toRightOf="@+id/ScrollViewClientes"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="false"
-        android:paddingLeft="@dimen/ExtraLargeText"
-        android:autoText="false" />
+        android:paddingLeft="@dimen/ExtraLargeText" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
+        android:id="@+id/listViewMotivosDeConsulta"
         android:layout_below="@+id/textView"
         android:layout_toRightOf="@+id/ScrollViewClientes"
-        android:paddingLeft="@dimen/ExtraLargeText"
-        android:minWidth="@android:dimen/thumbnail_width"/>
+        android:paddingLeft="@dimen/ExtraLargeText" />
 
 
 </RelativeLayout>

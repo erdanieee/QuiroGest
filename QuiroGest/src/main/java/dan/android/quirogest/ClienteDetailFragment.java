@@ -20,7 +20,8 @@ import dan.android.quirogest.database.TablaContactos;
 public class ClienteDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String TAG = "ClienteDetailFragment";
     private static final String CONTACTO_ID = "contacto_id";
-    private static final int LOADER_ID = 1;
+    private static final int LOADER_CONTACTO_ID = 1;
+    private static final int LOADER_MOTIVOS_ID  = 2;
 
     private long mContactoId;
     private View rootView;
@@ -47,7 +48,7 @@ public class ClienteDetailFragment extends Fragment implements LoaderManager.Loa
         mContactoId = getArguments().getLong(CONTACTO_ID, -1);
 
         if (mContactoId >= 0) {
-            getLoaderManager().initLoader(LOADER_ID, null, this);
+            getLoaderManager().initLoader(LOADER_CONTACTO_ID, null, this);
         }
     }
 
@@ -77,7 +78,7 @@ public class ClienteDetailFragment extends Fragment implements LoaderManager.Loa
 
         String nombre, apellido1, apellido2, movil, fijo, direccion, cp, localidad, provincia, fechaNac, profesion, enfermedades, alergias, observaciones;
         switch (cursorLoader.getId()) {
-            case LOADER_ID:
+            case LOADER_CONTACTO_ID:
                 if (cursor != null && cursor.moveToFirst()){
                     nombre          = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_NOMBRE));
                     apellido1       = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_APELLIDO1));
