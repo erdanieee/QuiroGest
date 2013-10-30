@@ -16,7 +16,7 @@ import dan.android.quirogest.database.TablaClientes;
 import dan.android.quirogest.database.TablaMotivos;
 
 
-public class ClienteListActivity extends Activity implements ClienteListFragment.Callbacks {
+public class ClienteListActivity extends Activity implements ClienteListFragment.Callbacks{
     private static final String TAG = "ClienteListActivity";
 
     @Override
@@ -77,7 +77,7 @@ public class ClienteListActivity extends Activity implements ClienteListFragment
      * indicating that the item with the given ID was selected.c
      */
     @Override
-    public void onItemSelected(long contactoId) {
+    public void onClienteSelected(long contactoId) {
         Log.i(TAG, "Item selected " + contactoId);
         Bundle arguments;
         ClienteDetailFragment fragment;

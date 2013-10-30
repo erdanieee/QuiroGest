@@ -14,14 +14,15 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaClientes;
+import dan.android.quirogest.database.TablaMotivos;
 
 
-public class ClienteListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String TAG = "ClienteListFragment";
-    private static final String[] PROJECTION = {BaseColumns._ID, TablaClientes.COL_NOMBRE};     //TODO: añadir otros campos para mostrar en la lista
+public class MotivosListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String TAG = "MotivosListFragment";
+    private static final String[] PROJECTION = {BaseColumns._ID, TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_DESCRIPCION, TablaMotivos.COL_FECHA};
     private static final int LOADER_ID       = 1;
     private SimpleCursorAdapter mAdapter;
+
 
     // The serialization (saved instance state) Bundle key representing the activated item position.
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
@@ -31,14 +32,10 @@ public class ClienteListFragment extends ListFragment implements LoaderManager.L
     // The fragment's current callback object, which is notified of list item clicks.
     private Callbacks mCallbacks = null;
 
+
     // A callback interface that all activities containing this fragment must implement. This mechanism allows activities to be notified of item selections.
     public interface Callbacks {
-        public void onClienteSelected(long id);
-    }
-
-
-    // Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes).
-    public ClienteListFragment() {
+        public void onMotivoSelected(long id);
     }
 
 
@@ -48,7 +45,7 @@ public class ClienteListFragment extends ListFragment implements LoaderManager.L
 
         //inicializamos el adapter con un cursor nulo hasta que se inicialice el Loader
         int layout          = android.R.layout.simple_list_item_activated_1;
-        String[] columnas   = new String[] {TablaClientes.COL_NOMBRE};
+        String[] columnas   = new String[] {TablaMotivos.COL_DIAGNOSTICO};
         int[] vistas        = new int[] {android.R.id.text1};
         mAdapter            = new SimpleCursorAdapter(getActivity(), layout, null, columnas, vistas, 0);
         setListAdapter(mAdapter);
@@ -134,7 +131,7 @@ public class ClienteListFragment extends ListFragment implements LoaderManager.L
         Log.i(TAG, "Item clicked posicion: " + position + " id: " + id);
         super.onListItemClick(listView, view, position, id);
         setActivatedPosition(position);
-        mCallbacks.onClienteSelected(getListView().getItemIdAtPosition(position));
+        mCallbacks.onMotivoSelected(getListView().getItemIdAtPosition(position));
     }
 
 
@@ -144,7 +141,7 @@ public class ClienteListFragment extends ListFragment implements LoaderManager.L
     //********************************************************************************************//
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(getActivity(), QuiroGestProvider.CONTENT_URI_CONTACTOS, PROJECTION, null, null, null);
+        return new CursorLoader(getActivity(), QuiroGestProvider.CONTENT_URI_MOTIVOS, PROJECTION, null, null, null);
     }
 
 

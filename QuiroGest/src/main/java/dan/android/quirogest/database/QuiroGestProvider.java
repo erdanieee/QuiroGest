@@ -58,6 +58,11 @@ public class QuiroGestProvider extends ContentProvider {
             case CONTACTOS:
                 c = dbHelper.getReadableDatabase().query(TablaClientes.TABLA_CLIENTES, projection, where, selectionArgs, null, null, sortOrder);
                 break;
+            case MOTIVOS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+            case MOTIVOS:
+                c = dbHelper.getReadableDatabase().query(TablaMotivos.TABLA_MOTIVOS, projection, where, selectionArgs, null, null, sortOrder);
+                break;
         }
         return c;
     }
@@ -76,6 +81,11 @@ public class QuiroGestProvider extends ContentProvider {
             case CONTACTOS:
                 count = dbHelper.getWritableDatabase().delete(TablaClientes.TABLA_CLIENTES, where, selectionArgs);
                 break;
+            case MOTIVOS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+            case MOTIVOS:
+                count = dbHelper.getWritableDatabase().delete(TablaMotivos.TABLA_MOTIVOS, where, selectionArgs);
+                break;
         }
         return count;
     }
@@ -93,6 +103,11 @@ public class QuiroGestProvider extends ContentProvider {
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
                 count = dbHelper.getWritableDatabase().update(TablaClientes.TABLA_CLIENTES, values, where, selectionArgs);
+                break;
+            case MOTIVOS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+            case MOTIVOS:
+                count = dbHelper.getWritableDatabase().update(TablaMotivos.TABLA_MOTIVOS, values, where, selectionArgs);
                 break;
         }
         return count;
@@ -136,6 +151,12 @@ public class QuiroGestProvider extends ContentProvider {
                 break;
             case CONTACTOS:
                 type = "vnd.android.cursor.dir/vnd.quirogest.contacto";
+                break;
+            case MOTIVOS_ID:
+                type = "vnd.android.cursor.item/vnd.quirogest.motivo";
+                break;
+            case MOTIVOS:
+                type = "vnd.android.cursor.dir/vnd.quirogest.motivo";
                 break;
         }
 
