@@ -5,8 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import dan.android.quirogest.Cte;
-
 /**
  * Created by dan on 25/08/13.
  */
@@ -23,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.i(this.getClass().getSimpleName(), "Creando base de datos");
-        sqLiteDatabase.execSQL(TablaContactos.sqlCreateTable);
+        sqLiteDatabase.execSQL(TablaClientes.sqlCreateTableClientes);
         //TODO!!
         //sqLiteDatabase.execSQL(sqlCreateTableMotivos);
         //sqLiteDatabase.execSQL(sqlCreateTableSesiones);

@@ -34,197 +34,139 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-            android:minWidth="900dp">
+                android:orientation="vertical"  >
 
 
-            <!--movil-->
+            <!--Telefono-->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/movil"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-
+                style="@style/Etiqueta"
+                android:text="@string/telefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/EditTextMovil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
-
-
-
-            <!--fijo-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/fijo"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/EditTextFijo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
 
 
             <!--email-->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Etiqueta"
                 android:text="@string/email"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/EditTextEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
 
 
             <!--direccción-->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Etiqueta"
                 android:text="@string/direccion"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-            
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/EditTextDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
-
-
-
-            <!--C.P.-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/cp"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-
-            <TextView
-                android:id="@+id/EditTextCP"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
-
-
-
-            <!--localidad-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/localidad"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/EditTextLocalidad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
-
-
-
-            <!--Provincia-->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/provincia"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/EditTextProvincia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/EditTextCP"
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
 
 
             <!--Fecha de nacimiento-->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Etiqueta"
                 android:text="@string/fechaNacimiento"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-            
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/EditTextFechaNacimiento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
 
 
             <!--Profesión-->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Etiqueta"
                 android:text="@string/profesion"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-            
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/EditTextProfesion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
 
 
             <!--Enfermedades-->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Etiqueta"
                 android:text="@string/enfermedades"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/EditTextEnfermedades"
+                style="@style/EditTextOff"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
+                android:layout_height="wrap_content"/>
+
 
 
             <!--Alergias-->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Etiqueta"
                 android:text="@string/alergias"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-            
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/EditTextAlergias"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
 
 
             <!--Observaciones-->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/Etiqueta"
                 android:text="@string/observaciones"
-                android:textAppearance="?android:attr/textAppearanceSmall"  />
-            
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/EditTextObservaciones"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:maxWidth="800dp" />
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </ScrollView>

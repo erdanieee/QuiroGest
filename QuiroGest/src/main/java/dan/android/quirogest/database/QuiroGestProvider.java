@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.util.Log;
 
 /**
@@ -14,7 +15,7 @@ import android.util.Log;
 public class QuiroGestProvider extends ContentProvider {
     private static final String TAG = "QuiroGestProvider";
     public static final String PROVIDER_NAME        = "dan.android.quirogest.provider";
-    public static final Uri CONTENT_URI_CONTACTOS   = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaContactos.TABLA_CONTACTOS);
+    public static final Uri CONTENT_URI_CONTACTOS   = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaClientes.TABLA_CLIENTES);
     public static final Uri CONTENT_URI_MOTIVOS     = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaMotivos.TABLA_MOTIVOS);
 
     //UriMatcher
@@ -27,8 +28,8 @@ public class QuiroGestProvider extends ContentProvider {
     public static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, TablaContactos.TABLA_CONTACTOS,        CONTACTOS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaContactos.TABLA_CONTACTOS + "/#", CONTACTOS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_CLIENTES,        CONTACTOS);
+        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_CLIENTES + "/#", CONTACTOS_ID);
         uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS,            MOTIVOS);
         uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS + "/#",     MOTIVOS_ID);
 
@@ -53,9 +54,9 @@ public class QuiroGestProvider extends ContentProvider {
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                where = TablaContactos._ID + "=" + uri.getLastPathSegment();
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                c = dbHelper.getReadableDatabase().query(TablaContactos.TABLA_CONTACTOS, projection, where, selectionArgs, null, null, sortOrder);
+                c = dbHelper.getReadableDatabase().query(TablaClientes.TABLA_CLIENTES, projection, where, selectionArgs, null, null, sortOrder);
                 break;
         }
         return c;
@@ -71,9 +72,9 @@ public class QuiroGestProvider extends ContentProvider {
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                where = TablaContactos._ID + "=" + uri.getLastPathSegment();
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                count = dbHelper.getWritableDatabase().delete(TablaContactos.TABLA_CONTACTOS, where, selectionArgs);
+                count = dbHelper.getWritableDatabase().delete(TablaClientes.TABLA_CLIENTES, where, selectionArgs);
                 break;
         }
         return count;
@@ -89,9 +90,9 @@ public class QuiroGestProvider extends ContentProvider {
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                where = TablaContactos._ID + "=" + uri.getLastPathSegment();
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                count = dbHelper.getWritableDatabase().update(TablaContactos.TABLA_CONTACTOS, values, where, selectionArgs);
+                count = dbHelper.getWritableDatabase().update(TablaClientes.TABLA_CLIENTES, values, where, selectionArgs);
                 break;
         }
         return count;
@@ -107,7 +108,7 @@ public class QuiroGestProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)){
             case CONTACTOS:
-                id          = dbHelper.getWritableDatabase().insert(TablaContactos.TABLA_CONTACTOS, null, values);
+                id          = dbHelper.getWritableDatabase().insert(TablaClientes.TABLA_CLIENTES, null, values);
                 contentUri  = CONTENT_URI_CONTACTOS;
                 break;
             case MOTIVOS:

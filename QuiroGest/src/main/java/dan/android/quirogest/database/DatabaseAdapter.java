@@ -34,27 +34,4 @@ public class DatabaseAdapter {
         db       = dbHelper.getWritableDatabase();
         return db;
     }
-
-
-    public void close(){
-        dbHelper.close();
-    }
-
-
-    public long insertContacto (Contacto c){
-        Log.i(this.getClass().getSimpleName(), "Insertando contacto " + c.getNombre() + " " + c.getApellido1() + " " + c.getApellido2());
-        return TablaContactos.insert(c, db);
-    }
-
-
-    public Cursor getAllContactsCursor (){
-        Log.i(this.getClass().getSimpleName(), "Obteniendo lista de contactos...");
-        return TablaContactos.getCursorAll(db);
-    }
-
-
-    public Cursor getContactsCursor (long id){
-        Log.i(this.getClass().getSimpleName(), "Obteniendo contacto con ID " + id);
-        return TablaContactos.getCursorAll(db);
-    }
 }

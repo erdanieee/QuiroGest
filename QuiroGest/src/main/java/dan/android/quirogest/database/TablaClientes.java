@@ -1,19 +1,13 @@
 package dan.android.quirogest.database;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by dlopez on 22/10/13.
  */
-public class TablaContactos implements BaseColumns{
+public class TablaClientes implements BaseColumns{
     /** nombre de la tabla */
-    public static final String TABLA_CONTACTOS = "contactos";
+    public static final String TABLA_CLIENTES = "clientes";
 
     //MySQLlite FIELDS
     public static final String COL_NOMBRE           = "nombre";
@@ -21,6 +15,7 @@ public class TablaContactos implements BaseColumns{
     public static final String COL_APELLIDO2        = "apellido2";
     public static final String COL_MOVIL            = "movil";
     public static final String COL_FIJO             = "fijo";
+    public static final String COL_EMAIL            = "email";
     public static final String COL_DIRECCION        = "direccion";
     public static final String COL_CP               = "cp";
     public static final String COL_LOCALIDAD        = "localidad";
@@ -32,13 +27,14 @@ public class TablaContactos implements BaseColumns{
     public static final String COL_OBSERVACIONES    = "observaciones";
 
 
-    public static final String sqlCreateTable = "CREATE TABLE " + TABLA_CONTACTOS + " (" +
+    public static final String sqlCreateTableClientes = "CREATE TABLE " + TABLA_CLIENTES + " (" +
             _ID                 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COL_NOMBRE          + " TEXT, " +
             COL_APELLIDO1       + " TEXT, " +
             COL_APELLIDO2       + " TEXT, " +
             COL_MOVIL           + " TEXT, " +
             COL_FIJO            + " TEXT, " +
+            COL_EMAIL           + " TEXT, " +
             COL_DIRECCION       + " TEXT, " +
             COL_CP              + " TEXT, " +
             COL_LOCALIDAD       + " TEXT, " +

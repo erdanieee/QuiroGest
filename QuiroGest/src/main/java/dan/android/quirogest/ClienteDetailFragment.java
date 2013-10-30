@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaContactos;
+import dan.android.quirogest.database.TablaClientes;
 
 
 public class ClienteDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -76,39 +76,40 @@ public class ClienteDetailFragment extends Fragment implements LoaderManager.Loa
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         Log.i(TAG, "Loader 'loaded'");
 
-        String nombre, apellido1, apellido2, movil, fijo, direccion, cp, localidad, provincia, fechaNac, profesion, enfermedades, alergias, observaciones;
+        String nombre, apellido1, apellido2, movil, fijo, email, direccion, cp, localidad, provincia, fechaNac, profesion, enfermedades, alergias, observaciones;
         switch (cursorLoader.getId()) {
             case LOADER_CONTACTO_ID:
                 if (cursor != null && cursor.moveToFirst()){
-                    nombre          = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_NOMBRE));
-                    apellido1       = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_APELLIDO1));
-                    apellido2       = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_APELLIDO2));
-                    movil           = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_MOVIL));
-                    fijo            = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_FIJO));
-                    direccion       = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_DIRECCION));
-                    cp              = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_CP));
-                    localidad       = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_LOCALIDAD));
-                    provincia       = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_PROVINCIA));
-                    fechaNac        = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_FECHA_NAC));
-                    profesion       = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_PROFESION));
-                    enfermedades    = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_ENFERMEDADES));
-                    alergias        = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_ALERGIAS));
-                    observaciones   = cursor.getString(cursor.getColumnIndex(TablaContactos.COL_OBSERVACIONES));
+                    nombre          = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_NOMBRE));
+                    apellido1       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_APELLIDO1));
+                    apellido2       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_APELLIDO2));
+                    movil           = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_MOVIL));
+                    fijo            = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_FIJO));
+                    email           = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_EMAIL));
+                    direccion       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_DIRECCION));
+                    cp              = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_CP));
+                    localidad       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_LOCALIDAD));
+                    provincia       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_PROVINCIA));
+                    fechaNac        = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_FECHA_NAC));
+                    profesion       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_PROFESION));
+                    enfermedades    = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_ENFERMEDADES));
+                    alergias        = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_ALERGIAS));
+                    observaciones   = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_OBSERVACIONES));
 
 
                     ((TextView) rootView.findViewById(R.id.textViewNombreCompleto)).setText(nombre + " " + apellido1 + " " + apellido2);
                     ((TextView) rootView.findViewById(R.id.EditTextMovil)).setText(movil);
-                    //((TextView) rootView.findViewById(R.id.EditText)).setText(fijo);
-                    //((TextView) rootView.findViewById(R.id.EditTextEmail)).setText(email);
+                    ((TextView) rootView.findViewById(R.id.EditTextFijo)).setText(fijo);
+                    ((TextView) rootView.findViewById(R.id.EditTextEmail)).setText(email);
                     ((TextView) rootView.findViewById(R.id.EditTextDireccion)).setText(direccion);
-                    //((TextView) rootView.findViewById(R.id.EditText)).setText(cp);
-                    //((TextView) rootView.findViewById(R.id.EditText)).setText(localidad);
-                    //((TextView) rootView.findViewById(R.id.EditText)).setText(provincia);
+                    ((TextView) rootView.findViewById(R.id.EditTextCP)).setText(cp);
+                    ((TextView) rootView.findViewById(R.id.EditTextLocalidad)).setText(localidad);
+                    ((TextView) rootView.findViewById(R.id.EditTextProvincia)).setText(provincia);
                     ((TextView) rootView.findViewById(R.id.EditTextFechaNacimiento)).setText(fechaNac);
                     ((TextView) rootView.findViewById(R.id.EditTextProfesion)).setText(profesion);
-                    //((TextView) rootView.findViewById(R.id.EditText)).setText(enfermedades);
+                    ((TextView) rootView.findViewById(R.id.EditTextEnfermedades)).setText(enfermedades);
                     ((TextView) rootView.findViewById(R.id.EditTextAlergias)).setText(alergias);
-                    //((TextView) rootView.findViewById(R.id.EditText)).setText(observaciones);
+                    ((TextView) rootView.findViewById(R.id.EditTextObservaciones)).setText(observaciones);
 
 
                     //TODO: añadir el resto de elementos

@@ -3,7 +3,7 @@
 
     <string name="app_name">QuiroGest</string>
     <string name="title_cliente_detail">Detalles de los contactos</string>
-    <string name="movil">Teléfono móvil</string>
+    <string name="telefono">Teléfono</string>
     <string name="email">Email</string>
     <string name="direccion">Dirección</string>
     <string name="fechaNacimiento">Fecha de Nacimiento</string>
@@ -17,6 +17,5 @@
     <string name="provincia">Provincia</string>
     <string name="enfermedades">Enfermedades relevantes</string>
     <string name="descripciónFotoPaciente">Foto del paciente</string>
-    <string name="fijo">Teléfono fijo</string>
 
 </resources>

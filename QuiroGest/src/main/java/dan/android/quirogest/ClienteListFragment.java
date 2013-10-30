@@ -7,18 +7,19 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaContactos;
+import dan.android.quirogest.database.TablaClientes;
 
 
 public class ClienteListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "ClienteListFragment";
-    private static final String[] PROJECTION = {TablaContactos._ID, TablaContactos.COL_NOMBRE};     //TODO: añadir otros campos para mostrar en la lista
+    private static final String[] PROJECTION = {BaseColumns._ID, TablaClientes.COL_NOMBRE};     //TODO: añadir otros campos para mostrar en la lista
     private static final int LOADER_ID       = 1;
     private SimpleCursorAdapter mAdapter;
 
@@ -48,7 +49,7 @@ public class ClienteListFragment extends ListFragment implements LoaderManager.L
 
         //inicializamos el adapter con un cursor nulo hasta que se inicialice el Loader
         int layout          = android.R.layout.simple_list_item_activated_1;
-        String[] columnas   = new String[] {TablaContactos.COL_NOMBRE};
+        String[] columnas   = new String[] {TablaClientes.COL_NOMBRE};
         int[] vistas        = new int[] {android.R.id.text1};
         mAdapter            = new SimpleCursorAdapter(getActivity(), layout, null, columnas, vistas, 0);
         setListAdapter(mAdapter);
