@@ -35,7 +35,7 @@ public class MotivosListFragment extends ListFragment implements LoaderManager.L
 
     // A callback interface that all activities containing this fragment must implement. This mechanism allows activities to be notified of item selections.
     public interface Callbacks {
-        public void onMotivoSelected(long id);
+        public void onMotivoSelected(long id);      //TODO: volver a dejar como estaba y unificar (entender) todos los listFragment para no repetir código
     }
 
 
