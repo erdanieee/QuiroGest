@@ -5,19 +5,22 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
+import dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable;
+import dan.android.quirogest.ItemListFragmentBase.CallbackItemClicked;
 import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 import dan.android.quirogest.database.TablaMotivos;
 
 
-public class ClienteListActivity extends Activity implements ClienteListFragment.Callbacks{
+public class ClienteListActivity extends Activity implements CallbackItemClicked{
     private static final String TAG = "ClienteListActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,9 @@ public class ClienteListActivity extends Activity implements ClienteListFragment
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_cliente);
+
+        //Configuramos el ListView principal
+        ((ClienteListFragment)getFragmentManager().findFragmentById(R.id.cliente_list)).getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaClientes.TABLA_CLIENTES);
@@ -69,29 +75,39 @@ public class ClienteListActivity extends Activity implements ClienteListFragment
         cv.put(TablaMotivos.COL_DESCRIPCION, "unos 19cm, gorda como un zollo");
         cv.put(TablaMotivos.COL_COMIENZO, new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT).format(new Date(0)));
         cv.put(TablaMotivos.COL_ESTADO_SALUD, TablaMotivos.EstadoSalud.BUENO.toSQLite());
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
     }
 
 
     /**
-     * Callback method from {@link ClienteListFragment.Callbacks}
+     * Callback method from {@link dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable}
      * indicating that the item with the given ID was selected.c
      */
     @Override
-    public void onClienteSelected(long contactoId) {
-        Log.i(TAG, "Item selected " + contactoId);
-        Bundle arguments;
-        ClienteDetailFragment fragment;
+    public void onListItemSelected(ListViewItemClickeable listView, long id) {
+        Log.i(TAG, "Item selected " + id);
+        ClienteDetailFragment clienteDetaiFragment;
+        MotivosListFragment motivosListFragment;
         FragmentTransaction ft;
 
-        fragment = (ClienteDetailFragment) getFragmentManager().findFragmentById(R.id.cliente_detail_container);
+        switch (listView.getListviewTag()){
+            case ClienteListFragment.TAG_LIST_VIEW:
+                clienteDetaiFragment = (ClienteDetailFragment) getFragmentManager().findFragmentById(R.id.cliente_detail_container);
 
-        if (fragment == null || fragment.getContactoId()!= contactoId){
-            fragment = ClienteDetailFragment.newInstance(contactoId);
-            getFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.cliente_detail_container, fragment)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
+                if (clienteDetaiFragment == null || clienteDetaiFragment.getContactoId()!= id){
+                    clienteDetaiFragment = ClienteDetailFragment.newInstance(id);
+                    motivosListFragment  = MotivosListFragment.newInstance(id);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.cliente_detail_container, clienteDetaiFragment)
+                            .replace(R.id.motivos_list_container, motivosListFragment)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                            .commit();
+                }
+                break;
+
+            case MotivosListFragment.TAG_LIST_VIEW:
+                break;
         }
     }
 }

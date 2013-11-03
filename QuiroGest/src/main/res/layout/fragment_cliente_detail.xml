@@ -23,10 +23,11 @@
         android:textAlignment="viewEnd"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/ExtraLargeText"
-        android:layout_toRightOf="@+id/imageViewFoto"/>
+        android:layout_toRightOf="@+id/imageViewFoto"
+        android:text="Prueba de nombre" />
 
     <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageViewFoto"
             android:id="@+id/ScrollViewClientes">
@@ -170,24 +171,6 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/motivosDeConsulta"
-        android:id="@+id/textView"
-        android:layout_below="@+id/imageViewFoto"
-        android:layout_toRightOf="@+id/ScrollViewClientes"
-        android:paddingLeft="@dimen/ExtraLargeText" />
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listViewMotivosDeConsulta"
-        android:layout_below="@+id/textView"
-        android:layout_toRightOf="@+id/ScrollViewClientes"
-        android:paddingLeft="@dimen/ExtraLargeText" />
 
 
 </RelativeLayout>
