@@ -21,7 +21,6 @@ public class ClienteDetailFragment extends Fragment implements LoaderManager.Loa
     private static final String TAG = "ClienteDetailFragment";
     private static final String CONTACTO_ID = "contacto_id";
     private static final int LOADER_CONTACTO_ID = 1;
-    private static final int LOADER_MOTIVOS_ID  = 2;
 
     private long mContactoId;
     private View rootView;
@@ -54,7 +53,6 @@ public class ClienteDetailFragment extends Fragment implements LoaderManager.Loa
 
 
     public long getContactoId(){
-        Log.i(TAG, "getContactoId: " + mContactoId);
         return mContactoId;
     }
 
@@ -110,9 +108,6 @@ public class ClienteDetailFragment extends Fragment implements LoaderManager.Loa
                     ((TextView) rootView.findViewById(R.id.EditTextEnfermedades)).setText(enfermedades);
                     ((TextView) rootView.findViewById(R.id.EditTextAlergias)).setText(alergias);
                     ((TextView) rootView.findViewById(R.id.EditTextObservaciones)).setText(observaciones);
-
-
-                    //TODO: añadir el resto de elementos
                 }
                 break;
         }
