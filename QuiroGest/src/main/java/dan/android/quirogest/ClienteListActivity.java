@@ -3,6 +3,7 @@ package dan.android.quirogest;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -69,19 +70,30 @@ public class ClienteListActivity extends Activity implements CallbackItemClicked
 
         cv = new ContentValues();
         cv.put(TablaMotivos.COL_ID_CONTACTO, 3);
-        cv.put(TablaMotivos.COL_DIAGNOSTICO, "Síndrome de la p#### constantemente tiesa");
-        cv.put(TablaMotivos.COL_OBSERVACIONES, "Efectívamente está muy dura");
+        cv.put(TablaMotivos.COL_DIAGNOSTICO, "Lumbalgia");
+        cv.put(TablaMotivos.COL_OBSERVACIONES, "Aparece cada mes o mes y medio");
         cv.put(TablaMotivos.COL_ACTIV_FISICA, "balanceo anteroposterior de tronco");
-        cv.put(TablaMotivos.COL_DESCRIPCION, "unos 19cm, gorda como un zollo");
-        cv.put(TablaMotivos.COL_COMIENZO, new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT).format(new Date(0)));
+        cv.put(TablaMotivos.COL_DESCRIPCION, "presenta dolor al estar varias horas sentado");
+        cv.put(TablaMotivos.COL_FECHA, new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT).format(new Date(0)));
         cv.put(TablaMotivos.COL_ESTADO_SALUD, TablaMotivos.EstadoSalud.BUENO.toSQLite());
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
+
+        cv = new ContentValues();
+        cv.put(TablaMotivos.COL_ID_CONTACTO, 3);
+        cv.put(TablaMotivos.COL_DIAGNOSTICO, "Cervicalgia");
+        cv.put(TablaMotivos.COL_OBSERVACIONES, "Aparece cada mes o mes y medio");
+        cv.put(TablaMotivos.COL_ACTIV_FISICA, "balanceo anteroposterior de tronco");
+        cv.put(TablaMotivos.COL_DESCRIPCION, "presenta dolor al estar varias horas sentado");
+        cv.put(TablaMotivos.COL_FECHA, "1981-08-21");
+        cv.put(TablaMotivos.COL_ESTADO_SALUD, TablaMotivos.EstadoSalud.MALO.toSQLite());
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
     }
 
 
     /**
      * Callback method from {@link dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable}
-     * indicating that the item with the given ID was selected.c
+     * indicating that the item with the given ID was selected.
+     * id - El id representa un contacto o un motivo, según la lista que se haya pulsado!!!
      */
     @Override
     public void onListItemSelected(ListViewItemClickeable listView, long id) {
@@ -107,6 +119,9 @@ public class ClienteListActivity extends Activity implements CallbackItemClicked
                 break;
 
             case MotivosListFragment.TAG_LIST_VIEW:
+                Intent myIntent = new Intent(this, MotivosListFragment.class);
+                myIntent.putExtra(MotivosListActivity.MOTIVO_ID, id);
+                startActivity(myIntent);
                 break;
         }
     }
