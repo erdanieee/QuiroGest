@@ -7,37 +7,42 @@ import android.provider.BaseColumns;
 import dan.android.quirogest.ItemListFragmentBase.ItemListFragmentBase;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaMotivos;
+import dan.android.quirogest.database.TablaSesiones;
 
-
-public class MotivosListFragment extends ItemListFragmentBase {
-    public static final int TAG_LIST_VIEW = 929823978;
-    private static final String CONTACTO_ID = "contacto_id";
-    private final String TAG = "MotivosListFragment";
-    private final String[] PROJECTION = {BaseColumns._ID, TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_FECHA};
-    private final String[] COLUMNS = {TablaMotivos.COL_FECHA, TablaMotivos.COL_DIAGNOSTICO};
+/**
+ * Created by dan on 4/11/13.
+ */
+//TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+public class SesionesListFragment extends ItemListFragmentBase {
+    public static final int TAG_LIST_VIEW = 73648273;
+    private static final String MOTIVO_ID = "motivo_id";
+    private final String TAG = "SesionesListFragment";
+    private final String[] PROJECTION = {BaseColumns._ID, TablaSesiones.COL_DIAGNOSTICO, TablaSesiones.COL_FECHA};
+    private final String[] COLUMNS = {TablaSesiones.COL_FECHA, TablaSesiones.COL_DIAGNOSTICO};
     private final int[] VISTAS = {android.R.id.text1, android.R.id.text2};
-    private final Uri URI = QuiroGestProvider.CONTENT_URI_MOTIVOS;
+    private final Uri URI = QuiroGestProvider.CONTENT_URI_SESIONES;
     private final int LAYOUT = android.R.layout.simple_list_item_2;
-    private long mContactoId;
+    private long mMotivoId;
 
 
     /** El constructor tiene que estar vacío, por eso se crea esta función estática */
-    public static MotivosListFragment newInstance(long contactoId) {
-        MotivosListFragment f = new MotivosListFragment();
+    public static SesionesListFragment newInstance(long motivoId) {
+        SesionesListFragment f = new SesionesListFragment();
 
         // Supply id input as an argument.
         Bundle args = new Bundle();
-        args.putLong(CONTACTO_ID, contactoId);
+        args.putLong(MOTIVO_ID, motivoId);
         f.setArguments(args);
 
         return f;
     }
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContactoId = getArguments().getLong(CONTACTO_ID, -1);
+        mMotivoId = getArguments().getLong(MOTIVO_ID, -1);
     }
 
 
@@ -48,13 +53,13 @@ public class MotivosListFragment extends ItemListFragmentBase {
     public String[] getProjection() { return PROJECTION; }
 
     @Override
-    public String getSelection() { return TablaMotivos.COL_ID_CONTACTO + "=?"; }
+    public String getSelection() { return TablaSesiones.COL_ID_MOTIVO + "=?"; }
 
     @Override
-    public String[] getSelectionArgs() { return new String[] {String.valueOf(mContactoId)};}
+    public String[] getSelectionArgs() { return new String[] {String.valueOf(mMotivoId)};}
 
     @Override
-    public String getOrder() { return "DATE(" + TablaMotivos.COL_FECHA + ") DESC"; }
+    public String getOrder() { return "DATE(" + TablaSesiones.COL_FECHA + ") DESC"; }
 
     @Override
     public int getListLayout() { return LAYOUT; }
@@ -67,4 +72,5 @@ public class MotivosListFragment extends ItemListFragmentBase {
 
     @Override
     public Uri getUri() { return URI; }
+
 }

@@ -17,21 +17,27 @@ public class QuiroGestProvider extends ContentProvider {
     public static final String PROVIDER_NAME        = "dan.android.quirogest.provider";
     public static final Uri CONTENT_URI_CONTACTOS   = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaClientes.TABLA_CLIENTES);
     public static final Uri CONTENT_URI_MOTIVOS     = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaMotivos.TABLA_MOTIVOS);
+    public static final Uri CONTENT_URI_SESIONES    = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaSesiones.TABLA_SESIONES);
+
 
     //UriMatcher
     public static final int CONTACTOS       = 1;
     public static final int CONTACTOS_ID    = 2;
     public static final int MOTIVOS         = 3;
     public static final int MOTIVOS_ID      = 4;
+    public static final int SESIONES        = 5;
+    public static final int SESIONES_ID     = 6;
 
     //inicializamos el UriMatcher
     public static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_CLIENTES,        CONTACTOS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_CLIENTES + "/#", CONTACTOS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_CLIENTES,          CONTACTOS);
+        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_CLIENTES + "/#",   CONTACTOS_ID);
         uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS,            MOTIVOS);
         uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS + "/#",     MOTIVOS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, TablaSesiones.TABLA_SESIONES,          SESIONES);
+        uriMatcher.addURI(PROVIDER_NAME, TablaSesiones.TABLA_SESIONES + "/#",   SESIONES_ID);
 
     }
 
@@ -48,69 +54,78 @@ public class QuiroGestProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Log.i(TAG, "Query " + uri.toString());
-        Cursor c     = null;
+        String tabla=null;
         String where = selection;
 
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
+            case MOTIVOS_ID:
+            case SESIONES_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                c = dbHelper.getReadableDatabase().query(TablaClientes.TABLA_CLIENTES, projection, where, selectionArgs, null, null, sortOrder);
+                tabla = TablaClientes.TABLA_CLIENTES;
                 break;
-            case MOTIVOS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case MOTIVOS:
-                c = dbHelper.getReadableDatabase().query(TablaMotivos.TABLA_MOTIVOS, projection, where, selectionArgs, null, null, sortOrder);
+                tabla = TablaMotivos.TABLA_MOTIVOS;
+                break;
+            case SESIONES:
+                tabla = TablaSesiones.TABLA_SESIONES;
                 break;
         }
-        return c;
+        return dbHelper.getReadableDatabase().query(tabla, projection, where, selectionArgs, null, null, sortOrder);
     }
 
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         Log.i(TAG, "Delete " + uri.toString());
-        int count    = -1;
+        String tabla=null;
         String where = selection;
 
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
+            case MOTIVOS_ID:
+            case SESIONES_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                count = dbHelper.getWritableDatabase().delete(TablaClientes.TABLA_CLIENTES, where, selectionArgs);
+                tabla = TablaClientes.TABLA_CLIENTES;
                 break;
-            case MOTIVOS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case MOTIVOS:
-                count = dbHelper.getWritableDatabase().delete(TablaMotivos.TABLA_MOTIVOS, where, selectionArgs);
+                tabla = TablaMotivos.TABLA_MOTIVOS;
+                break;
+            case SESIONES:
+                tabla = TablaSesiones.TABLA_SESIONES;
                 break;
         }
-        return count;
+        return dbHelper.getWritableDatabase().delete(tabla, where, selectionArgs);
     }
 
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         Log.i(TAG, "Update " + uri.toString() + " " + values.toString());
-        int count    = -1;
+        String tabla=null;
         String where = selection;
 
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
+            case MOTIVOS_ID:
+            case SESIONES_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                count = dbHelper.getWritableDatabase().update(TablaClientes.TABLA_CLIENTES, values, where, selectionArgs);
+                tabla = TablaClientes.TABLA_CLIENTES;
                 break;
-            case MOTIVOS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case MOTIVOS:
-                count = dbHelper.getWritableDatabase().update(TablaMotivos.TABLA_MOTIVOS, values, where, selectionArgs);
+                tabla = TablaMotivos.TABLA_MOTIVOS;
+                break;
+            case SESIONES:
+                tabla = TablaSesiones.TABLA_SESIONES;
                 break;
         }
-        return count;
+        return dbHelper.getWritableDatabase().update(tabla, values, where, selectionArgs);
     }
 
 
@@ -120,18 +135,24 @@ public class QuiroGestProvider extends ContentProvider {
         Uri contentUri  = null;
         Uri _uri        = null;
         long id         = -1;
+        String tabla=null;
 
         switch (uriMatcher.match(uri)){
             case CONTACTOS:
-                id          = dbHelper.getWritableDatabase().insert(TablaClientes.TABLA_CLIENTES, null, values);
+                tabla = TablaClientes.TABLA_CLIENTES;
                 contentUri  = CONTENT_URI_CONTACTOS;
                 break;
             case MOTIVOS:
-                id          = dbHelper.getWritableDatabase().insert(TablaMotivos.TABLA_MOTIVOS, null, values);
+                tabla = TablaMotivos.TABLA_MOTIVOS;
                 contentUri  = CONTENT_URI_MOTIVOS;
+                break;
+            case SESIONES:
+                tabla = TablaSesiones.TABLA_SESIONES;
+                contentUri  = CONTENT_URI_SESIONES;
                 break;
         }
 
+        id = dbHelper.getWritableDatabase().insert(tabla, null, values);
         if (id > 0){
             _uri = ContentUris.withAppendedId(contentUri, id);
             getContext().getContentResolver().notifyChange(_uri, null);
@@ -147,16 +168,22 @@ public class QuiroGestProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                type = "vnd.android.cursor.item/vnd.quirogest.contacto";
+                type = "vnd.android.cursor.item/vnd.quirogest.contactos";
                 break;
             case CONTACTOS:
-                type = "vnd.android.cursor.dir/vnd.quirogest.contacto";
+                type = "vnd.android.cursor.dir/vnd.quirogest.contactos";
                 break;
             case MOTIVOS_ID:
-                type = "vnd.android.cursor.item/vnd.quirogest.motivo";
+                type = "vnd.android.cursor.item/vnd.quirogest.motivos";
                 break;
             case MOTIVOS:
-                type = "vnd.android.cursor.dir/vnd.quirogest.motivo";
+                type = "vnd.android.cursor.dir/vnd.quirogest.motivos";
+                break;
+            case SESIONES_ID:
+                type = "vnd.android.cursor.item/vnd.quirogest.sesiones";
+                break;
+            case SESIONES:
+                type = "vnd.android.cursor.dir/vnd.quirogest.sesiones";
                 break;
         }
 

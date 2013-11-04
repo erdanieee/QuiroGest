@@ -1,23 +1,9 @@
 package dan.android.quirogest;
 
-import android.app.Activity;
-import android.app.ListFragment;
-import android.app.LoaderManager;
-import android.content.ClipData;
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.BaseColumns;
-import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
-import dan.android.quirogest.ItemListFragmentBase.CallbackItemClicked;
 import dan.android.quirogest.ItemListFragmentBase.ItemListFragmentBase;
-import dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 
@@ -47,7 +33,7 @@ public class ClienteListFragment extends ItemListFragmentBase {
     public String[] getSelectionArgs() { return null; }
 
     @Override
-    public String getOrder() { return null; }
+    public String getOrder() { return TablaClientes.COL_NOMBRE + " COLLATE NOCASE"; }
 
     @Override
     public int getListLayout() { return LAYOUT; }
