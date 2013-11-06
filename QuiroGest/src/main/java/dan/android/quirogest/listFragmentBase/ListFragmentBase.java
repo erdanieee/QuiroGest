@@ -29,7 +29,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     // The serialization (saved instance state) Bundle key representing the activated item position.
     private static final String STATE_ACTIVATED_POSITION = "activated_position";
     private int mActivatedPosition                       = ListView.INVALID_POSITION;
-    private static final String ITEM_ID = "item_id";
+    private static final String CONTACTO_ID = "item_id";
 
     // The fragment's current callback object, which is notified of list item clicks.
     private CallbackItemClicked mCallbacks = null;
@@ -44,6 +44,8 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     public abstract String[]    getColumns();
     public abstract int[]       getViews();
     public abstract Uri         getUri();
+
+
 
 
 
@@ -63,7 +65,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
 
         // Supply id input as an argument.
         Bundle args = new Bundle();
-        args.putLong(ITEM_ID, itemId);          //se pone la variable como argumento para el loader...
+        args.putLong(CONTACTO_ID, itemId);          //se pone la variable como argumento para el loader...
         f.setArguments(args);
 
         return f;
@@ -170,13 +172,13 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
                 break;
         }
 
-        if (getArguments().containsKey(ITEM_ID)){
-            long id = getArguments().getLong(ITEM_ID);
+        if (getArguments().containsKey(CONTACTO_ID)){
+            long id = getArguments().getLong(CONTACTO_ID);
 
             for (int p=0; p<mAdapter.getCount(); p++){
                 if (mAdapter.getItemId(p) == id){
                     mActivatedPosition = p;
-                    getArguments().remove(ITEM_ID);
+                    getArguments().remove(CONTACTO_ID);
                     break;
                 }
             }

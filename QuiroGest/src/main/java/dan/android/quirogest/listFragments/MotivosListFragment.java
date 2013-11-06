@@ -10,7 +10,6 @@ import dan.android.quirogest.database.TablaMotivos;
 
 
 public class MotivosListFragment extends ListFragmentBase {
-    private static final String CONTACTO_ID = "contacto_id";
     private final String TAG = "MotivosListFragment";
     private final String[] PROJECTION = {BaseColumns._ID, TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_FECHA};
     private final String[] COLUMNS = {TablaMotivos.COL_FECHA, TablaMotivos.COL_DIAGNOSTICO};
