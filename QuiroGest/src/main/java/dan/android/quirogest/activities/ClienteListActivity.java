@@ -11,19 +11,18 @@ import android.widget.ListView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable;
-import dan.android.quirogest.ItemListFragmentBase.CallbackItemClicked;
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.detailFragments.ClienteDetailFragment;
+import dan.android.quirogest.listFragmentBase.ListFragmentBase;
 import dan.android.quirogest.listFragments.ClienteListFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
 
 
-public class ClienteListActivity extends Activity implements CallbackItemClicked{
+public class ClienteListActivity extends Activity implements ListFragmentBase.CallbackItemClicked{
     private static final String TAG = "ClienteListActivity";
 
 
@@ -37,6 +36,9 @@ public class ClienteListActivity extends Activity implements CallbackItemClicked
         //Configuramos el ListView principal
         ((ClienteListFragment)getFragmentManager().findFragmentById(R.id.cliente_list)).getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+
+
+        //////////////// TEMPORAL /////////////////
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaClientes.TABLA_CLIENTES);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaMotivos.TABLA_MOTIVOS);
@@ -95,34 +97,34 @@ public class ClienteListActivity extends Activity implements CallbackItemClicked
 
 
     /**
-     * Callback method from {@link dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable}
+     * Callback method from {@link dan.android.quirogest.listFragmentBase.ListFragmentBase}
      * indicating that the item with the given ID was selected.
      * id - El id representa un contacto o un motivo, según la lista que se haya pulsado!!!
      */
     @Override
-    public void onListItemSelected(ListViewItemClickeable listView, long id) {
+    public void onListItemSelected(ListFragmentBase lfb, long id) {
         Log.i(TAG, "Item selected " + id);
-        ClienteDetailFragment clienteDetaiFragment;
-        MotivosListFragment motivosListFragment;
+        ClienteDetailFragment cdf;
+        MotivosListFragment mlf;
         FragmentTransaction ft;
 
-        switch (listView.getListviewTag()){
-            case ClienteListFragment.TAG_LIST_VIEW:
-                clienteDetaiFragment = (ClienteDetailFragment) getFragmentManager().findFragmentById(R.id.cliente_detail_container);
+        switch (lfb.getListViewType()){
+            case LIST_VIEW_CLIENTES:
+                cdf = (ClienteDetailFragment) getFragmentManager().findFragmentById(R.id.cliente_detail_container);
 
-                if (clienteDetaiFragment == null || clienteDetaiFragment.getContactoId()!= id){
-                    clienteDetaiFragment = ClienteDetailFragment.newInstance(id);
-                    motivosListFragment  = MotivosListFragment.newInstance(id);
+                if (cdf == null || cdf.getContactoId()!= id){
+                    cdf = ClienteDetailFragment.newInstance(id);
+                    mlf  = MotivosListFragment.newInstance(id);
                     getFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.cliente_detail_container, clienteDetaiFragment)
-                            .replace(R.id.motivos_list_container, motivosListFragment)
+                            .replace(R.id.cliente_detail_container, cdf)
+                            .replace(R.id.motivos_list_container, mlf)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
-                }
+                };
                 break;
 
-            case MotivosListFragment.TAG_LIST_VIEW:
+            case LIST_VIEW_MOTIVOS:
                 Intent myIntent = new Intent(this, MotivosListFragment.class);
                 myIntent.putExtra(MotivosListActivity.MOTIVO_ID, id);
                 startActivity(myIntent);

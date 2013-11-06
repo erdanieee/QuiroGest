@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 
-import dan.android.quirogest.ItemListFragmentBase.ItemListFragmentBase;
+import dan.android.quirogest.listFragmentBase.ListFragmentBase;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaSesiones;
 
@@ -12,7 +12,7 @@ import dan.android.quirogest.database.TablaSesiones;
  * Created by dan on 4/11/13.
  */
 //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-public class SesionesListFragment extends ItemListFragmentBase {
+public class SesionesListFragment extends ListFragmentBase {
     public static final int TAG_LIST_VIEW = 73648273;
     private static final String MOTIVO_ID = "motivo_id";
     private final String TAG = "SesionesListFragment";
@@ -41,7 +41,7 @@ public class SesionesListFragment extends ItemListFragmentBase {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMotivoId = getArguments().getLong(MOTIVO_ID, -1);
+        mMotivoId = getArguments().getLong(MOTIVO_ID);
     }
 
 

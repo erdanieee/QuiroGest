@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
-import dan.android.quirogest.ItemListFragmentBase.CallbackItemClicked;
-import dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable;
+import dan.android.quirogest.listFragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.detailFragments.MotivoDetailFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
 
 
-public class MotivosListActivity extends Activity implements CallbackItemClicked{
+public class MotivosListActivity extends Activity implements ListFragmentBase.CallbackItemClicked {
     private static final String TAG = "MotivosListActivity";
 
     public static final String MOTIVO_ID = "motivo_id";
@@ -37,17 +36,17 @@ public class MotivosListActivity extends Activity implements CallbackItemClicked
 
 
     /**
-     * Callback method from {@link dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable}
+     * Callback method from {@link dan.android.quirogest.listFragmentBase.ListFragmentBase}
      * indicating that the item with the given ID was selected.c
      */
     @Override
-    public void onListItemSelected(ListViewItemClickeable listView, long id) {
+    public void onListItemSelected(ListFragmentBase lfb, long id) {
         Log.i(TAG, "Item selected " + id);
         MotivoDetailFragment mdf;
         FragmentTransaction ft;
 
-        switch (listView.getListviewTag()){
-            case MotivosListFragment.TAG_LIST_VIEW:
+        switch (lfb.getListViewType()){
+            case  MotivosListFragment.TAG_LIST_VIEW:
                 mdf = (MotivoDetailFragment) getFragmentManager().findFragmentById(R.id.motivo_detail_container);
 
                 if (mdf == null || mdf.getMotivoId()!= id){
