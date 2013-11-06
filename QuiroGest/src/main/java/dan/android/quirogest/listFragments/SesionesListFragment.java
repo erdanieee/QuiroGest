@@ -1,4 +1,4 @@
-package dan.android.quirogest;
+package dan.android.quirogest.listFragments;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.provider.BaseColumns;
 
 import dan.android.quirogest.ItemListFragmentBase.ItemListFragmentBase;
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.database.TablaSesiones;
 
 /**

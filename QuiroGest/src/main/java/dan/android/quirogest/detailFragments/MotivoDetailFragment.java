@@ -1,4 +1,4 @@
-package dan.android.quirogest;
+package dan.android.quirogest.detailFragments;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
@@ -13,11 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 
 
-public class ClienteDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MotivoDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String TAG = "ClienteDetailFragment";
     private static final String CONTACTO_ID = "contacto_id";
     private static final int LOADER_CONTACTO_ID = 1;
@@ -27,9 +28,9 @@ public class ClienteDetailFragment extends Fragment implements LoaderManager.Loa
 
 
     /** El constructor tiene que estar vacío, por eso se crea esta función estática */
-    public static ClienteDetailFragment newInstance(long contactoId) {
+    public static MotivoDetailFragment newInstance(long contactoId) {
         Log.i(TAG, "creando nueva instancia ID: " + contactoId);
-        ClienteDetailFragment f = new ClienteDetailFragment();
+        MotivoDetailFragment f = new MotivoDetailFragment();
 
         // Supply id input as an argument.
         Bundle args = new Bundle();

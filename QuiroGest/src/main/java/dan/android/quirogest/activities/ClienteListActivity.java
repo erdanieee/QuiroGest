@@ -1,4 +1,4 @@
-package dan.android.quirogest;
+package dan.android.quirogest.activities;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -13,10 +13,14 @@ import java.util.Date;
 
 import dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable;
 import dan.android.quirogest.ItemListFragmentBase.CallbackItemClicked;
+import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 import dan.android.quirogest.database.TablaMotivos;
+import dan.android.quirogest.detailFragments.ClienteDetailFragment;
+import dan.android.quirogest.listFragments.ClienteListFragment;
+import dan.android.quirogest.listFragments.MotivosListFragment;
 
 
 public class ClienteListActivity extends Activity implements CallbackItemClicked{

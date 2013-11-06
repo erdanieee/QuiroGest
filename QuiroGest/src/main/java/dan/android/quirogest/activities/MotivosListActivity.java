@@ -1,28 +1,23 @@
-package dan.android.quirogest;
+package dan.android.quirogest.activities;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import dan.android.quirogest.ItemListFragmentBase.CallbackItemClicked;
 import dan.android.quirogest.ItemListFragmentBase.ListViewItemClickeable;
-import dan.android.quirogest.database.DatabaseHelper;
-import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaClientes;
-import dan.android.quirogest.database.TablaMotivos;
+import dan.android.quirogest.R;
+import dan.android.quirogest.detailFragments.MotivoDetailFragment;
+import dan.android.quirogest.listFragments.MotivosListFragment;
 
 
 public class MotivosListActivity extends Activity implements CallbackItemClicked{
     private static final String TAG = "MotivosListActivity";
 
-    public static final String MOTIVO_ID = "contacto_id";
+    public static final String MOTIVO_ID = "motivo_id";
     private long mMotivoId;
 
 
@@ -30,7 +25,7 @@ public class MotivosListActivity extends Activity implements CallbackItemClicked
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_motivos);
+        setContentView(R.layout.activity_motivo);
 
         //obtenemos el motivo seleccionado en cliente_activity
         Intent myIntent = getIntent();
@@ -48,18 +43,18 @@ public class MotivosListActivity extends Activity implements CallbackItemClicked
     @Override
     public void onListItemSelected(ListViewItemClickeable listView, long id) {
         Log.i(TAG, "Item selected " + id);
-        MotivosDetailFragment motivosDetailFragment;
+        MotivoDetailFragment mdf;
         FragmentTransaction ft;
 
         switch (listView.getListviewTag()){
             case MotivosListFragment.TAG_LIST_VIEW:
-                motivosDetailFragment = (MotivosDetailFragment) getFragmentManager().findFragmentById(R.id.motivos_detail_container);
+                mdf = (MotivoDetailFragment) getFragmentManager().findFragmentById(R.id.motivo_detail_container);
 
-                if (motivosDetailFragment == null || motivosDetailFragment.getContactoId()!= id){
-                    motivosDetailFragment = MotivosDetailFragment.newInstance(id);
+                if (mdf == null || mdf.getMotivoId()!= id){
+                    mdf = MotivoDetailFragment.newInstance(id);
                     getFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.cliente_detail_container, clienteDetaiFragment)
+                            .replace(R.id.motivo_detail_container, mdf)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
                 }

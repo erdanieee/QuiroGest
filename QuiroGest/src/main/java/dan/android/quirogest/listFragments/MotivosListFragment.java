@@ -1,4 +1,4 @@
-package dan.android.quirogest;
+package dan.android.quirogest.listFragments;
 
 import android.net.Uri;
 import android.os.Bundle;

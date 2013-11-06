@@ -17,5 +17,6 @@
     <string name="provincia">Provincia</string>
     <string name="enfermedades">Enfermedades relevantes</string>
     <string name="descripciónFotoPaciente">Foto del paciente</string>
+    <string name="estadoDeSaludGeneral">Estado de Salud general</string>
 
 </resources>
