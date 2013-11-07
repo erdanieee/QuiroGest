@@ -53,7 +53,12 @@ public class QuiroGestProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Log.i(TAG, "Query " + uri.toString());
+        Log.d(TAG, "Query " +
+                uri!=null?uri.toString():"" + " " +
+                projection!=null?projection.toString():"" + " " +
+                selection!=null?selection.toString():"" + " " +
+                selectionArgs!=null?selectionArgs.toString():"" + " " +
+                sortOrder!=null?sortOrder.toString():"");
         String tabla=null;
         String where = selection;
 
@@ -79,7 +84,7 @@ public class QuiroGestProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.i(TAG, "Delete " + uri.toString());
+        Log.d(TAG, "Delete " + uri.toString());
         String tabla=null;
         String where = selection;
 
@@ -105,7 +110,7 @@ public class QuiroGestProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        Log.i(TAG, "Update " + uri.toString() + " " + values.toString());
+        Log.d(TAG, "Update " + uri.toString() + " " + values.toString());
         String tabla=null;
         String where = selection;
 
@@ -131,7 +136,7 @@ public class QuiroGestProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Log.i(TAG, "Insert " + uri.toString() + " " + values.toString());
+        Log.d(TAG, "Insert " + uri.toString() + " " + values.toString());
         Uri contentUri  = null;
         Uri _uri        = null;
         long id         = -1;

@@ -1,4 +1,4 @@
-package dan.android.quirogest.listFragmentBase;
+package dan.android.quirogest.FragmentBase;
 
 import android.app.Activity;
 import android.app.ListFragment;
@@ -8,16 +8,14 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-import dan.android.quirogest.listFragments.ClienteListFragment;
-import dan.android.quirogest.listFragments.MotivosListFragment;
-import dan.android.quirogest.listFragments.SesionesListFragment;
-
 
 public abstract class ListFragmentBase extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private static final String TAG                         = "ListFragmentBase";
     private static final int    LOADER_ID                   = 234237823;
     private static final String STATE_ACTIVATED_POSITION    = "activated_position";
     public  static final String ARG_SELECTED_ITEM_ID        = "default_selected_item_id";
@@ -53,6 +51,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
             getListView().setItemChecked(position, true);
         }
         mActivatedPosition = position;
+        Log.d(TAG, "seleccionamos item " + position);
     }
 
 
@@ -142,9 +141,12 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
             case LOADER_ID:
                 mAdapter.swapCursor(cursor);
                 break;
+            default:
+                throw new IllegalStateException("Nunca debería pasar esto");
         }
 
-        if (getArguments().containsKey(ARG_SELECTED_ITEM_ID)){
+        if (getArguments()!=null && getArguments().containsKey(ARG_SELECTED_ITEM_ID)){
+            Log.d(TAG, "queremos un item preseleccionado");
             long id = getArguments().getLong(ARG_SELECTED_ITEM_ID);
 
             for (int p=0; p<mAdapter.getCount(); p++){

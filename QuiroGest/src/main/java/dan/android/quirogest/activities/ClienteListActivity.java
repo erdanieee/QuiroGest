@@ -17,7 +17,7 @@ import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.detailFragments.ClienteDetailFragment;
-import dan.android.quirogest.listFragmentBase.ListFragmentBase;
+import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.listFragments.ClienteListFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
 
@@ -28,7 +28,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "creating activity");
+        Log.d(TAG, "creating activity");
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_cliente);
@@ -98,13 +98,13 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
 
 
     /**
-     * Callback method from {@link dan.android.quirogest.listFragmentBase.ListFragmentBase}
+     * Callback method from {@link dan.android.quirogest.FragmentBase.ListFragmentBase}
      * indicating that the item with the given ID was selected.
      * id - El id representa un contacto o un motivo, según la lista que se haya pulsado!!!
      */
     @Override
     public void onListItemSelected(ListFragmentBase lfb, long id) {
-        Log.i(TAG, "Item selected " + id);
+        Log.i(TAG, "Item selected " + id + " en " + lfb.getClass());
         ClienteDetailFragment cdf;
         MotivosListFragment mlf;
         FragmentTransaction ft;
@@ -113,13 +113,13 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
             case LIST_VIEW_CLIENTES:
                 cdf = (ClienteDetailFragment) getFragmentManager().findFragmentById(R.id.cliente_detail_container);
 
-                if (cdf == null || cdf.getContactoId()!= id){
-                    cdf = ClienteDetailFragment.newInstance(id);
+                if (cdf == null || cdf.getItemId()!= id){
+                    cdf  = ClienteDetailFragment.newInstance(id);
                     mlf  = MotivosListFragment.newInstance(id);
                     getFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.cliente_detail_container, cdf)
                             .replace(R.id.motivos_list_container, mlf)
+                            .replace(R.id.cliente_detail_container, cdf)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
                 }

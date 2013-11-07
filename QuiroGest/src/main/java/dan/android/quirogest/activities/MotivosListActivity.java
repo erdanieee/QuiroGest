@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
-import dan.android.quirogest.listFragmentBase.ListFragmentBase;
+import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.detailFragments.MotivoDetailFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
@@ -36,7 +36,7 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
 
 
     /**
-     * Callback method from {@link dan.android.quirogest.listFragmentBase.ListFragmentBase}
+     * Callback method from {@link dan.android.quirogest.FragmentBase.ListFragmentBase}
      * indicating that the item with the given ID was selected.c
      * id - representa un motivoId o sesionId según la lista pulsada
      */
@@ -51,7 +51,7 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
             case LIST_VIEW_MOTIVOS:
                 mdf = (MotivoDetailFragment) getFragmentManager().findFragmentById(R.id.motivo_detail_container);
 
-                if (mdf == null || mdf.getMotivoId()!= id){
+                if (mdf == null || mdf.getItemId()!= id){
                     mdf = MotivoDetailFragment.newInstance(id);
                     slf = SesionesListFragment.newInstance(id);
                     getFragmentManager()
@@ -64,9 +64,9 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
                 break;
 
             case LIST_VIEW_SESIONES:
-                Intent myIntent = new Intent(this, SesionesListActivity.class);
-                myIntent.putExtra(SesionesListActivity.SESION_ID, id);  //usado para seleccionar posición por defecto
-                startActivity(myIntent);
+              //  Intent myIntent = new Intent(this, SesionesListActivity.class);
+              //  myIntent.putExtra(SesionesListActivity.SESION_ID, id);  //usado para seleccionar posición por defecto
+              //  startActivity(myIntent);
                 break;
         }
     }

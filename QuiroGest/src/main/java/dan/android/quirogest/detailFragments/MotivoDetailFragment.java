@@ -1,40 +1,44 @@
 package dan.android.quirogest.detailFragments;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.ContentUris;
-import android.content.CursorLoader;
+import android.app.Activity;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaClientes;
+import dan.android.quirogest.FragmentBase.DetailFragmentBase;
+import dan.android.quirogest.database.TablaMotivos;
 
 
-public class MotivoDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    private static final String TAG = "ClienteDetailFragment";
-    private static final String CONTACTO_ID = "contacto_id";
-    private static final int LOADER_CONTACTO_ID = 1;
+public class MotivoDetailFragment extends DetailFragmentBase{
+    private static final int    LAYOUT      = R.layout.fragment_cliente_detail;
+    private final Uri           QUERY_URI   = QuiroGestProvider.CONTENT_URI_MOTIVOS;
+    private TextView mFecha, mEstadoSalud;
+    private ListView mDatosMotivo;
 
-    private long mContactoId;
-    private View rootView;
+    @Override
+    public Uri      getUri()        { return QUERY_URI; }
+    public String[] getProjection() { return null; }            //nos interesan casi todas las columnas
 
 
     /** El constructor tiene que estar vacío, por eso se crea esta función estática */
-    public static MotivoDetailFragment newInstance(long contactoId) {
-        Log.i(TAG, "creando nueva instancia ID: " + contactoId);
+    public static MotivoDetailFragment newInstance(long motivoId) {
         MotivoDetailFragment f = new MotivoDetailFragment();
 
         // Supply id input as an argument.
         Bundle args = new Bundle();
-        args.putLong(CONTACTO_ID, contactoId);
+        args.putLong(ITEM_ID, motivoId);
         f.setArguments(args);
 
         return f;
@@ -42,81 +46,52 @@ public class MotivoDetailFragment extends Fragment implements LoaderManager.Load
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mContactoId = getArguments().getLong(CONTACTO_ID, -1);
-
-        if (mContactoId >= 0) {
-            getLoaderManager().initLoader(LOADER_CONTACTO_ID, null, this);
-        }
-    }
-
-
-    public long getContactoId(){
-        return mContactoId;
-    }
-
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_cliente_detail, container, false);
-        return rootView;
+        super.onCreateView(inflater, container, savedInstanceState);
+        View mRootView;
+
+        mRootView       = inflater.inflate(LAYOUT, container, false);
+        mFecha          = (TextView) mRootView.findViewById(R.id.textViewFecha);
+        mEstadoSalud    = (TextView) mRootView.findViewById(R.id.textViewEstadoSalud);
+        mDatosMotivo    = (ListView) mRootView.findViewById(R.id.listViewDatosMotivos);
+
+        return mRootView;
     }
 
-
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(getActivity(), ContentUris.withAppendedId(QuiroGestProvider.CONTENT_URI_CONTACTOS, mContactoId), null, null, null, null);
-    }
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        if (null!=getCursor() && getCursor().moveToFirst()){
+            String fecha, descripcion, comienzo, activFisica, diagnostico, observaciones;
+            int estadoSalud;
+            SimpleDateFormat sdfIn, sdfOut;
+            Date date;
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        Log.i(TAG, "Loader 'loaded'");
+            fecha           = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_FECHA));
+            descripcion     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_DESCRIPCION));
+            comienzo        = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_COMIENZO));
+            activFisica     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_ACTIV_FISICA));
+            diagnostico     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_DIAGNOSTICO));
+            observaciones   = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_OBSERVACIONES));
+            //contactoId      = getCursor().getInt(getCursor().getColumnIndex(TablaMotivos.COL_ID_CONTACTO));
+            estadoSalud     = getCursor().getInt(getCursor().getColumnIndex(TablaMotivos.COL_ESTADO_SALUD));
 
-        String nombre, apellido1, apellido2, movil, fijo, email, direccion, cp, localidad, provincia, fechaNac, profesion, enfermedades, alergias, observaciones;
-        switch (cursorLoader.getId()) {
-            case LOADER_CONTACTO_ID:
-                if (cursor != null && cursor.moveToFirst()){
-                    nombre          = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_NOMBRE));
-                    apellido1       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_APELLIDO1));
-                    apellido2       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_APELLIDO2));
-                    movil           = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_MOVIL));
-                    fijo            = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_FIJO));
-                    email           = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_EMAIL));
-                    direccion       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_DIRECCION));
-                    cp              = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_CP));
-                    localidad       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_LOCALIDAD));
-                    provincia       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_PROVINCIA));
-                    fechaNac        = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_FECHA_NAC));
-                    profesion       = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_PROFESION));
-                    enfermedades    = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_ENFERMEDADES));
-                    alergias        = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_ALERGIAS));
-                    observaciones   = cursor.getString(cursor.getColumnIndex(TablaClientes.COL_OBSERVACIONES));
+            //ponemos la fecha  //TODO: hacer una clase de conversión format SQL-aplicación
+            sdfIn   = new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT);
+            sdfOut  = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                date = sdfIn.parse(fecha);
+                mFecha.setText(sdfOut.format(date));
 
+            } catch (ParseException e) {
+                mFecha.setText("FECHA INVÁLIDA");
+                e.printStackTrace();
+            }
 
-                    ((TextView) rootView.findViewById(R.id.textViewNombreCompleto)).setText(nombre + " " + apellido1 + " " + apellido2);
-                    ((TextView) rootView.findViewById(R.id.EditTextMovil)).setText(movil);
-                    ((TextView) rootView.findViewById(R.id.EditTextFijo)).setText(fijo);
-                    ((TextView) rootView.findViewById(R.id.EditTextEmail)).setText(email);
-                    ((TextView) rootView.findViewById(R.id.EditTextDireccion)).setText(direccion);
-                    ((TextView) rootView.findViewById(R.id.EditTextCP)).setText(cp);
-                    ((TextView) rootView.findViewById(R.id.EditTextLocalidad)).setText(localidad);
-                    ((TextView) rootView.findViewById(R.id.EditTextProvincia)).setText(provincia);
-                    ((TextView) rootView.findViewById(R.id.EditTextFechaNacimiento)).setText(fechaNac);
-                    ((TextView) rootView.findViewById(R.id.EditTextProfesion)).setText(profesion);
-                    ((TextView) rootView.findViewById(R.id.EditTextEnfermedades)).setText(enfermedades);
-                    ((TextView) rootView.findViewById(R.id.EditTextAlergias)).setText(alergias);
-                    ((TextView) rootView.findViewById(R.id.EditTextObservaciones)).setText(observaciones);
-                }
-                break;
+            mEstadoSalud.setText(estadoSalud);
+
+            //mDatosMotivo.divid
         }
-    }
-
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        //no es necesario hacer nada
     }
 }

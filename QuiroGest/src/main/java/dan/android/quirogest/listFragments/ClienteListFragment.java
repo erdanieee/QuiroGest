@@ -3,12 +3,13 @@ package dan.android.quirogest.listFragments;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import dan.android.quirogest.listFragmentBase.ListFragmentBase;
+import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 
 
 public class ClienteListFragment extends ListFragmentBase {
+    private static final String TAG             = "MotivosListFragment";
     private final Uri       QUERY_URI           = QuiroGestProvider.CONTENT_URI_CONTACTOS;
     private final String[]  QUERY_PROJECTION    = {BaseColumns._ID, TablaClientes.COL_NOMBRE};     //TODO: añadir otros campos para mostrar en la lista
     private final String[]  LAYOUT_DATA_COLUMNS = {TablaClientes.COL_NOMBRE};

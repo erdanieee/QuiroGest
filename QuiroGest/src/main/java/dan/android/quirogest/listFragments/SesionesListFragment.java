@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 
 import dan.android.quirogest.database.TablaSesiones;
-import dan.android.quirogest.listFragmentBase.ListFragmentBase;
+import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.database.QuiroGestProvider;
 
 /**

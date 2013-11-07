@@ -3,20 +3,22 @@ package dan.android.quirogest.listFragments;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.util.Log;
 
-import dan.android.quirogest.listFragmentBase.ListFragmentBase;
+import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaMotivos;
 
 
 public class MotivosListFragment extends ListFragmentBase {
+    private static final String TAG             = "MotivosListFragment";
     private final static String ARG_CONTACTO_ID = "contacto_id";
 
-    private final Uri QUERY_URI                 = QuiroGestProvider.CONTENT_URI_MOTIVOS;
-    private final String[] QUERY_PROJECTION     = {BaseColumns._ID, TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_FECHA};
-    private final String[] LAYOUT_DATA_COLUMNS  = {TablaMotivos.COL_FECHA, TablaMotivos.COL_DIAGNOSTICO};
-    private final int[] LAYOUT_VIEW_IDS         = {android.R.id.text1, android.R.id.text2};
-    private final int LAYOUT                    = android.R.layout.simple_list_item_2;
+    private final Uri       QUERY_URI            = QuiroGestProvider.CONTENT_URI_MOTIVOS;
+    private final String[]  QUERY_PROJECTION     = {BaseColumns._ID, TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_FECHA};
+    private final String[]  LAYOUT_DATA_COLUMNS  = {TablaMotivos.COL_FECHA, TablaMotivos.COL_DIAGNOSTICO};
+    private final int[]     LAYOUT_VIEW_IDS      = {android.R.id.text1, android.R.id.text2};
+    private final int       LAYOUT               = android.R.layout.simple_list_item_2;
 
     private String mContactoId = null;
 
@@ -24,7 +26,8 @@ public class MotivosListFragment extends ListFragmentBase {
 
     /** El constructor tiene que estar vacío, por eso se crea esta función estática */
     public static MotivosListFragment newInstance(long contactoId) { return newInstance(contactoId, null); }
-    public static MotivosListFragment newInstance(long contactoId, Long selectedMotivoId) {
+        public static MotivosListFragment newInstance(long contactoId, Long selectedMotivoId) {
+        Log.d(TAG, "Nueva instancia");
         MotivosListFragment f;
         Bundle args;
 
