@@ -14,25 +14,24 @@ import android.widget.SimpleCursorAdapter;
 
 import dan.android.quirogest.listFragments.ClienteListFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
+import dan.android.quirogest.listFragments.SesionesListFragment;
 
 
 public abstract class ListFragmentBase extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+    private static final int    LOADER_ID                   = 234237823;
+    private static final String STATE_ACTIVATED_POSITION    = "activated_position";
+    public  static final String ARG_SELECTED_ITEM_ID        = "default_selected_item_id";
+
     public static enum ListTypes {
         LIST_VIEW_CLIENTES,
         LIST_VIEW_MOTIVOS,
-        TYPE_SESIONES_LIST;
+        LIST_VIEW_SESIONES;
     }
 
-    private static final int LOADER_ID  = 234237823;
-    private SimpleCursorAdapter mAdapter;
+    private CallbackItemClicked mCallbacks          = null;
+    private SimpleCursorAdapter mAdapter            = null;
+    private int                 mActivatedPosition  = ListView.INVALID_POSITION;
 
-    // The serialization (saved instance state) Bundle key representing the activated item position.
-    private static final String STATE_ACTIVATED_POSITION = "activated_position";
-    private int mActivatedPosition                       = ListView.INVALID_POSITION;
-    private static final String CONTACTO_ID = "item_id";
-
-    // The fragment's current callback object, which is notified of list item clicks.
-    private CallbackItemClicked mCallbacks = null;
 
     // Métodos abstractos
     public abstract ListTypes   getListViewType();
@@ -46,32 +45,6 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     public abstract Uri         getUri();
 
 
-
-
-
-    /** El constructor tiene que estar vacío, por eso se crea esta función estática */
-    public static ListFragmentBase newInstance(ListTypes type, long itemId) {        //TODO: Mover esta función al método Base
-        ListFragmentBase f = null;
-
-        switch (type){
-            case LIST_VIEW_CLIENTES:
-                f = new ClienteListFragment();
-                break;
-            case LIST_VIEW_MOTIVOS:
-                f = new MotivosListFragment();
-                break;
-
-        }
-
-        // Supply id input as an argument.
-        Bundle args = new Bundle();
-        args.putLong(CONTACTO_ID, itemId);          //se pone la variable como argumento para el loader...
-        f.setArguments(args);
-
-        return f;
-    }
-
-
     private void setActivatedPosition(int position) {
         if (position == ListView.INVALID_POSITION) {
             getListView().setItemChecked(mActivatedPosition, false);
@@ -80,6 +53,18 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
             getListView().setItemChecked(position, true);
         }
         mActivatedPosition = position;
+    }
+
+
+
+    //********************************************************************************************//
+    // L I S T F R A G M E N T
+    //********************************************************************************************//
+    @Override
+    public void onListItemClick(ListView listView, View view, int position, long id) {
+        super.onListItemClick(listView, view, position, id);
+        setActivatedPosition(position);
+        mCallbacks.onListItemSelected(this, id);
     }
 
 
@@ -107,7 +92,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
         mAdapter = new SimpleCursorAdapter(getActivity(), getListLayout(), null, getColumns(), getViews(), 0);
         setListAdapter(mAdapter);
 
-        //inicializamos el Loader con id LOADER_ID
+        //empezamos la carga de datos en paralelo
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
@@ -144,25 +129,12 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
 
 
     //********************************************************************************************//
-    // L I S T   F R A G M E N T
-    //********************************************************************************************//
-    @Override
-    public void onListItemClick(ListView listView, View view, int position, long id) {
-        super.onListItemClick(listView, view, position, id);
-        setActivatedPosition(position);
-        mCallbacks.onListItemSelected(this, id);
-    }
-
-
-
-    //********************************************************************************************//
     // L O A D E R
     //********************************************************************************************//
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(getActivity(), getUri(), getProjection(), getSelection(), getSelectionArgs(), getOrder());
     }
-
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
@@ -172,13 +144,13 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
                 break;
         }
 
-        if (getArguments().containsKey(CONTACTO_ID)){
-            long id = getArguments().getLong(CONTACTO_ID);
+        if (getArguments().containsKey(ARG_SELECTED_ITEM_ID)){
+            long id = getArguments().getLong(ARG_SELECTED_ITEM_ID);
 
             for (int p=0; p<mAdapter.getCount(); p++){
                 if (mAdapter.getItemId(p) == id){
                     mActivatedPosition = p;
-                    getArguments().remove(CONTACTO_ID);
+                    getArguments().remove(ARG_SELECTED_ITEM_ID);
                     break;
                 }
             }

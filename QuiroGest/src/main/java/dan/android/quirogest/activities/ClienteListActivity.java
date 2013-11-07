@@ -34,6 +34,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         setContentView(R.layout.activity_cliente);
 
         //Configuramos el ListView principal
+        //TODO: unificar layout para vistas y meter el fragment a manija en lugar de hacerlo en el XML
         ((ClienteListFragment)getFragmentManager().findFragmentById(R.id.cliente_list)).getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 
@@ -121,12 +122,12 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
                             .replace(R.id.motivos_list_container, mlf)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
-                };
+                }
                 break;
 
             case LIST_VIEW_MOTIVOS:
-                Intent myIntent = new Intent(this, MotivosListFragment.class);
-                myIntent.putExtra(MotivosListActivity.MOTIVO_ID, id);
+                Intent myIntent = new Intent(this, MotivosListActivity.class);
+                myIntent.putExtra(MotivosListActivity.MOTIVO_ID, id);           //usado para seleccionar posición por defecto
                 startActivity(myIntent);
                 break;
         }
