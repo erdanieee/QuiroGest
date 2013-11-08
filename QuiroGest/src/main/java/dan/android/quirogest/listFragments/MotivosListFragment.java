@@ -27,21 +27,21 @@ public class MotivosListFragment extends ListFragmentBase {
 
     /** El constructor tiene que estar vacío, por eso se crea esta función estática */
     public static MotivosListFragment newInstance(long contactoId) { return newInstance(contactoId, null); }
-        public static MotivosListFragment newInstance(long contactoId, Long selectedMotivoId) {
-        Log.d(TAG, "Nueva instancia");
-        MotivosListFragment f;
-        Bundle args;
+    public static MotivosListFragment newInstance(long contactoId, Long selectedMotivoId) {
+    Log.d(TAG, "Nueva instancia");
+    MotivosListFragment f;
+    Bundle args;
 
-        f    = new MotivosListFragment();
-        args = new Bundle();
-        args.putLong(ARG_CONTACTO_ID, contactoId);
-        if (selectedMotivoId!=null){
-            args.putLong(ARG_SELECTED_ITEM_ID, selectedMotivoId);
-        }
-        f.setArguments(args);
-
-        return f;
+    f    = new MotivosListFragment();
+    args = new Bundle();
+    args.putLong(ARG_CONTACTO_ID, contactoId);
+    if (selectedMotivoId!=null){
+        args.putLong(ARG_SELECTED_ITEM_ID, selectedMotivoId);
     }
+    f.setArguments(args);
+
+    return f;
+}
 
 
     //Necesitamos el Id del contacto. Se puede obtener desde el intent o desde los argumentos
@@ -56,6 +56,7 @@ public class MotivosListFragment extends ListFragmentBase {
             throw new IllegalStateException("Se ha instanciado la clase sin añadir el argumento contactoID!!!");
         }
     }
+
 
 
     private Long getContactoId(){ return mContactoId; }

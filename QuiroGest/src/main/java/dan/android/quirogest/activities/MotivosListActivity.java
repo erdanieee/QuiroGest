@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
@@ -20,6 +19,7 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
     //TODO: variables usadas para seleccionar por defecto un elemento de la lista. AÑADIR código!!!
     public static final String MOTIVO_ID    = "motivo_id";
     public static final String CONTACTO_ID  = "contacto_id";
+    private long mContactoId, mMotivoId;
 
 
     @Override
@@ -31,13 +31,22 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_motivo);
+        setContentView(R.layout.two_lists_details_cabecera);
 
-        //TODO: Añadir código para seleccionar valor por defecto para el MotivoListFragment (necesario instanciar manualmente y no en el XML)
-        //new Bundle().putLong(ListFragmentBase.ARG_SELECTED_ITEM_ID, getIntent().getLongExtra(MOTIVO_ID, 0));
+        //añadimos el fragment principal
+        mContactoId = getIntent().getLongExtra(CONTACTO_ID,-1);
+        mMotivoId   = getIntent().getLongExtra(MOTIVO_ID, -1);
+        SesionesListFragment slf = SesionesListFragment.newInstance(mMotivoId);
+        MotivoDetailFragment mdf = MotivoDetailFragment.newInstance(mMotivoId);
 
-        //Configuramos el ListView principal
-        ((MotivosListFragment)getFragmentManager().findFragmentById(R.id.main_list)).getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        MotivosListFragment f = MotivosListFragment.newInstance(mContactoId, mMotivoId);
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_list_container, f)
+                .replace(R.id.detail_container, mdf)
+                .replace(R.id.secondary_list_container, slf)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 
 
@@ -55,15 +64,15 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
 
         switch (lfb.getListViewType()){
             case LIST_VIEW_MOTIVOS:
-                mdf = (MotivoDetailFragment) getFragmentManager().findFragmentById(R.id.motivo_detail_container);
+                mdf = (MotivoDetailFragment) getFragmentManager().findFragmentById(R.id.detail_container);
 
                 if (mdf == null || mdf.getItemId()!= id){
                     mdf = MotivoDetailFragment.newInstance(id);
                     slf = SesionesListFragment.newInstance(id);
                     getFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.motivo_detail_container, mdf)
-                            .replace(R.id.sesiones_list_container, slf)
+                            .replace(R.id.detail_container, mdf)
+                            .replace(R.id.secondary_list_container, slf)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
                 }

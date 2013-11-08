@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:minWidth="@android:dimen/notification_large_icon_width"
+        android:minHeight="@android:dimen/notification_large_icon_height"
+        android:maxWidth="@android:dimen/notification_large_icon_width"
+        android:maxHeight="@android:dimen/notification_large_icon_height" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Nombre(debug)"
+        android:id="@+id/textView"
+        android:minHeight="@android:dimen/notification_large_icon_height" />
+
+</LinearLayout>

@@ -20,6 +20,8 @@ public class ClienteListFragment extends ListFragmentBase {
     @Override
     public void init() {}   //no es necesario hacer nada
 
+    public static ClienteListFragment newIntance() { return new ClienteListFragment(); }
+
     @Override
     public ListTypes getListViewType() { return ListTypes.LIST_VIEW_CLIENTES; }
 

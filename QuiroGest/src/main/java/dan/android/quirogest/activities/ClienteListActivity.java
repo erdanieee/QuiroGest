@@ -35,14 +35,12 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         setContentView(R.layout.two_lists_details);
 
         //añadimos el fragment principal
-        ClienteListFragment f = new ClienteListFragment();
+        ClienteListFragment f = ClienteListFragment.newIntance();
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_list_container, f)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
-
-
 
 
         //////////////// TEMPORAL /////////////////
