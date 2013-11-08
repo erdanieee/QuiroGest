@@ -41,6 +41,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     public abstract String[]    getColumns();
     public abstract int[]       getViews();
     public abstract Uri         getUri();
+    public abstract void        init();
 
 
     private void setActivatedPosition(int position) {
@@ -86,6 +87,9 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //inicializamos el fragment
+        init();
 
         //inicializamos el adapter con un cursor nulo hasta que se inicialice el Loader
         mAdapter = new SimpleCursorAdapter(getActivity(), getListLayout(), null, getColumns(), getViews(), 0);

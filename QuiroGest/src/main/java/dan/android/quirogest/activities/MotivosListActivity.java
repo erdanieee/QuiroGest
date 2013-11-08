@@ -1,8 +1,8 @@
 package dan.android.quirogest.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -18,8 +18,14 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
     private static final String TAG = "MotivosListActivity";
 
     //TODO: variables usadas para seleccionar por defecto un elemento de la lista. AÑADIR código!!!
-    public static final String MOTIVO_ID = "motivo_id";
+    public static final String MOTIVO_ID    = "motivo_id";
+    public static final String CONTACTO_ID  = "contacto_id";
 
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

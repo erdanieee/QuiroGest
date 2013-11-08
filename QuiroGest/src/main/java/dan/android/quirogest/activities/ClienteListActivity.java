@@ -11,19 +11,20 @@ import android.widget.ListView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.detailFragments.ClienteDetailFragment;
-import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.listFragments.ClienteListFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
 
 
 public class ClienteListActivity extends Activity implements ListFragmentBase.CallbackItemClicked{
     private static final String TAG = "ClienteListActivity";
+    private long mContactoId, mMotivoId;
 
 
     @Override
@@ -104,18 +105,19 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
      */
     @Override
     public void onListItemSelected(ListFragmentBase lfb, long id) {
-        Log.i(TAG, "Item selected " + id + " en " + lfb.getClass());
+        Log.i(TAG, "Item selected " + id + " en ");
         ClienteDetailFragment cdf;
         MotivosListFragment mlf;
         FragmentTransaction ft;
 
         switch (lfb.getListViewType()){
             case LIST_VIEW_CLIENTES:
+                mContactoId = id;
                 cdf = (ClienteDetailFragment) getFragmentManager().findFragmentById(R.id.cliente_detail_container);
 
-                if (cdf == null || cdf.getItemId()!= id){
-                    cdf  = ClienteDetailFragment.newInstance(id);
-                    mlf  = MotivosListFragment.newInstance(id);
+                if (cdf == null || cdf.getItemId()!= mContactoId){
+                    cdf = ClienteDetailFragment.newInstance(mContactoId);
+                    mlf  = MotivosListFragment.newInstance(mContactoId);
                     getFragmentManager()
                             .beginTransaction()
                             .replace(R.id.motivos_list_container, mlf)
@@ -126,8 +128,10 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
                 break;
 
             case LIST_VIEW_MOTIVOS:
+                mMotivoId = id;
                 Intent myIntent = new Intent(this, MotivosListActivity.class);
-                myIntent.putExtra(MotivosListActivity.MOTIVO_ID, id);           //usado para seleccionar posición por defecto
+                myIntent.putExtra(MotivosListActivity.CONTACTO_ID, mContactoId);
+                myIntent.putExtra(MotivosListActivity.MOTIVO_ID, mMotivoId);           //usado para seleccionar posición por defecto
                 startActivity(myIntent);
                 break;
         }

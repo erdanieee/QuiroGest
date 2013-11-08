@@ -4,9 +4,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 
-import dan.android.quirogest.database.TablaSesiones;
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.database.QuiroGestProvider;
+import dan.android.quirogest.database.TablaSesiones;
 
 /**
  * Created by dan on 4/11/13.
@@ -20,7 +20,7 @@ public class SesionesListFragment extends ListFragmentBase {
     private final int[] LAYOUT_VIEW_IDS         = {android.R.id.text1, android.R.id.text2};
     private final int LAYOUT                    = android.R.layout.simple_list_item_2;
 
-    private String mMotivoId = null;
+    private Long mMotivoId = null;
 
 
 
@@ -42,8 +42,15 @@ public class SesionesListFragment extends ListFragmentBase {
     }
 
 
-    private String getMotivoId(){return mMotivoId ==null ? String.valueOf(new Bundle().getLong(ARG_MOTIVO_ID)) : mMotivoId;}
+    public void init() {
+        if (null== getArguments() || !getArguments().containsKey(ARG_MOTIVO_ID) ){
+            throw new IllegalStateException("Se ha instanciado la clase sin añadir el argumento contactoID!!!");
+        }
+        mMotivoId = getArguments().getLong(ARG_MOTIVO_ID,-1);
+    }
 
+
+    private Long getMotivoId(){return mMotivoId;}
 
 
     @Override
@@ -56,7 +63,7 @@ public class SesionesListFragment extends ListFragmentBase {
     public String getSelection() { return TablaSesiones.COL_ID_MOTIVO + "=?"; }
 
     @Override
-    public String[] getSelectionArgs() { return new String[] {getMotivoId()};}
+    public String[] getSelectionArgs() { return new String[] {getMotivoId().toString()};}
 
     @Override
     public String getOrder() { return "DATE(" + TablaSesiones.COL_FECHA + ") DESC"; }

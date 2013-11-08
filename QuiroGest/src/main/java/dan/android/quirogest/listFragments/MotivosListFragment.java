@@ -6,6 +6,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
+import dan.android.quirogest.activities.MotivosListActivity;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaMotivos;
 
@@ -20,7 +21,7 @@ public class MotivosListFragment extends ListFragmentBase {
     private final int[]     LAYOUT_VIEW_IDS      = {android.R.id.text1, android.R.id.text2};
     private final int       LAYOUT               = android.R.layout.simple_list_item_2;
 
-    private long mContactoId;
+    private Long mContactoId;
 
 
 
@@ -43,7 +44,20 @@ public class MotivosListFragment extends ListFragmentBase {
     }
 
 
-    private String getStringContactoId(){return String.valueOf(getArguments().getLong(ARG_CONTACTO_ID,-1));}
+    public void init() {
+        mContactoId = getActivity().getIntent().getLongExtra(MotivosListActivity.CONTACTO_ID, -1);
+
+        if (null!=getArguments() && getArguments().containsKey(ARG_CONTACTO_ID) ){
+            mContactoId = getArguments().getLong(ARG_CONTACTO_ID,-1);
+        }
+
+        if (mContactoId==null || mContactoId<0){
+            throw new IllegalStateException("Se ha instanciado la clase sin añadir el argumento contactoID!!!");
+        }
+    }
+
+
+    private Long getContactoId(){ return mContactoId; }
 
 
     @Override
@@ -56,7 +70,7 @@ public class MotivosListFragment extends ListFragmentBase {
     public String getSelection() { return TablaMotivos.COL_ID_CONTACTO + "=?"; }
 
     @Override
-    public String[] getSelectionArgs() { return new String[] {getStringContactoId()};}
+    public String[] getSelectionArgs() { return new String[] {getContactoId().toString()};}
 
     @Override
     public String getOrder() { return "DATE(" + TablaMotivos.COL_FECHA + ") DESC"; }
