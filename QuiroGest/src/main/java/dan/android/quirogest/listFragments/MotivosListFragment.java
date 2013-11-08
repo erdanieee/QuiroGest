@@ -20,7 +20,7 @@ public class MotivosListFragment extends ListFragmentBase {
     private final int[]     LAYOUT_VIEW_IDS      = {android.R.id.text1, android.R.id.text2};
     private final int       LAYOUT               = android.R.layout.simple_list_item_2;
 
-    private String mContactoId = null;
+    private long mContactoId;
 
 
 
@@ -43,8 +43,7 @@ public class MotivosListFragment extends ListFragmentBase {
     }
 
 
-    private String getContactoId(){return mContactoId==null ? String.valueOf(new Bundle().getLong(ARG_CONTACTO_ID)) : mContactoId;}
-
+    private String getStringContactoId(){return String.valueOf(getArguments().getLong(ARG_CONTACTO_ID,-1));}
 
 
     @Override
@@ -57,7 +56,7 @@ public class MotivosListFragment extends ListFragmentBase {
     public String getSelection() { return TablaMotivos.COL_ID_CONTACTO + "=?"; }
 
     @Override
-    public String[] getSelectionArgs() { return new String[] {getContactoId()};}
+    public String[] getSelectionArgs() { return new String[] {getStringContactoId()};}
 
     @Override
     public String getOrder() { return "DATE(" + TablaMotivos.COL_FECHA + ") DESC"; }
