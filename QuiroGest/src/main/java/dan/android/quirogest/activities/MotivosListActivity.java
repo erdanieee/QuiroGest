@@ -37,7 +37,7 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
         //new Bundle().putLong(ListFragmentBase.ARG_SELECTED_ITEM_ID, getIntent().getLongExtra(MOTIVO_ID, 0));
 
         //Configuramos el ListView principal
-        ((MotivosListFragment)getFragmentManager().findFragmentById(R.id.motivos_list)).getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        ((MotivosListFragment)getFragmentManager().findFragmentById(R.id.main_list)).getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
 

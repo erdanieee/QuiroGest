@@ -38,7 +38,7 @@
         android:layout_below="@+id/imageView">
 
         <fragment
-            android:id="@+id/motivos_list"
+            android:id="@+id/main_list"
             android:name="dan.android.quirogest.listFragments.MotivosListFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"

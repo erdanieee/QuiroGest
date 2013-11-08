@@ -44,6 +44,7 @@ public class MotivosListFragment extends ListFragmentBase {
     }
 
 
+    //Necesitamos el Id del contacto. Se puede obtener desde el intent o desde los argumentos
     public void init() {
         mContactoId = getActivity().getIntent().getLongExtra(MotivosListActivity.CONTACTO_ID, -1);
 
