@@ -101,7 +101,7 @@ public class QuiroGestProvider extends ContentProvider {
                 tabla = TablaSesiones.TABLA_SESIONES;
                 break;
         }
-        return dbHelper.getWritableDatabase().delete(tabla, where, selectionArgs);
+        return dbHelper.getWritableDatabase().delete(tabla, where, selectionArgs); 
     }
 
 
