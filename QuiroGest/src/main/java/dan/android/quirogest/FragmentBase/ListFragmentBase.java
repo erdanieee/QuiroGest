@@ -107,6 +107,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
    /* @Override

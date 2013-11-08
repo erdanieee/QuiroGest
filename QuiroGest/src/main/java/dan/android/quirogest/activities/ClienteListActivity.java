@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +16,7 @@ import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 import dan.android.quirogest.database.TablaMotivos;
+import dan.android.quirogest.database.TablaSesiones;
 import dan.android.quirogest.detailFragments.ClienteDetailFragment;
 import dan.android.quirogest.listFragments.ClienteListFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
@@ -32,11 +32,16 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         Log.d(TAG, "creating activity");
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_cliente);
+        setContentView(R.layout.two_lists_details);
 
-        //Configuramos el ListView principal
-        //TODO: unificar layout para vistas y meter el fragment a manija en lugar de hacerlo en el XML
-        ((ClienteListFragment)getFragmentManager().findFragmentById(R.id.cliente_list)).getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        //añadimos el fragment principal
+        ClienteListFragment f = new ClienteListFragment();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_list_container, f)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+
 
 
 
@@ -44,9 +49,11 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaClientes.TABLA_CLIENTES);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaMotivos.TABLA_MOTIVOS);
+        dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaSesiones.TABLA_SESIONES);
 
         dbHelper.getWritableDatabase().execSQL(TablaClientes.sqlCreateTableClientes);
         dbHelper.getWritableDatabase().execSQL(TablaMotivos.sqlCreateTableMotivos);
+        dbHelper.getWritableDatabase().execSQL(TablaSesiones.sqlCreateTableSesiones);
 
         //insertamos algunos valores de ejemplo
         ContentValues cv = new ContentValues();
@@ -113,15 +120,15 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         switch (lfb.getListViewType()){
             case LIST_VIEW_CLIENTES:
                 mContactoId = id;
-                cdf = (ClienteDetailFragment) getFragmentManager().findFragmentById(R.id.cliente_detail_container);
+                cdf = (ClienteDetailFragment) getFragmentManager().findFragmentById(R.id.detail_container);
 
                 if (cdf == null || cdf.getItemId()!= mContactoId){
                     cdf = ClienteDetailFragment.newInstance(mContactoId);
                     mlf  = MotivosListFragment.newInstance(mContactoId);
                     getFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.motivos_list_container, mlf)
-                            .replace(R.id.cliente_detail_container, cdf)
+                            .replace(R.id.secondary_list_container, mlf)
+                            .replace(R.id.detail_container, cdf)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
                 }
