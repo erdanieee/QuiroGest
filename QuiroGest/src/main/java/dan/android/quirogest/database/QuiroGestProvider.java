@@ -53,27 +53,24 @@ public class QuiroGestProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        Log.d(TAG, "Query " +
-                uri!=null?uri.toString():"" + " " +
-                projection!=null?projection.toString():"" + " " +
-                selection!=null?selection.toString():"" + " " +
-                selectionArgs!=null?selectionArgs.toString():"" + " " +
-                sortOrder!=null?sortOrder.toString():"");
+        Log.d(TAG, "Query " + uri.toString());
         String tabla=null;
         String where = selection;
 
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-            case MOTIVOS_ID:
-            case SESIONES_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
                 tabla = TablaClientes.TABLA_CLIENTES;
                 break;
+            case MOTIVOS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case MOTIVOS:
                 tabla = TablaMotivos.TABLA_MOTIVOS;
                 break;
+            case SESIONES_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case SESIONES:
                 tabla = TablaSesiones.TABLA_SESIONES;
                 break;

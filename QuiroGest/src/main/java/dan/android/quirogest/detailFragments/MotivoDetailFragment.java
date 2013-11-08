@@ -1,8 +1,5 @@
 package dan.android.quirogest.detailFragments;
 
-import android.app.Activity;
-import android.content.Loader;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,14 +12,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import dan.android.quirogest.FragmentBase.DetailFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.FragmentBase.DetailFragmentBase;
 import dan.android.quirogest.database.TablaMotivos;
 
 
 public class MotivoDetailFragment extends DetailFragmentBase{
-    private static final int    LAYOUT      = R.layout.fragment_cliente_detail;
+    private static final int    LAYOUT      = R.layout.fragment_motivo_detail;
     private final Uri           QUERY_URI   = QuiroGestProvider.CONTENT_URI_MOTIVOS;
     private TextView mFecha, mEstadoSalud;
     private ListView mDatosMotivo;
@@ -89,7 +86,7 @@ public class MotivoDetailFragment extends DetailFragmentBase{
                 e.printStackTrace();
             }
 
-            mEstadoSalud.setText(estadoSalud);
+            mEstadoSalud.setText(String.valueOf(estadoSalud)    );
 
             //mDatosMotivo.divid
         }

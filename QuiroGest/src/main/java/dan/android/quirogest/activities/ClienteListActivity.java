@@ -104,7 +104,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
      * id - El id representa un contacto o un motivo, según la lista que se haya pulsado!!!
      */
     @Override
-    public void onListItemSelected(ListFragmentBase lfb, long id) {
+    public void onListItemSelected(ListFragmentBase lfb, long id) {     //Podría pasarme mejor la Uri!!!
         Log.i(TAG, "Item selected " + id + " en ");
         ClienteDetailFragment cdf;
         MotivosListFragment mlf;
