@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:columnCount="2">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView1"
@@ -102,4 +101,5 @@
         android:textAppearance="@style/EditTextOff"
         android:id="@+id/textViewFecha"
         android:text="prueba(debuj)" />
-</GridLayout>
+
+</LinearLayout>

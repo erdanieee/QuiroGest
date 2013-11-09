@@ -65,7 +65,7 @@ public class SesionDetailFragment extends DetailFragmentBase{
             SimpleDateFormat sdfIn, sdfOut;
             Date date;
 
-            fecha           = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_FECHA));
+  /*          fecha           = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_FECHA));
             descripcion     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_DESCRIPCION));
             comienzo        = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_COMIENZO));
             activFisica     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_ACTIV_FISICA));
@@ -77,7 +77,7 @@ public class SesionDetailFragment extends DetailFragmentBase{
             //ponemos la fecha  //TODO: hacer una clase de conversión format SQL-aplicación
             sdfIn   = new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT);
             sdfOut  = new SimpleDateFormat("dd/MM/yyyy");
-  /*          try {
+            try {
                 date = sdfIn.parse(fecha);
                 mFecha.setText(sdfOut.format(date));
 

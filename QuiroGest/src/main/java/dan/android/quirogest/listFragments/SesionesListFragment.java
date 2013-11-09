@@ -54,7 +54,7 @@ public class SesionesListFragment extends ListFragmentBase {
 
 
     @Override
-    public ListTypes getListViewType() { return ListTypes.LIST_VIEW_MOTIVOS; }
+    public ListTypes getListViewType() { return ListTypes.LIST_VIEW_SESIONES; }
 
     @Override
     public String[] getProjection() { return QUERY_PROJECTION; }

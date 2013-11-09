@@ -26,8 +26,11 @@
         <activity
             android:name=".activities.MotivosListActivity"
             android:screenOrientation="landscape"
-            android:label="@string/app_name" >tent.category.LAUNCHER" />
-        </activity>
+            android:label="motivos_activity"/>
+        <activity
+            android:name=".activities.SesionesListActivity"
+            android:screenOrientation="landscape"
+            android:label="sesiones_activity"/>
         <provider
             android:authorities="dan.android.quirogest.provider"
             android:name="dan.android.quirogest.database.QuiroGestProvider"/>
