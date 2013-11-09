@@ -18,5 +18,11 @@
     <string name="enfermedades">Enfermedades relevantes</string>
     <string name="descripciónFotoPaciente">Foto del paciente</string>
     <string name="estadoDeSaludGeneral">Estado de Salud general</string>
+    <string name="cuantificacionDolor">Cuantificación del dolor</string>
+    <string name="diagnostico">Diagnóstico</string>
+    <string name="postratamiento">Postratamiento</string>
+    <string name="numeroSesion">Numero de sesión</string>
+    <string name="precio">Precio</string>
+    <string name="fecha">Fecha</string>
 
 </resources>
