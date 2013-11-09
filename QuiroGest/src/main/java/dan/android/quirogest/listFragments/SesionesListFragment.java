@@ -18,7 +18,7 @@ public class SesionesListFragment extends ListFragmentBase {
     private final String[] QUERY_PROJECTION     = {BaseColumns._ID, TablaSesiones.COL_DIAGNOSTICO, TablaSesiones.COL_FECHA};
     private final String[] LAYOUT_DATA_COLUMNS  = {TablaSesiones.COL_FECHA, TablaSesiones.COL_DIAGNOSTICO};
     private final int[] LAYOUT_VIEW_IDS         = {android.R.id.text1, android.R.id.text2};
-    private final int LAYOUT                    = android.R.layout.simple_list_item_2;
+    private final int LAYOUT                    = android.R.layout.simple_list_item_activated_2;
 
     private Long mMotivoId = null;
 

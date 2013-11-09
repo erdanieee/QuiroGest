@@ -19,7 +19,7 @@ public class MotivosListFragment extends ListFragmentBase {
     private final String[]  QUERY_PROJECTION     = {BaseColumns._ID, TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_FECHA};
     private final String[]  LAYOUT_DATA_COLUMNS  = {TablaMotivos.COL_FECHA, TablaMotivos.COL_DIAGNOSTICO};
     private final int[]     LAYOUT_VIEW_IDS      = {android.R.id.text1, android.R.id.text2};
-    private final int       LAYOUT               = android.R.layout.simple_list_item_2;
+    private final int       LAYOUT               = android.R.layout.simple_list_item_activated_2;
 
     private Long mContactoId;
 
@@ -46,7 +46,7 @@ public class MotivosListFragment extends ListFragmentBase {
 
     //Necesitamos el Id del contacto. Se puede obtener desde el intent o desde los argumentos
     public void init() {
-        mContactoId = getActivity().getIntent().getLongExtra(MotivosListActivity.CONTACTO_ID, -1);
+        //mContactoId = getActivity().getIntent().getLongExtra(MotivosListActivity.MOTIVO_ID, -1);
 
         if (null!=getArguments() && getArguments().containsKey(ARG_CONTACTO_ID) ){
             mContactoId = getArguments().getLong(ARG_CONTACTO_ID,-1);

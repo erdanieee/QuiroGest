@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
@@ -16,16 +17,13 @@ import dan.android.quirogest.listFragments.SesionesListFragment;
 public class MotivosListActivity extends Activity implements ListFragmentBase.CallbackItemClicked {
     private static final String TAG = "MotivosListActivity";
 
-    //TODO: variables usadas para seleccionar por defecto un elemento de la lista. AÑADIR código!!!
     public static final String MOTIVO_ID    = "motivo_id";
     public static final String CONTACTO_ID  = "contacto_id";
     private long mContactoId, mMotivoId;
 
 
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

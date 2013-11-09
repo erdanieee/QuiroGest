@@ -36,4 +36,10 @@ public abstract class DetailFragmentBase extends Fragment{
 
         mCursor = getActivity().getContentResolver().query(ContentUris.withAppendedId(getUri(), getItemId()), getProjection(), null, null, null);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCursor.close();
+    }
 }
