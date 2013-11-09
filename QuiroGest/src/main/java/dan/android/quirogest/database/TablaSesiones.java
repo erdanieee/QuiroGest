@@ -8,7 +8,6 @@ import android.provider.BaseColumns;
 public class TablaSesiones  implements BaseColumns {
     public static final String TABLA_SESIONES = "sesiones";
 
-    public static final String COL_ID_CONTACTO      = "idContacto";
     public static final String COL_ID_MOTIVO        = "idMotivo";
     public static final String COL_NUM_SESION       = "numeroDeSesion";
     public static final String COL_FECHA            = "fecha";                                       // FORMATO SQLITE_DATE_FORMAT
@@ -65,7 +64,6 @@ public class TablaSesiones  implements BaseColumns {
 
     public static final String sqlCreateTableSesiones = "CREATE TABLE " + TABLA_SESIONES + " (" +
             _ID                 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COL_ID_CONTACTO     + " INTEGER, " +
             COL_ID_MOTIVO       + " INTEGER, " +
             COL_NUM_SESION      + " INTEGER, " +
             COL_FECHA           + " TEXT DEFAULT CURRENT_DATE, " +
