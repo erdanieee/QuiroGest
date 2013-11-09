@@ -16,7 +16,7 @@
         <activity
             android:name=".activities.ClienteListActivity"
             android:screenOrientation="landscape"
-            android:label="@string/app_name" >
+            android:label="Contactos" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,11 +26,11 @@
         <activity
             android:name=".activities.MotivosListActivity"
             android:screenOrientation="landscape"
-            android:label="motivos_activity"/>
+            android:label="Motivos de consulta"/>
         <activity
             android:name=".activities.SesionesListActivity"
             android:screenOrientation="landscape"
-            android:label="sesiones_activity"/>
+            android:label="Sesiones"/>
         <provider
             android:authorities="dan.android.quirogest.provider"
             android:name="dan.android.quirogest.database.QuiroGestProvider"/>

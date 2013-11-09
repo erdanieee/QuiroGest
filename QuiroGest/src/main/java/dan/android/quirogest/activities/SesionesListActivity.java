@@ -49,31 +49,25 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
      * id - representa un motivoId o sesionId según la lista pulsada
      */
     @Override
-    public void onListItemSelected(ListFragmentBase lfb, long id) {
-        Log.i(TAG, "Item selected " + id);
+    public void onListItemSelected(ListFragmentBase lfb, long sesionId) {
+        Log.i(TAG, "Item selected " + sesionId);
         SesionesListFragment slf;
         SesionDetailFragment sdf;
         FragmentTransaction ft;
 
         switch (lfb.getListViewType()){
-            case LIST_VIEW_MOTIVOS:
+            case LIST_VIEW_SESIONES:
+                mSesionId = sesionId;
                 sdf = (SesionDetailFragment) getFragmentManager().findFragmentById(R.id.detail_container);
 
-                if (sdf == null || sdf.getItemId()!= id){
-                    sdf = SesionDetailFragment.newInstance(id);
+                if (sdf == null || sdf.getItemId()!= sesionId){
+                    sdf = SesionDetailFragment.newInstance(sesionId);
                     getFragmentManager()
                             .beginTransaction()
                             .replace(R.id.detail_container, sdf)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
                 }
-                break;
-
-            case LIST_VIEW_SESIONES:
-                Intent myIntent = new Intent(this, SesionesListActivity.class);
-                myIntent.putExtra(SesionesListActivity.MOTIVO_ID, id);
-                myIntent.putExtra(SesionesListActivity.SESION_ID, id);  //usado para seleccionar posición por defecto
-                startActivity(myIntent);
                 break;
         }
     }

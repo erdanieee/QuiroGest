@@ -111,7 +111,6 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv = new ContentValues();
         cv.put(TablaClientes._ID, 1);
         cv.put(TablaSesiones.COL_ID_MOTIVO, 2);
-        cv.put(TablaSesiones.COL_ID_CONTACTO, 3);
         cv.put(TablaSesiones.COL_DIAGNOSTICO, "diagnóstico de la osteópata");
         cv.put(TablaSesiones.COL_DOLOR, TablaSesiones.CuantificacionDolor.DOLOR_4.toSQLite());
         cv.put(TablaSesiones.COL_FECHA,  new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT).format(new Date(1230)));
@@ -123,7 +122,6 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv = new ContentValues();
         cv.put(TablaClientes._ID, 2);
         cv.put(TablaSesiones.COL_ID_MOTIVO, 2);
-        cv.put(TablaSesiones.COL_ID_CONTACTO, 3);
         cv.put(TablaSesiones.COL_DIAGNOSTICO, "diagnóstico de la osteópata 2");
         cv.put(TablaSesiones.COL_DOLOR, TablaSesiones.CuantificacionDolor.DOLOR_4.toSQLite());
         cv.put(TablaSesiones.COL_FECHA,  new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT).format(new Date(29230)));
