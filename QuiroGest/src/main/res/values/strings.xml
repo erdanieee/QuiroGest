@@ -24,5 +24,10 @@
     <string name="numeroSesion">Numero de sesión</string>
     <string name="precio">Precio</string>
     <string name="fecha">Fecha</string>
+    <string name="motivoConsulta">Descripción del motivo de consulta</string>
+    <string name="comienzoDolor">Comienzo del dolor</string>
+    <string name="estadoSalud">Evaluación estado de Salud general</string>
+    <string name="activFisica">Actividad física</string>
+    <string name="diagnosticoGeneral">Diagnóstico general</string>
 
 </resources>

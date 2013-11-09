@@ -17,9 +17,6 @@ public class TablaMotivos implements BaseColumns{
     public static final String COL_DIAGNOSTICO     = "diagnosticoGeneral";
     public static final String COL_OBSERVACIONES   = "observaciones";
 
-    /** Usado por SimpleDateFormat. <br>Debe tener el mismo formato que CURRENT_DATE de SQLite  */
-    public static final String SQLITE_DATE_FORMAT  = "yyyy-MM-dd";
-
 
     public enum EstadoSalud {
         MALO,
