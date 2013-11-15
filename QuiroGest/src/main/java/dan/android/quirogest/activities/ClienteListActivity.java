@@ -5,6 +5,8 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.ListView;
 
@@ -93,7 +95,8 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaMotivos.COL_OBSERVACIONES, "Aparece cada mes o mes y medio");
         cv.put(TablaMotivos.COL_ACTIV_FISICA, "balanceo anteroposterior de tronco");
         cv.put(TablaMotivos.COL_DESCRIPCION, "presenta dolor al estar varias horas sentado");
-        cv.put(TablaMotivos.COL_FECHA, new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT).format(new Date(0)));
+        cv.put(TablaMotivos.COL_COMIENZO, "2000-01-01");
+        cv.put(TablaMotivos.COL_FECHA, "2000-03-03");
         cv.put(TablaMotivos.COL_ESTADO_SALUD, TablaMotivos.EstadoSalud.BUENO.toSQLite());
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
 
@@ -104,7 +107,8 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaMotivos.COL_OBSERVACIONES, "Aparece cada mes o mes y medio");
         cv.put(TablaMotivos.COL_ACTIV_FISICA, "balanceo anteroposterior de tronco");
         cv.put(TablaMotivos.COL_DESCRIPCION, "presenta dolor al estar varias horas sentado");
-        cv.put(TablaMotivos.COL_FECHA, "1981-08-21");
+        cv.put(TablaMotivos.COL_COMIENZO, "2013-08-01");
+        cv.put(TablaMotivos.COL_FECHA, "2013-08-21");
         cv.put(TablaMotivos.COL_ESTADO_SALUD, TablaMotivos.EstadoSalud.MALO.toSQLite());
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
 
@@ -113,7 +117,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaSesiones.COL_ID_MOTIVO, 2);
         cv.put(TablaSesiones.COL_DIAGNOSTICO, "diagnóstico de la osteópata");
         cv.put(TablaSesiones.COL_DOLOR, TablaSesiones.CuantificacionDolor.DOLOR_4.toSQLite());
-        cv.put(TablaSesiones.COL_FECHA,  new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT).format(new Date(1230)));
+        cv.put(TablaSesiones.COL_FECHA,  "2001-12-14");
         cv.put(TablaSesiones.COL_INGRESOS, 35);
         cv.put(TablaSesiones.COL_OBSERVACIONES, "lo he hecho fenomenal!");
         cv.put(TablaSesiones.COL_POSTRATAMIENTO, "nada");
@@ -124,7 +128,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaSesiones.COL_ID_MOTIVO, 2);
         cv.put(TablaSesiones.COL_DIAGNOSTICO, "diagnóstico de la osteópata 2");
         cv.put(TablaSesiones.COL_DOLOR, TablaSesiones.CuantificacionDolor.DOLOR_4.toSQLite());
-        cv.put(TablaSesiones.COL_FECHA,  new SimpleDateFormat(TablaMotivos.SQLITE_DATE_FORMAT).format(new Date(29230)));
+        cv.put(TablaSesiones.COL_FECHA, "2013-01-14");
         cv.put(TablaSesiones.COL_INGRESOS, 95);
         cv.put(TablaSesiones.COL_OBSERVACIONES, "lo he hecho fenomenal!");
         cv.put(TablaSesiones.COL_POSTRATAMIENTO, "nada");
