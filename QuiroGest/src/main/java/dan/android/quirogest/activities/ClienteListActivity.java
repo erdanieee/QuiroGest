@@ -21,6 +21,8 @@ import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaClientes;
 import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.database.TablaSesiones;
+import dan.android.quirogest.database.TablaTecnicas;
+import dan.android.quirogest.database.TablaTiposDeTecnicas;
 import dan.android.quirogest.detailFragments.ClienteDetailFragment;
 import dan.android.quirogest.listFragments.ClienteListFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
@@ -52,10 +54,14 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaClientes.TABLA_CLIENTES);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaMotivos.TABLA_MOTIVOS);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaSesiones.TABLA_SESIONES);
+        dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaTecnicas.TABLA_TECNICAS);
+        dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
 
         dbHelper.getWritableDatabase().execSQL(TablaClientes.sqlCreateTableClientes);
         dbHelper.getWritableDatabase().execSQL(TablaMotivos.sqlCreateTableMotivos);
         dbHelper.getWritableDatabase().execSQL(TablaSesiones.sqlCreateTableSesiones);
+        dbHelper.getWritableDatabase().execSQL(TablaTecnicas.sqlCreateTableTecnicas);
+        dbHelper.getWritableDatabase().execSQL(TablaTiposDeTecnicas.sqlCreateTableTiposTecnicas);
 
         //insertamos algunos valores de ejemplo
         ContentValues cv = new ContentValues();
