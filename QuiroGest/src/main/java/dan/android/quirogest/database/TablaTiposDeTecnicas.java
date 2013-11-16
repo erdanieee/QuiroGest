@@ -19,6 +19,6 @@ public class TablaTiposDeTecnicas implements BaseColumns {
             COL_ID_PARENT           + " INTEGER, " +
             COL_MIN                 + " INTEGER, " +
             COL_MAX                 + " INTEGER, " +
-            COL_REPRESENTACION      + " INTEGER, " +
+            COL_REPRESENTACION      + " INTEGER, " +    //How to draw the wirdget
             COL_DESCRIPCION         + " TEXT)";
 }
