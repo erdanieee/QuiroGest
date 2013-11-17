@@ -8,14 +8,14 @@ import android.provider.BaseColumns;
 public class TablaSesiones  implements BaseColumns {
     public static final String TABLA_SESIONES = "sesiones";
 
-    public static final String COL_ID_MOTIVO        = "idMotivo";
-    public static final String COL_NUM_SESION       = "numeroDeSesion";
-    public static final String COL_FECHA            = "fecha";                                       // FORMATO SQLITE_DATE_FORMAT
-    public static final String COL_DOLOR            = "cuantificacionDelDolor";
-    public static final String COL_POSTRATAMIENTO   = "escuelaPostratamiento";
-    public static final String COL_DIAGNOSTICO      = "diagnosticoEspecifico";
-    public static final String COL_OBSERVACIONES    = "observaciones";
-    public static final String COL_INGRESOS         = "ingresos";
+    public static final String COL_ID_MOTIVO        = "idMotivo_tablaSesion";
+    public static final String COL_NUM_SESION       = "numeroDeSesion_tablaSesion";
+    public static final String COL_FECHA            = "fecha_tablaSesion";                                       // FORMATO SQLITE_DATE_FORMAT
+    public static final String COL_DOLOR            = "cuantificacionDelDolor_tablaSesion";
+    public static final String COL_POSTRATAMIENTO   = "escuelaPostratamiento_tablaSesion";
+    public static final String COL_DIAGNOSTICO      = "diagnosticoEspecifico_tablaSesion";
+    public static final String COL_OBSERVACIONES    = "observaciones_tablaSesion";
+    public static final String COL_INGRESOS         = "ingresos_tablaSesion";
 
 
     public enum CuantificacionDolor {

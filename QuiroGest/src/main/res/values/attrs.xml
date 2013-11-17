@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TecnicaView">
+        <attr name="minValue"           format="integer"/>
+        <attr name="maxValue"           format="integer"/>
+        <attr name="value"              format="integer"/>
+        <attr name="descripcion"        format="string"/>
+        <attr name="observaciones"      format="string"/>
+    </declare-styleable>
+</resources>

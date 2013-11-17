@@ -10,21 +10,21 @@ public class TablaClientes implements BaseColumns{
     public static final String TABLA_CLIENTES = "clientes";
 
     //MySQLlite FIELDS
-    public static final String COL_NOMBRE           = "nombre";
-    public static final String COL_APELLIDO1        = "apellido1";
-    public static final String COL_APELLIDO2        = "apellido2";
-    public static final String COL_MOVIL            = "movil";
-    public static final String COL_FIJO             = "fijo";
-    public static final String COL_EMAIL            = "email";
-    public static final String COL_DIRECCION        = "direccion";
-    public static final String COL_CP               = "cp";
-    public static final String COL_LOCALIDAD        = "localidad";
-    public static final String COL_PROVINCIA        = "provincia";
-    public static final String COL_FECHA_NAC        = "fechaNacimiento";
-    public static final String COL_PROFESION        = "profesion";
-    public static final String COL_ENFERMEDADES     = "enfermedades";
-    public static final String COL_ALERGIAS         = "alergias";
-    public static final String COL_OBSERVACIONES    = "observaciones";
+    public static final String COL_NOMBRE           = "nombre_TablaCliente";
+    public static final String COL_APELLIDO1        = "apellido1_TablaCliente";
+    public static final String COL_APELLIDO2        = "apellido2_TablaCliente";
+    public static final String COL_MOVIL            = "movil_TablaCliente";
+    public static final String COL_FIJO             = "fijo_TablaCliente";
+    public static final String COL_EMAIL            = "email_TablaCliente";
+    public static final String COL_DIRECCION        = "direccion_TablaCliente";
+    public static final String COL_CP               = "cp_TablaCliente";
+    public static final String COL_LOCALIDAD        = "localidad_TablaCliente";
+    public static final String COL_PROVINCIA        = "provincia_TablaCliente";
+    public static final String COL_FECHA_NAC        = "fechaNacimiento_TablaCliente";
+    public static final String COL_PROFESION        = "profesion_TablaCliente";
+    public static final String COL_ENFERMEDADES     = "enfermedades_TablaCliente";
+    public static final String COL_ALERGIAS         = "alergias_TablaCliente";
+    public static final String COL_OBSERVACIONES    = "observaciones_TablaCliente";
 
 
     public static final String sqlCreateTableClientes = "CREATE TABLE " + TABLA_CLIENTES + " (" +

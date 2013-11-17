@@ -8,14 +8,14 @@ import android.provider.BaseColumns;
 public class TablaMotivos implements BaseColumns{
     public static final String TABLA_MOTIVOS = "motivosDeConsulta";
 
-    public static final String COL_ID_CONTACTO     = "idContacto";
-    public static final String COL_FECHA           = "fecha";                                       // FORMATO SQLITE_DATE_FORMAT
-    public static final String COL_DESCRIPCION     = "descripcionMotivoConsulta";
-    public static final String COL_COMIENZO        = "comienzoDolor";                               // FORMATO SQLITE_DATE_FORMAT
-    public static final String COL_ESTADO_SALUD    = "estadoSaludGeneral";                          // FORMATO: [enum EstadoSalud.toSQLite()]
-    public static final String COL_ACTIV_FISICA    = "actividadFisica";
-    public static final String COL_DIAGNOSTICO     = "diagnosticoGeneral";
-    public static final String COL_OBSERVACIONES   = "observaciones";
+    public static final String COL_ID_CONTACTO     = "idContacto_tablaMotivo";
+    public static final String COL_FECHA           = "fecha_tablaMotivo";                                       // FORMATO SQLITE_DATE_FORMAT
+    public static final String COL_DESCRIPCION     = "descripcionMotivoConsulta_tablaMotivo";
+    public static final String COL_COMIENZO        = "comienzoDolor_tablaMotivo";                               // FORMATO SQLITE_DATE_FORMAT
+    public static final String COL_ESTADO_SALUD    = "estadoSaludGeneral_tablaMotivo";                          // FORMATO: [enum EstadoSalud.toSQLite()]
+    public static final String COL_ACTIV_FISICA    = "actividadFisica_tablaMotivo";
+    public static final String COL_DIAGNOSTICO     = "diagnosticoGeneral_tablaMotivo";
+    public static final String COL_OBSERVACIONES   = "observaciones_tablaMotivo";
 
 
     public enum EstadoSalud {
