@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
@@ -14,19 +15,25 @@ import android.util.Log;
  */
 public class QuiroGestProvider extends ContentProvider {
     private static final String TAG = "QuiroGestProvider";
-    public static final String PROVIDER_NAME        = "dan.android.quirogest.provider";
-    public static final Uri CONTENT_URI_CONTACTOS   = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaClientes.TABLA_CLIENTES);
-    public static final Uri CONTENT_URI_MOTIVOS     = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaMotivos.TABLA_MOTIVOS);
-    public static final Uri CONTENT_URI_SESIONES    = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaSesiones.TABLA_SESIONES);
+    public static final String PROVIDER_NAME            = "dan.android.quirogest.provider";
+    public static final Uri CONTENT_URI_CONTACTOS       = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaClientes.TABLA_CLIENTES);
+    public static final Uri CONTENT_URI_MOTIVOS         = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaMotivos.TABLA_MOTIVOS);
+    public static final Uri CONTENT_URI_SESIONES        = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaSesiones.TABLA_SESIONES);
+    public static final Uri CONTENT_URI_TECNICAS        = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTecnicas.TABLA_TECNICAS);
+    public static final Uri CONTENT_URI_TIPOS_TECNICAS  = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
 
 
     //UriMatcher
-    public static final int CONTACTOS       = 1;
-    public static final int CONTACTOS_ID    = 2;
-    public static final int MOTIVOS         = 3;
-    public static final int MOTIVOS_ID      = 4;
-    public static final int SESIONES        = 5;
-    public static final int SESIONES_ID     = 6;
+    public static final int CONTACTOS           = 1;
+    public static final int CONTACTOS_ID        = 2;
+    public static final int MOTIVOS             = 3;
+    public static final int MOTIVOS_ID          = 4;
+    public static final int SESIONES            = 5;
+    public static final int SESIONES_ID         = 6;
+    public static final int TECNICAS            = 7;
+    public static final int TECNICAS_ID         = 8;
+    public static final int TIPOS_TECNICAS      = 9;
+    public static final int TIPOS_TECNICAS_ID   = 10;
 
     //inicializamos el UriMatcher
     public static final UriMatcher uriMatcher;
@@ -38,6 +45,10 @@ public class QuiroGestProvider extends ContentProvider {
         uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS + "/#",     MOTIVOS_ID);
         uriMatcher.addURI(PROVIDER_NAME, TablaSesiones.TABLA_SESIONES,          SESIONES);
         uriMatcher.addURI(PROVIDER_NAME, TablaSesiones.TABLA_SESIONES + "/#",   SESIONES_ID);
+        uriMatcher.addURI(PROVIDER_NAME, TablaTecnicas.TABLA_TECNICAS,          TECNICAS);
+        uriMatcher.addURI(PROVIDER_NAME, TablaTecnicas.TABLA_TECNICAS + "/#",   TECNICAS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS,          TIPOS_TECNICAS);
+        uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS + "/#",   TIPOS_TECNICAS_ID);
 
     }
 
@@ -54,28 +65,46 @@ public class QuiroGestProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Log.d(TAG, "Query " + uri.toString());
+        Cursor c;
         String tabla=null;
         String where = selection;
+        SQLiteQueryBuilder sqlb = new SQLiteQueryBuilder();
+
+        //if (null!=where)sqlb.appendWhere(selection);
 
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
             case CONTACTOS:
-                tabla = TablaClientes.TABLA_CLIENTES;
+                sqlb.setTables(TablaClientes.TABLA_CLIENTES);
                 break;
             case MOTIVOS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
             case MOTIVOS:
-                tabla = TablaMotivos.TABLA_MOTIVOS;
+                sqlb.setTables(TablaMotivos.TABLA_MOTIVOS);
                 break;
             case SESIONES_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
             case SESIONES:
-                tabla = TablaSesiones.TABLA_SESIONES;
+                sqlb.setTables(TablaSesiones.TABLA_SESIONES);
+                break;
+            case TECNICAS_ID:
+                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
+                sqlb.appendWhere(TablaTecnicas.COL_ID_TECNICA + "=" + TablaTiposDeTecnicas._ID);
+            case TECNICAS:
+                sqlb.setTables(TablaTecnicas.TABLA_TECNICAS + "," + TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
+                break;
+            case TIPOS_TECNICAS_ID:
+                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
+
+            case TIPOS_TECNICAS:
+                sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
                 break;
         }
-        return dbHelper.getReadableDatabase().query(tabla, projection, where, selectionArgs, null, null, sortOrder);
+        c= sqlb.query(dbHelper.getReadableDatabase(), projection, where, selectionArgs, null, null, sortOrder);
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+        return c;
     }
 
 
@@ -84,24 +113,39 @@ public class QuiroGestProvider extends ContentProvider {
         Log.d(TAG, "Delete " + uri.toString());
         String tabla=null;
         String where = selection;
+        int rowDeleted;
 
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-            case MOTIVOS_ID:
-            case SESIONES_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
                 tabla = TablaClientes.TABLA_CLIENTES;
                 break;
+            case MOTIVOS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case MOTIVOS:
                 tabla = TablaMotivos.TABLA_MOTIVOS;
                 break;
+            case SESIONES_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case SESIONES:
                 tabla = TablaSesiones.TABLA_SESIONES;
                 break;
+            case TECNICAS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+            case TECNICAS:
+                tabla = TablaTecnicas.TABLA_TECNICAS;
+                break;
+            case TIPOS_TECNICAS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+            case TIPOS_TECNICAS:
+                tabla = TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS;
+                break;
         }
-        return dbHelper.getWritableDatabase().delete(tabla, where, selectionArgs);
+        rowDeleted = dbHelper.getWritableDatabase().delete(tabla, where, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return rowDeleted;
     }
 
 
@@ -110,24 +154,39 @@ public class QuiroGestProvider extends ContentProvider {
         Log.d(TAG, "Update " + uri.toString() + " " + values.toString());
         String tabla=null;
         String where = selection;
+        int rowUpdated;
 
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-            case MOTIVOS_ID:
-            case SESIONES_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
                 tabla = TablaClientes.TABLA_CLIENTES;
                 break;
+            case MOTIVOS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case MOTIVOS:
                 tabla = TablaMotivos.TABLA_MOTIVOS;
                 break;
+            case SESIONES_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case SESIONES:
                 tabla = TablaSesiones.TABLA_SESIONES;
                 break;
+            case TECNICAS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+            case TECNICAS:
+                tabla = TablaTecnicas.TABLA_TECNICAS;
+                break;
+            case TIPOS_TECNICAS_ID:
+                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+            case TIPOS_TECNICAS:
+                tabla = TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS;
+                break;
         }
-        return dbHelper.getWritableDatabase().update(tabla, values, where, selectionArgs);
+        rowUpdated = dbHelper.getWritableDatabase().update(tabla, values, where, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return rowUpdated;
     }
 
 
@@ -151,6 +210,14 @@ public class QuiroGestProvider extends ContentProvider {
             case SESIONES:
                 tabla = TablaSesiones.TABLA_SESIONES;
                 contentUri  = CONTENT_URI_SESIONES;
+                break;
+            case TECNICAS:
+                tabla = TablaTecnicas.TABLA_TECNICAS;
+                contentUri  = CONTENT_URI_TECNICAS;
+                break;
+            case TIPOS_TECNICAS:
+                tabla = TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS;
+                contentUri  = CONTENT_URI_TIPOS_TECNICAS;
                 break;
         }
 
@@ -186,6 +253,12 @@ public class QuiroGestProvider extends ContentProvider {
                 break;
             case SESIONES:
                 type = "vnd.android.cursor.dir/vnd.quirogest.sesiones";
+                break;
+            case TECNICAS_ID:
+                type = "vnd.android.cursor.item/vnd.quirogest.tecnicas";
+                break;
+            case TECNICAS:
+                type = "vnd.android.cursor.dir/vnd.quirogest.tecnicas";
                 break;
         }
 
