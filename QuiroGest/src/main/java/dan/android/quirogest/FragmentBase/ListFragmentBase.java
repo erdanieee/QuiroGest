@@ -23,11 +23,12 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     public static enum ListTypes {
         LIST_VIEW_CLIENTES,
         LIST_VIEW_MOTIVOS,
-        LIST_VIEW_SESIONES;
+        LIST_VIEW_SESIONES,
+        LIST_VIEW_TECNICAS;
     }
 
     private CallbackItemClicked mCallbacks          = null;
-    private SimpleCursorAdapter mAdapter            = null;
+    private SimpleCursorAdapter mAdapter          = null;
     private int                 mActivatedPosition  = ListView.INVALID_POSITION;
 
 
@@ -88,12 +89,12 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //inicializamos el fragment
-        init();
-
         //inicializamos el adapter con un cursor nulo hasta que se inicialice el Loader
         mAdapter = new SimpleCursorAdapter(getActivity(), getListLayout(), null, getColumns(), getViews(), 0);
         setListAdapter(mAdapter);
+
+        //inicializamos el fragment
+        init();
 
         //empezamos la carga de datos en paralelo
         getLoaderManager().initLoader(LOADER_ID, null, this);
