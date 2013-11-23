@@ -16,4 +16,9 @@
         android:layout_height="match_parent"
         layout="@layout/one_list_details" />
 
+    <FrameLayout
+        android:id="@+id/list_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

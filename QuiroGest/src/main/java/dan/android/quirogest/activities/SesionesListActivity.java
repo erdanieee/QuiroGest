@@ -12,6 +12,7 @@ import dan.android.quirogest.detailFragments.MotivoDetailFragment;
 import dan.android.quirogest.detailFragments.SesionDetailFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
 import dan.android.quirogest.listFragments.SesionesListFragment;
+import dan.android.quirogest.tecnicas.TecnicasListFragment;
 
 
 public class SesionesListActivity extends Activity implements ListFragmentBase.CallbackItemClicked {
@@ -32,12 +33,14 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
         mMotivoId = getIntent().getLongExtra(MOTIVO_ID,-1);
         mSesionId = getIntent().getLongExtra(SESION_ID, -1);
         SesionDetailFragment sdf = SesionDetailFragment.newInstance(mSesionId);
+        TecnicasListFragment tlf = TecnicasListFragment.newInstance(mSesionId);
 
         SesionesListFragment f = SesionesListFragment.newInstance(mMotivoId, mSesionId);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_list_container, f)
                 .replace(R.id.detail_container, sdf)
+                .replace(R.id.list_container, tlf)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }

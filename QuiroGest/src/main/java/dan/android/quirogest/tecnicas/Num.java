@@ -6,10 +6,10 @@ import android.widget.TextView;
 /**
  * Created by dan on 17/11/13.
  */
-public class TecnicasViewTypeNumber extends TextView implements TecnicasListFragment.itemTecnicable{
+public class Num extends TextView implements TecnicasListFragment.itemTecnicable{
 
 
-    public TecnicasViewTypeNumber(Context context) {
+    public Num(Context context) {
         super(context);
     }
 

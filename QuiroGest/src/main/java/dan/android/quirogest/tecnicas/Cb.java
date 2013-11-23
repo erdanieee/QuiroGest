@@ -1,14 +1,20 @@
 package dan.android.quirogest.tecnicas;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.widget.CheckBox;
 
 /**
  * Created by dan on 17/11/13.
  */
-public class TecnicasViewTypeCheckbox extends CheckBox implements TecnicasListFragment.itemTecnicable{
+public class Cb extends CheckBox implements TecnicasListFragment.itemTecnicable{
 
-    public TecnicasViewTypeCheckbox(Context context) {
+
+    public Cb(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public Cb(Context context) {
         super(context);
     }
 
