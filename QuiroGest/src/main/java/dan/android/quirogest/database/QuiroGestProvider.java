@@ -91,9 +91,13 @@ public class QuiroGestProvider extends ContentProvider {
                 break;
             case TECNICAS_ID:
                 sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
-                sqlb.appendWhere(TablaTecnicas.COL_ID_TECNICA + "=" + TablaTiposDeTecnicas._ID);
-            case TECNICAS:
-                sqlb.setTables(TablaTecnicas.TABLA_TECNICAS + "," + TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
+            case TECNICAS:// LEFT JOIN
+                sqlb.setTables(TablaTecnicas.TABLA_TECNICAS +
+                        " LEFT JOIN " +
+                        TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS +
+                        " ON (" +
+                        TablaTecnicas.COL_ID_TECNICA + "=" + TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA +
+                        ")");
                 break;
             case TIPOS_TECNICAS_ID:
                 sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());

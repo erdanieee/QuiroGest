@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import dan.android.quirogest.R;
@@ -17,16 +16,13 @@ import dan.android.quirogest.database.TablaTiposDeTecnicas;
  * Created by dan on 16/11/13.
  */
 public class TecnicasAdapter extends CursorAdapter{
-    private static final int VIEWTYPE_CHECKBOX  = 0;
-    private static final int VIEWTYPE_NUMBER    = 1;
-    private static final int VIEWTYPE_COUNT     = 2;    //número de VIEWTYPEs
+    private static final int VIEWTYPE_CHECKBOX  = 1;
+    private static final int VIEWTYPE_NUMBER    = 2;
+    private static final int VIEWTYPE_COUNT     = 1;    //número de VIEWTYPEs
 
-    LayoutInflater mInflater;
 
     public TecnicasAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
-
-        mInflater = LayoutInflater.from(context);
     }
 
 
@@ -47,14 +43,17 @@ public class TecnicasAdapter extends CursorAdapter{
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View view = null;
         ViewHolder vh = new ViewHolder();
+        LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
 
         switch(getItemViewType(cursor.getPosition())) {
             case VIEWTYPE_CHECKBOX:
-                view = mInflater.inflate(R.layout.tecnica_viewtype_checkbox, parent, false);
+                view        = mInflater.inflate(R.layout.tecnica_viewtype_checkbox, parent,false);
+                vh.mView    = new Tecnica<Cb>((Cb)view.findViewById(R.id.tecnicaView));
                 break;
 
             case VIEWTYPE_NUMBER:
-                view = mInflater.inflate(R.layout.tecnica_viewtype_numero, parent, false);
+                view        = mInflater.inflate(R.layout.tecnica_viewtype_numero, parent,false);
+                vh.mView    = new Tecnica<Num> ((Num) view.findViewById(R.id.tecnicaView));
                 break;
 
             default:
@@ -63,7 +62,6 @@ public class TecnicasAdapter extends CursorAdapter{
 
         vh.mDescripcion     = (TextView) view.findViewById(R.id.tecnicaDescripcion);
         vh.mObservaciones   = (TextView) view.findViewById(R.id.tecnicaObservaciones);
-        vh.mView            = (TecnicasViewTypeBase) view.findViewById(R.id.tecnicaView);
 
         view.setTag(vh);
         return view;
@@ -88,14 +86,16 @@ public class TecnicasAdapter extends CursorAdapter{
         } else {
             mHolder.mObservaciones.setVisibility(View.GONE);
         }
+
         mHolder.mView.setValues(min, max, value);
-
-
     }
+
 
     public static class ViewHolder{
         TextView mDescripcion, mObservaciones;
-        TecnicasViewTypeBase mView;
+        Tecnica mView;
+        //Cb cb;
+        //Num num;
     }
 }
 

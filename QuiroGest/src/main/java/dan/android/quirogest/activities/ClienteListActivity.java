@@ -95,7 +95,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_CONTACTOS, cv);
 
         cv = new ContentValues();
-        cv.put(TablaClientes._ID, 1);
+        cv.put(TablaMotivos._ID, 1);
         cv.put(TablaMotivos.COL_ID_CONTACTO, 3);
         cv.put(TablaMotivos.COL_DIAGNOSTICO, "Lumbalgia");
         cv.put(TablaMotivos.COL_OBSERVACIONES, "Aparece cada mes o mes y medio");
@@ -105,9 +105,8 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaMotivos.COL_FECHA, "2000-03-03");
         cv.put(TablaMotivos.COL_ESTADO_SALUD, TablaMotivos.EstadoSalud.BUENO.toSQLite());
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
-
         cv = new ContentValues();
-        cv.put(TablaClientes._ID, 2);
+        cv.put(TablaMotivos._ID, 2);
         cv.put(TablaMotivos.COL_ID_CONTACTO, 3);
         cv.put(TablaMotivos.COL_DIAGNOSTICO, "Cervicalgia");
         cv.put(TablaMotivos.COL_OBSERVACIONES, "Aparece cada mes o mes y medio");
@@ -119,7 +118,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
 
         cv = new ContentValues();
-        cv.put(TablaClientes._ID, 1);
+        cv.put(TablaSesiones._ID, 1);
         cv.put(TablaSesiones.COL_ID_MOTIVO, 2);
         cv.put(TablaSesiones.COL_DIAGNOSTICO, "diagnóstico de la osteópata");
         cv.put(TablaSesiones.COL_DOLOR, TablaSesiones.CuantificacionDolor.DOLOR_4.toSQLite());
@@ -128,9 +127,8 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaSesiones.COL_OBSERVACIONES, "lo he hecho fenomenal!");
         cv.put(TablaSesiones.COL_POSTRATAMIENTO, "nada");
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_SESIONES, cv);
-
         cv = new ContentValues();
-        cv.put(TablaClientes._ID, 2);
+        cv.put(TablaSesiones._ID, 2);
         cv.put(TablaSesiones.COL_ID_MOTIVO, 2);
         cv.put(TablaSesiones.COL_DIAGNOSTICO, "diagnóstico de la osteópata 2");
         cv.put(TablaSesiones.COL_DOLOR, TablaSesiones.CuantificacionDolor.DOLOR_4.toSQLite());
@@ -139,6 +137,46 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaSesiones.COL_OBSERVACIONES, "lo he hecho fenomenal!");
         cv.put(TablaSesiones.COL_POSTRATAMIENTO, "nada");
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_SESIONES, cv);
+
+        cv = new ContentValues();
+        cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 1);
+        cv.put(TablaTiposDeTecnicas.COL_DESCRIPCION, "estiramiento de cuello");
+        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, 1);
+        cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
+        cv.put(TablaTiposDeTecnicas.COL_MAX, 1);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
+        cv = new ContentValues();
+        cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 2);
+        cv.put(TablaTiposDeTecnicas.COL_DESCRIPCION, "torsión de cuello");
+        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, 2);
+        cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
+        cv.put(TablaTiposDeTecnicas.COL_MAX, 5);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
+
+        cv = new ContentValues();
+        cv.put(TablaTecnicas.COL_ID_SESION, 2);
+        cv.put(TablaTecnicas.COL_ID_TECNICA, 1);
+        cv.put(TablaTecnicas.COL_OBSERVACIONES, "bien");
+        cv.put(TablaTecnicas.COL_VALOR, 1);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
+        cv = new ContentValues();
+        cv.put(TablaTecnicas.COL_ID_SESION, 2);
+        cv.put(TablaTecnicas.COL_ID_TECNICA, 1);
+        cv.put(TablaTecnicas.COL_OBSERVACIONES, "mal");
+        cv.put(TablaTecnicas.COL_VALOR, 0);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
+        cv = new ContentValues();
+        cv.put(TablaTecnicas.COL_ID_SESION, 2);
+        cv.put(TablaTecnicas.COL_ID_TECNICA, 2);
+        cv.put(TablaTecnicas.COL_OBSERVACIONES, "otra observación");
+        cv.put(TablaTecnicas.COL_VALOR, 3);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
+        cv = new ContentValues();
+        cv.put(TablaTecnicas.COL_ID_SESION, 2);
+        cv.put(TablaTecnicas.COL_ID_TECNICA, 2);
+        cv.put(TablaTecnicas.COL_OBSERVACIONES, "otra observación");
+        cv.put(TablaTecnicas.COL_VALOR, 5);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
     }
 
 

@@ -1,6 +1,7 @@
 package dan.android.quirogest.tecnicas;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.widget.TextView;
 
 /**
@@ -8,6 +9,9 @@ import android.widget.TextView;
  */
 public class Num extends TextView implements TecnicasListFragment.itemTecnicable{
 
+    public Num(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
     public Num(Context context) {
         super(context);
@@ -16,7 +20,7 @@ public class Num extends TextView implements TecnicasListFragment.itemTecnicable
     @Override
     public void setValue(int min, int max, int value) {
         if (value >= min && value <= max){
-            setText(value);
+            setText(String.valueOf(value));
 
         } else {
             setText("ERROR!!!!");
