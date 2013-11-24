@@ -1,7 +1,5 @@
 package dan.android.quirogest.database;
 
-import android.provider.BaseColumns;
-
 /**
  * Created by dlopez on 23/10/13.
  */
@@ -20,6 +18,6 @@ public class TablaTiposDeTecnicas{
             COL_ID_PARENT           + " INTEGER, " +
             COL_MIN                 + " INTEGER, " +
             COL_MAX                 + " INTEGER, " +
-            COL_VIEWTYPE            + " INTEGER, " +    //How to draw the wirdget
+            COL_VIEWTYPE            + " INTEGER, " +    //How to draw the widget
             COL_DESCRIPCION         + " TEXT)";
 }

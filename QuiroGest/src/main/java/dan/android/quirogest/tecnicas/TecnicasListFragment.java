@@ -1,6 +1,5 @@
 package dan.android.quirogest.tecnicas;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -8,14 +7,10 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
-import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaSesiones;
 import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
 
@@ -34,6 +29,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
             TablaTecnicas.COL_ID_TECNICA,
             TablaTecnicas.COL_OBSERVACIONES,
             TablaTecnicas.COL_VALOR,
+            TablaTiposDeTecnicas.COL_ID_PARENT,
             TablaTiposDeTecnicas.COL_DESCRIPCION,
             TablaTiposDeTecnicas.COL_MIN,
             TablaTiposDeTecnicas.COL_MAX,
@@ -45,7 +41,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
 
 
     public interface itemTecnicable{
-        public void setValue(int min, int max, int value);
+        public void setValue(int idPadre, int min, int max, int value);
     }
 
 

@@ -75,22 +75,22 @@ public class QuiroGestProvider extends ContentProvider {
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
+                sqlb.appendWhere(TablaClientes._ID + "=" + uri.getLastPathSegment());
             case CONTACTOS:
                 sqlb.setTables(TablaClientes.TABLA_CLIENTES);
                 break;
             case MOTIVOS_ID:
-                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
+                sqlb.appendWhere(TablaMotivos._ID + "=" + uri.getLastPathSegment());
             case MOTIVOS:
                 sqlb.setTables(TablaMotivos.TABLA_MOTIVOS);
                 break;
             case SESIONES_ID:
-                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
+                sqlb.appendWhere(TablaSesiones._ID + "=" + uri.getLastPathSegment());
             case SESIONES:
                 sqlb.setTables(TablaSesiones.TABLA_SESIONES);
                 break;
             case TECNICAS_ID:
-                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
+                sqlb.appendWhere(TablaTecnicas._ID + "=" + uri.getLastPathSegment());
             case TECNICAS:// LEFT JOIN
                 sqlb.setTables(TablaTecnicas.TABLA_TECNICAS +
                         " LEFT JOIN " +
@@ -100,7 +100,7 @@ public class QuiroGestProvider extends ContentProvider {
                         ")");
                 break;
             case TIPOS_TECNICAS_ID:
-                sqlb.appendWhere(BaseColumns._ID + "=" + uri.getLastPathSegment());
+                sqlb.appendWhere(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + "=" + uri.getLastPathSegment());
 
             case TIPOS_TECNICAS:
                 sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);

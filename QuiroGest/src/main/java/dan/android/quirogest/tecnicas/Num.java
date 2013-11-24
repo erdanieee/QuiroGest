@@ -17,8 +17,9 @@ public class Num extends TextView implements TecnicasListFragment.itemTecnicable
         super(context);
     }
 
+
     @Override
-    public void setValue(int min, int max, int value) {
+    public void setValue(int idPadre, int min, int max, int value) {
         if (value >= min && value <= max){
             setText(String.valueOf(value));
 

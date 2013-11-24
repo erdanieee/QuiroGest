@@ -62,12 +62,14 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
             case LIST_VIEW_SESIONES:
                 mSesionId = sesionId;
                 sdf = (SesionDetailFragment) getFragmentManager().findFragmentById(R.id.detail_container);
+                TecnicasListFragment tlf = TecnicasListFragment.newInstance(mSesionId);
 
                 if (sdf == null || sdf.getItemId()!= sesionId){
                     sdf = SesionDetailFragment.newInstance(sesionId);
                     getFragmentManager()
                             .beginTransaction()
                             .replace(R.id.detail_container, sdf)
+                            .replace(R.id.list_container, tlf)
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit();
                 }

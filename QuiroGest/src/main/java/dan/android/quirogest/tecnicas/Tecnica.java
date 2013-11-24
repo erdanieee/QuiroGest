@@ -17,11 +17,12 @@ import dan.android.quirogest.R;
 public class Tecnica<T extends TecnicasListFragment.itemTecnicable>{
     T obj;
 
+
     public Tecnica(T o) {
         this.obj = o;
     }
 
-    public void setValues(int min, int max, int value){
-        obj.setValue(min, max, value);
+    public void setValues(int idPadre, int min, int max, int value) {
+        obj.setValue(idPadre, min, max, value);
     }
 }

@@ -11,7 +11,7 @@ public class TablaTecnicas implements BaseColumns {
     public static final String COL_ID_SESION        = "idSesion_tablaTecnica";
     public static final String COL_ID_TECNICA       = "idTipoTecnica_tablaTecnica";
     public static final String COL_FECHA            = "fecha_tablaTecnica";
-    public static final String COL_VALOR = "resultadoTecnica_tablaTecnica";
+    public static final String COL_VALOR            = "resultadoTecnica_tablaTecnica";
     public static final String COL_OBSERVACIONES    = "observaciones_tablaTecnica";
 
     public static final String sqlCreateTableTecnicas = "CREATE TABLE " + TABLA_TECNICAS + " (" +
