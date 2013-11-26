@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.TextView;
 
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.TablaTecnicas;
@@ -18,7 +17,7 @@ import dan.android.quirogest.database.TablaTiposDeTecnicas;
 public class TecnicasAdapter extends CursorAdapter{
     public static final int VIEWTYPE_CHECKBOX  = 1;
     public static final int VIEWTYPE_NUMBER    = 2;
-    public static final int VIEWTYPE_GRID      = 3;
+    public static final int VIEWTYPE_GRID_6x3 = 3;
     public static final int VIEWTYPE_COUNT     = 4;    //número de VIEWTYPEs
 
 
@@ -63,9 +62,10 @@ public class TecnicasAdapter extends CursorAdapter{
                 vh.mView    = new Tecnica<Num> ((Num) view.findViewById(R.id.tecnicaView));
                 break;
 
-            case VIEWTYPE_GRID:
-                view        = mInflater.inflate(R.layout.tecnica_viewtype_grid, parent,false);
-                vh.mView    = new Tecnica<Grid_6x3> ((Grid_6x3) view.findViewById(R.id.tecnicaView));
+            case VIEWTYPE_GRID_6x3:
+                Grid_6x3 g  = new Grid_6x3(context);
+                view        = g;
+                vh.mView    = new Tecnica<Grid_6x3> (g);
                 break;
             
             default:
@@ -95,7 +95,6 @@ public class TecnicasAdapter extends CursorAdapter{
 
 
     public static class ViewHolder{
-        TextView mDescripcion, mObservaciones;
         Tecnica mView;
     }
 }

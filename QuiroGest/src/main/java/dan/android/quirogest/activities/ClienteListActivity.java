@@ -148,8 +148,8 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
         cv = new ContentValues();
         cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 3);
-        cv.put(TablaTiposDeTecnicas.COL_ETIQUETA, "Valoración cervical");
-        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_GRID);
+        cv.put(TablaTiposDeTecnicas.COL_ETIQUETA, "Izq,Esp,Der,C1,C2,C3,C4,C5,C6,Valoración cervical");
+        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_GRID_6x3);
         cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
         cv.put(TablaTiposDeTecnicas.COL_MAX, 1);
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
@@ -181,15 +181,10 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv = new ContentValues();
         cv.put(TablaTecnicas.COL_ID_SESION, 2);
         cv.put(TablaTecnicas.COL_ID_TECNICA, 3);
-        cv.put(TablaTecnicas.COL_OBSERVACIONES, "C1");
-        cv.put(TablaTecnicas.COL_VALOR, 1);
+        cv.put(TablaTecnicas.COL_OBSERVACIONES, "kk de la vaca (observada)");
+        cv.put(TablaTecnicas.COL_VALOR, "0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1");
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
-        cv = new ContentValues();
-        cv.put(TablaTecnicas.COL_ID_SESION, 2);
-        cv.put(TablaTecnicas.COL_ID_TECNICA, 3);
-        cv.put(TablaTecnicas.COL_OBSERVACIONES, "C1");
-        cv.put(TablaTecnicas.COL_VALOR, 0);
-        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
+
     }
 
 

@@ -29,5 +29,6 @@
     <string name="estadoSalud">Evaluación estado de Salud general</string>
     <string name="activFisica">Actividad física</string>
     <string name="diagnosticoGeneral">Diagnóstico general</string>
+    <string name="test">Medium Text</string>
 
 </resources>
