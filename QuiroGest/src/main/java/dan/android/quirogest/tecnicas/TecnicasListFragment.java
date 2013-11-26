@@ -30,7 +30,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
             TablaTecnicas.COL_OBSERVACIONES,
             TablaTecnicas.COL_VALOR,
             TablaTiposDeTecnicas.COL_ID_PARENT,
-            TablaTiposDeTecnicas.COL_DESCRIPCION,
+            TablaTiposDeTecnicas.COL_ETIQUETA,
             TablaTiposDeTecnicas.COL_MIN,
             TablaTiposDeTecnicas.COL_MAX,
             TablaTiposDeTecnicas.COL_VIEWTYPE};
@@ -41,7 +41,12 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
 
 
     public interface itemTecnicable{
-        public void setValue(int idPadre, int min, int max, int value);
+        public void setValue(int[] value);
+        public void setMin(int min);
+        public void setMax(int max);
+        public void setParentId(int parentId);
+        public void setLabels(String[] labels);
+        public void setObserv(String observ);
     }
 
 

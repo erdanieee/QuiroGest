@@ -1,9 +1,7 @@
 package dan.android.quirogest.tecnicas;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,6 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import dan.android.quirogest.R;
-import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
 
@@ -21,7 +18,7 @@ import dan.android.quirogest.database.TablaTiposDeTecnicas;
 public class TecnicasAdapter extends CursorAdapter{
     public static final int VIEWTYPE_CHECKBOX  = 1;
     public static final int VIEWTYPE_NUMBER    = 2;
-    public static final int VIEWTYPE_GRID_6x3  = 3;
+    public static final int VIEWTYPE_GRID      = 3;
     public static final int VIEWTYPE_COUNT     = 4;    //número de VIEWTYPEs
 
 
@@ -45,11 +42,17 @@ public class TecnicasAdapter extends CursorAdapter{
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = null;
-        ViewHolder vh = new ViewHolder();
-        LayoutInflater mInflater = LayoutInflater.from(parent.getContext());
+        int viewType;
+        View view;
+        ViewHolder vh;
+        LayoutInflater mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        switch(getItemViewType(cursor.getPosition())) {
+        view        = null;
+        vh          = new ViewHolder();
+        mInflater   = LayoutInflater.from(parent.getContext());
+        viewType    = getItemViewType(cursor.getPosition());
+
+        switch(viewType) {
             case VIEWTYPE_CHECKBOX:
                 view        = mInflater.inflate(R.layout.tecnica_viewtype_checkbox, parent,false);
                 vh.mView    = new Tecnica<Cb>((Cb)view.findViewById(R.id.tecnicaView));
@@ -60,17 +63,14 @@ public class TecnicasAdapter extends CursorAdapter{
                 vh.mView    = new Tecnica<Num> ((Num) view.findViewById(R.id.tecnicaView));
                 break;
 
-            case VIEWTYPE_GRID_6x3:
+            case VIEWTYPE_GRID:
                 view        = mInflater.inflate(R.layout.tecnica_viewtype_grid, parent,false);
-                vh.mView    = new Tecnica<Grid> ((Grid) view.findViewById(R.id.tecnicaView));
+                vh.mView    = new Tecnica<Grid_6x3> ((Grid_6x3) view.findViewById(R.id.tecnicaView));
                 break;
             
             default:
                 throw new IllegalStateException ("Should never happend!!") ;
         }
-
-        vh.mDescripcion     = (TextView) view.findViewById(R.id.tecnicaDescripcion);
-        vh.mObservaciones   = (TextView) view.findViewById(R.id.tecnicaObservaciones);
 
         view.setTag(vh);
         return view;
@@ -79,21 +79,18 @@ public class TecnicasAdapter extends CursorAdapter{
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        int min, max, value, idPadre;
-        String descrip, observ;
+        int min, max, idPadre;
+        String label, observ, value;
         ViewHolder mHolder = (ViewHolder) view.getTag();
 
         idPadre = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_ID_PARENT));
         min     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_MIN));
         max     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_MAX));
-        value   = cursor.getInt(cursor.getColumnIndex(TablaTecnicas.COL_VALOR));                    //TODO: sugerencia. Cambiar a String para poder hacer concatenaciones (group_concat. ej: http://stackoverflow.com/questions/16269363/joining-multiple-records-in-a-cursoradapter) o usa binarios
-        descrip = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_DESCRIPCION));    //TODO: ajustar para que las matrices puedan coger todos los labels en una sola casilla
+        value   = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_VALOR));                    //TODO: sugerencia. Cambiar a String para poder hacer concatenaciones (group_concat. ej: http://stackoverflow.com/questions/16269363/joining-multiple-records-in-a-cursoradapter) o usa binarios
+        label   = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_ETIQUETA));    //TODO: ajustar para que las matrices puedan coger todos los labels en una sola casilla
         observ  = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES));
 
-        if (mHolder.mDescripcion!=null) {mHolder.mDescripcion.setText(descrip);}
-        if (mHolder.mObservaciones!=null && !observ.equals("")){ mHolder.mObservaciones.setText(observ); }
-
-        mHolder.mView.setValues(idPadre, min, max, value);
+        mHolder.mView.setValue(idPadre,min,max,value,label,observ);
     }
 
 
@@ -241,7 +238,7 @@ public class LazyAdapter extends BaseAdapter {
         HashMap&lt;String, String&gt; song = new HashMap&lt;String, String&gt;();
         song = data.get(position);
 
-        // Setting all values in listview
+        // Setting all cbItems in listview
         title.setText(song.get(CustomizedListView.KEY_TITLE));
         artist.setText(song.get(CustomizedListView.KEY_ARTIST));
         duration.setText(song.get(CustomizedListView.KEY_DURATION));

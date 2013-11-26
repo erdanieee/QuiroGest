@@ -19,6 +19,6 @@ public class TablaTecnicas implements BaseColumns {
             COL_ID_SESION           + " INTEGER, " +
             COL_ID_TECNICA          + " INTEGER, " +
             COL_FECHA               + " TEXT DEFAULT CURRENT_DATE, " +
-            COL_VALOR + " TEXT, " +
+            COL_VALOR               + " TEXT, " +
             COL_OBSERVACIONES       + " TEXT)";
 }

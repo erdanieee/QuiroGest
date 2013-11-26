@@ -20,7 +20,26 @@ public class Cb extends CheckBox implements TecnicasListFragment.itemTecnicable{
 
 
     @Override
-    public void setValue(int idPadre, int min, int max, int value) {
-        setChecked(value != 0);
+    public void setValue(int[] value) {
+        setChecked(value[0] != 0);
+    }
+
+    @Override
+    public void setMin(int min) {}
+
+    @Override
+    public void setMax(int max) {}
+
+    @Override
+    public void setParentId(int parentId) {}
+
+    @Override
+    public void setLabels(String[] labels) {
+
+    }
+
+    @Override
+    public void setObserv(String observ) {
+
     }
 }

@@ -134,22 +134,22 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
 
         cv = new ContentValues();
         cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 1);
-        cv.put(TablaTiposDeTecnicas.COL_DESCRIPCION, "estiramiento de cuello");
+        cv.put(TablaTiposDeTecnicas.COL_ETIQUETA, "estiramiento de cuello");
         cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_CHECKBOX);
         cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
         cv.put(TablaTiposDeTecnicas.COL_MAX, 1);
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
         cv = new ContentValues();
         cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 2);
-        cv.put(TablaTiposDeTecnicas.COL_DESCRIPCION, "torsión de cuello");
+        cv.put(TablaTiposDeTecnicas.COL_ETIQUETA, "torsión de cuello");
         cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_NUMBER);
         cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
         cv.put(TablaTiposDeTecnicas.COL_MAX, 5);
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
         cv = new ContentValues();
         cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 3);
-        cv.put(TablaTiposDeTecnicas.COL_DESCRIPCION, "Valoración cervical");
-        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_GRID_6x3);
+        cv.put(TablaTiposDeTecnicas.COL_ETIQUETA, "Valoración cervical");
+        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_GRID);
         cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
         cv.put(TablaTiposDeTecnicas.COL_MAX, 1);
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
