@@ -5,14 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.Settings;
 import android.util.Log;
-import android.widget.ListView;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
@@ -26,6 +19,7 @@ import dan.android.quirogest.database.TablaTiposDeTecnicas;
 import dan.android.quirogest.detailFragments.ClienteDetailFragment;
 import dan.android.quirogest.listFragments.ClienteListFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
+import dan.android.quirogest.tecnicas.TecnicasAdapter;
 
 
 public class ClienteListActivity extends Activity implements ListFragmentBase.CallbackItemClicked{
@@ -141,16 +135,23 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv = new ContentValues();
         cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 1);
         cv.put(TablaTiposDeTecnicas.COL_DESCRIPCION, "estiramiento de cuello");
-        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, 1);
+        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_CHECKBOX);
         cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
         cv.put(TablaTiposDeTecnicas.COL_MAX, 1);
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
         cv = new ContentValues();
         cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 2);
         cv.put(TablaTiposDeTecnicas.COL_DESCRIPCION, "torsión de cuello");
-        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, 2);
+        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_NUMBER);
         cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
         cv.put(TablaTiposDeTecnicas.COL_MAX, 5);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
+        cv = new ContentValues();
+        cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 3);
+        cv.put(TablaTiposDeTecnicas.COL_DESCRIPCION, "Valoración cervical");
+        cv.put(TablaTiposDeTecnicas.COL_VIEWTYPE, TecnicasAdapter.VIEWTYPE_GRID_6x3);
+        cv.put(TablaTiposDeTecnicas.COL_MIN, 0);
+        cv.put(TablaTiposDeTecnicas.COL_MAX, 1);
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
 
         cv = new ContentValues();
@@ -160,7 +161,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaTecnicas.COL_VALOR, 1);
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
         cv = new ContentValues();
-        cv.put(TablaTecnicas.COL_ID_SESION, 2);
+        cv.put(TablaTecnicas.COL_ID_SESION, 1);
         cv.put(TablaTecnicas.COL_ID_TECNICA, 1);
         cv.put(TablaTecnicas.COL_OBSERVACIONES, "mal");
         cv.put(TablaTecnicas.COL_VALOR, 0);
@@ -176,6 +177,18 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaTecnicas.COL_ID_TECNICA, 2);
         cv.put(TablaTecnicas.COL_OBSERVACIONES, "otra observación");
         cv.put(TablaTecnicas.COL_VALOR, 5);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
+        cv = new ContentValues();
+        cv.put(TablaTecnicas.COL_ID_SESION, 2);
+        cv.put(TablaTecnicas.COL_ID_TECNICA, 3);
+        cv.put(TablaTecnicas.COL_OBSERVACIONES, "C1");
+        cv.put(TablaTecnicas.COL_VALOR, 1);
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
+        cv = new ContentValues();
+        cv.put(TablaTecnicas.COL_ID_SESION, 2);
+        cv.put(TablaTecnicas.COL_ID_TECNICA, 3);
+        cv.put(TablaTecnicas.COL_OBSERVACIONES, "C1");
+        cv.put(TablaTecnicas.COL_VALOR, 0);
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
     }
 
