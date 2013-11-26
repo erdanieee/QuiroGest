@@ -32,7 +32,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         Log.d(TAG, "creating activity");
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.two_lists_details);
+        setContentView(R.layout.activity_3frames);
 
         //añadimos el fragment principal
         ClienteListFragment f = ClienteListFragment.newIntance();

@@ -25,7 +25,7 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.two_lists_details_cabecera);
+        setContentView(R.layout.activity_3frames_cabecera);
 
         //añadimos el fragment principal
         mContactoId = getIntent().getLongExtra(CONTACTO_ID,-1);
@@ -54,7 +54,6 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
         Log.i(TAG, "Item selected " + id);
         MotivoDetailFragment mdf;
         SesionesListFragment slf;
-        FragmentTransaction ft;
 
         switch (lfb.getListViewType()){
             case LIST_VIEW_MOTIVOS:
