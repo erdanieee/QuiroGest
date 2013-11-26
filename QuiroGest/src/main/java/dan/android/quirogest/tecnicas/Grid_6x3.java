@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import dan.android.quirogest.R;
 /**
  * Created by dan on 17/11/13.
  */
-public class Grid_6x3 extends GridLayout implements TecnicasListFragment.itemTecnicable{
+public class Grid_6x3 extends LinearLayout implements TecnicasListFragment.itemTecnicable{
     private static final int NUM_ROW = 6;
     private static final int NUM_COL = 3;
     TextView title, observ;
@@ -31,15 +32,11 @@ public class Grid_6x3 extends GridLayout implements TecnicasListFragment.itemTec
     public Grid_6x3(Context context) { this(context, null);}
     public Grid_6x3(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
     }
 
-
-    private void init(Context c){
-        this.context = c;
-
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.tecnica_viewtype_grid, this, true);
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
 
         title   = (TextView) findViewById(R.id.tecnicaDescripcion);
         observ  = (TextView) findViewById(R.id.tecnicaObservaciones);
@@ -65,7 +62,7 @@ public class Grid_6x3 extends GridLayout implements TecnicasListFragment.itemTec
             }
         }
     }
-
+    
 
     @Override
     public void setValue(int[] v) {

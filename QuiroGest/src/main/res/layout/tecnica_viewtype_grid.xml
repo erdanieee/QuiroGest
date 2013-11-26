@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<dan.android.quirogest.tecnicas.Grid_6x3
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -15,14 +16,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="@android:style/TextAppearance.Small"
         android:text="@string/test"
         android:id="@+id/tecnicaObservaciones" />
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tecnicaTable">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tecnicaTable"
+        android:layout_gravity="center_horizontal">
 
         <TableRow
             android:layout_width="fill_parent"
@@ -241,4 +243,4 @@
 
     </TableLayout>
 
-</merge>
+</dan.android.quirogest.tecnicas.Grid_6x3>
