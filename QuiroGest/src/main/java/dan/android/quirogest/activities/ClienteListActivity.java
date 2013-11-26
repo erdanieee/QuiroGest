@@ -184,6 +184,12 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaTecnicas.COL_OBSERVACIONES, "kk de la vaca (observada)");
         cv.put(TablaTecnicas.COL_VALOR, "0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1");
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
+        cv = new ContentValues();
+        cv.put(TablaTecnicas.COL_ID_SESION, 2);
+        cv.put(TablaTecnicas.COL_ID_TECNICA, 3);
+        cv.put(TablaTecnicas.COL_OBSERVACIONES, "Observo lluego existo");
+        cv.put(TablaTecnicas.COL_VALOR, "1,0,0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,1");
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
 
     }
 

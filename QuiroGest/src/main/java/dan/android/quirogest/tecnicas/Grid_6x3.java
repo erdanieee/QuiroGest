@@ -62,7 +62,7 @@ public class Grid_6x3 extends LinearLayout implements TecnicasListFragment.itemT
             }
         }
     }
-    
+
 
     @Override
     public void setValue(int[] v) {

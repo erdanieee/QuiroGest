@@ -3,25 +3,37 @@ package dan.android.quirogest.tecnicas;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import dan.android.quirogest.R;
 
 /**
  * Created by dan on 17/11/13.
  */
-public class Cb extends CheckBox implements TecnicasListFragment.itemTecnicable{
+public class Cb extends LinearLayout implements TecnicasListFragment.itemTecnicable{
+    private TextView title, observ;
+    private CheckBox checkBox;
 
 
+    public Cb(Context context) { this(context,null); }
     public Cb(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public Cb(Context context) {
-        super(context);
-    }
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+
+        title   = (TextView) findViewById(R.id.tecnicaDescripcion);
+        observ  = (TextView) findViewById(R.id.tecnicaObservaciones);
+        checkBox    = (CheckBox) findViewById(R.id.tecnicaCheckBox);
+    }
 
     @Override
     public void setValue(int[] value) {
-        setChecked(value[0] != 0);
+        checkBox.setChecked(value[0] != 0);
     }
 
     @Override
@@ -35,11 +47,11 @@ public class Cb extends CheckBox implements TecnicasListFragment.itemTecnicable{
 
     @Override
     public void setLabels(String[] labels) {
-
+        title.setText(labels[0]);
     }
 
     @Override
-    public void setObserv(String observ) {
-
+    public void setObserv(String o) {
+        observ.setText(o);
     }
 }
