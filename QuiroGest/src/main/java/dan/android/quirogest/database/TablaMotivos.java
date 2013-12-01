@@ -8,14 +8,14 @@ import android.provider.BaseColumns;
 public class TablaMotivos implements BaseColumns{
     public static final String TABLA_MOTIVOS = "motivosDeConsulta";
 
-    public static final String COL_ID_CONTACTO     = "idContacto_tablaMotivo";
-    public static final String COL_FECHA           = "fecha_tablaMotivo";                                       // FORMATO SQLITE_DATE_FORMAT
-    public static final String COL_DESCRIPCION     = "descripcionMotivoConsulta_tablaMotivo";
-    public static final String COL_COMIENZO        = "comienzoDolor_tablaMotivo";                               // FORMATO SQLITE_DATE_FORMAT
-    public static final String COL_ESTADO_SALUD    = "estadoSaludGeneral_tablaMotivo";                          // FORMATO: [enum EstadoSalud.toSQLite()]
-    public static final String COL_ACTIV_FISICA    = "actividadFisica_tablaMotivo";
-    public static final String COL_DIAGNOSTICO     = "diagnosticoGeneral_tablaMotivo";
-    public static final String COL_OBSERVACIONES   = "observaciones_tablaMotivo";
+    public static final String COL_ID_CONTACTO     = "idContacto"                   + "_" + TABLA_MOTIVOS;
+    public static final String COL_FECHA           = "fecha"                        + "_" + TABLA_MOTIVOS;                                       // FORMATO SQLITE_DATE_FORMAT
+    public static final String COL_DESCRIPCION     = "descripcionMotivoConsulta"    + "_" + TABLA_MOTIVOS;
+    public static final String COL_COMIENZO        = "comienzoDolor"                + "_" + TABLA_MOTIVOS;    // FORMATO SQLITE_DATE_FORMAT
+    public static final String COL_ESTADO_SALUD    = "estadoSaludGeneral"           + "_" + TABLA_MOTIVOS;    // FORMATO: [enum EstadoSalud.toSQLite()]
+    public static final String COL_ACTIV_FISICA    = "actividadFisica"              + "_" + TABLA_MOTIVOS;
+    public static final String COL_DIAGNOSTICO     = "diagnosticoGeneral"           + "_" + TABLA_MOTIVOS;
+    public static final String COL_OBSERVACIONES   = "observaciones"                + "_" + TABLA_MOTIVOS;
 
 
     public enum EstadoSalud {

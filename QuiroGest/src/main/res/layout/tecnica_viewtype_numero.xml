@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<dan.android.quirogest.tecnicas.Num
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,20 +10,26 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/tecnicaDescripcion" />
+        android:id="@+id/tecnicaDescripcion"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Medium Text"
-        android:id="@+id/tecnicaObservaciones" />
+        android:id="@+id/tecnicaObservaciones"
+        android:layout_below="@+id/tecnicaNum"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:background="#ffcc3820"
-        android:id="@+id/tecnicaNum" />
+        android:id="@+id/tecnicaNum"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
-</dan.android.quirogest.tecnicas.Num>
+</merge>

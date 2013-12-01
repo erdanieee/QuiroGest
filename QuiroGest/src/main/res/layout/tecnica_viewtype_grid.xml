@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tecnicaTable"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="true">
+        android:layout_centerHorizontal="true">
     </TableLayout>
 
     <TextView
@@ -22,7 +21,6 @@
         android:text="@string/test"
         android:id="@+id/tecnicaDescripcion"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="false"
         android:layout_alignParentLeft="true" />
 
     <TextView
@@ -32,6 +30,5 @@
         android:text="@string/test"
         android:id="@+id/tecnicaObservaciones"
         android:layout_below="@+id/tecnicaDescripcion"
-        android:layout_alignParentRight="false"
         android:layout_alignParentLeft="true" />
-</RelativeLayout>
+</merge>

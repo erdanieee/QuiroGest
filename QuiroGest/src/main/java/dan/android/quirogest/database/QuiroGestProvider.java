@@ -16,7 +16,7 @@ import android.util.Log;
 public class QuiroGestProvider extends ContentProvider {
     private static final String TAG = "QuiroGestProvider";
     public static final String PROVIDER_NAME            = "dan.android.quirogest.provider";
-    public static final Uri CONTENT_URI_CONTACTOS       = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaClientes.TABLA_CLIENTES);
+    public static final Uri CONTENT_URI_CONTACTOS       = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaClientes.TABLA_PACIENTES);
     public static final Uri CONTENT_URI_MOTIVOS         = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaMotivos.TABLA_MOTIVOS);
     public static final Uri CONTENT_URI_SESIONES        = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaSesiones.TABLA_SESIONES);
     public static final Uri CONTENT_URI_TECNICAS        = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTecnicas.TABLA_TECNICAS);
@@ -39,8 +39,8 @@ public class QuiroGestProvider extends ContentProvider {
     public static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_CLIENTES,          CONTACTOS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_CLIENTES + "/#",   CONTACTOS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_PACIENTES,          CONTACTOS);
+        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_PACIENTES + "/#",   CONTACTOS_ID);
         uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS,            MOTIVOS);
         uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS + "/#",     MOTIVOS_ID);
         uriMatcher.addURI(PROVIDER_NAME, TablaSesiones.TABLA_SESIONES,          SESIONES);
@@ -77,7 +77,7 @@ public class QuiroGestProvider extends ContentProvider {
             case CONTACTOS_ID:
                 sqlb.appendWhere(TablaClientes._ID + "=" + uri.getLastPathSegment());
             case CONTACTOS:
-                sqlb.setTables(TablaClientes.TABLA_CLIENTES);
+                sqlb.setTables(TablaClientes.TABLA_PACIENTES);
                 break;
             case MOTIVOS_ID:
                 sqlb.appendWhere(TablaMotivos._ID + "=" + uri.getLastPathSegment());
@@ -96,7 +96,7 @@ public class QuiroGestProvider extends ContentProvider {
                         " LEFT JOIN " +
                         TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS +
                         " ON (" +
-                        TablaTecnicas.COL_ID_TECNICA + "=" + TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA +
+                        TablaTecnicas.COL_ID_TIPO_TECNICA + "=" + TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA +
                         ")");
                 break;
             case TIPOS_TECNICAS_ID:
@@ -124,7 +124,7 @@ public class QuiroGestProvider extends ContentProvider {
             case CONTACTOS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                tabla = TablaClientes.TABLA_CLIENTES;
+                tabla = TablaClientes.TABLA_PACIENTES;
                 break;
             case MOTIVOS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
@@ -165,7 +165,7 @@ public class QuiroGestProvider extends ContentProvider {
             case CONTACTOS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                tabla = TablaClientes.TABLA_CLIENTES;
+                tabla = TablaClientes.TABLA_PACIENTES;
                 break;
             case MOTIVOS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
@@ -204,7 +204,7 @@ public class QuiroGestProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)){
             case CONTACTOS:
-                tabla = TablaClientes.TABLA_CLIENTES;
+                tabla = TablaClientes.TABLA_PACIENTES;
                 contentUri  = CONTENT_URI_CONTACTOS;
                 break;
             case MOTIVOS:

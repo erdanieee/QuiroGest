@@ -8,14 +8,14 @@ import android.provider.BaseColumns;
 public class TablaSesiones  implements BaseColumns {
     public static final String TABLA_SESIONES = "sesiones";
 
-    public static final String COL_ID_MOTIVO        = "idMotivo_tablaSesion";
-    public static final String COL_NUM_SESION       = "numeroDeSesion_tablaSesion";
-    public static final String COL_FECHA            = "fecha_tablaSesion";                                       // FORMATO SQLITE_DATE_FORMAT
-    public static final String COL_DOLOR            = "cuantificacionDelDolor_tablaSesion";
-    public static final String COL_POSTRATAMIENTO   = "escuelaPostratamiento_tablaSesion";
-    public static final String COL_DIAGNOSTICO      = "diagnosticoEspecifico_tablaSesion";
-    public static final String COL_OBSERVACIONES    = "observaciones_tablaSesion";
-    public static final String COL_INGRESOS         = "ingresos_tablaSesion";
+    public static final String COL_ID_MOTIVO        = "idMotivo"                + "_" + TABLA_SESIONES;
+    public static final String COL_NUM_SESION       = "numeroDeSesion"          + "_" + TABLA_SESIONES;
+    public static final String COL_FECHA            = "fecha"                   + "_" + TABLA_SESIONES; // FORMATO SQLITE_DATE_FORMAT
+    public static final String COL_DOLOR            = "cuantificacionDelDolor"  + "_" + TABLA_SESIONES;
+    public static final String COL_POSTRATAMIENTO   = "escuelaPostratamiento"   + "_" + TABLA_SESIONES;
+    public static final String COL_DIAGNOSTICO      = "diagnosticoEspecifico"   + "_" + TABLA_SESIONES;
+    public static final String COL_OBSERVACIONES    = "observaciones"           + "_" + TABLA_SESIONES;
+    public static final String COL_INGRESOS         = "ingresos"                + "_" + TABLA_SESIONES;
 
 
     public enum CuantificacionDolor {

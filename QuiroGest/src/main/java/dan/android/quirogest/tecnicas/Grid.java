@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import dan.android.quirogest.R;
 /**
  * Created by dan on 17/11/13.
  */
-public class Grid extends LinearLayout implements TecnicasListFragment.itemTecnicable{
+public class Grid extends RelativeLayout implements TecnicasListFragment.itemTecnicable{
     private TextView mTitle, mObserv;
     private TableLayout mTable;
     private ArrayList<TextView> mLabels;             //primero columnas, luego filas

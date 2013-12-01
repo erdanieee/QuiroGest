@@ -55,17 +55,17 @@ public class TecnicasAdapter extends CursorAdapter{
 
         switch(viewType) {
             case VIEWTYPE_CHECKBOX:
-                view        = mInflater.inflate(R.layout.tecnica_viewtype_checkbox, parent,false);
+                view        = new Cb(context);
                 vh.mView    = new Tecnica<Cb>((Cb)view);
                 break;
 
             case VIEWTYPE_NUMBER:
-                view        = mInflater.inflate(R.layout.tecnica_viewtype_numero, parent,false);
+                view        = new Num(context);
                 vh.mView    = new Tecnica<Num> ((Num) view);
                 break;
 
             case VIEWTYPE_GRID_3x7:
-                view = new Grid(context,3,7);
+                view        = new Grid(context,3,7);
                 vh.mView    = new Tecnica<Grid> ((Grid)view);
                 break;
             case VIEWTYPE_GRID_5x12:

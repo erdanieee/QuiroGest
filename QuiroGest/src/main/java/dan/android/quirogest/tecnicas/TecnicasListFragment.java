@@ -7,9 +7,12 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
+import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
@@ -26,7 +29,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
     private static final String ORDER        = "DATE(" + TablaTecnicas.COL_FECHA + ") DESC";
     private static final String[] PROYECTION = {
             TablaTecnicas._ID,
-            TablaTecnicas.COL_ID_TECNICA,
+            TablaTecnicas.COL_ID_TIPO_TECNICA,
             TablaTecnicas.COL_OBSERVACIONES,
             TablaTecnicas.COL_VALOR,
             TablaTiposDeTecnicas.COL_ID_PARENT,
@@ -34,7 +37,6 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
             TablaTiposDeTecnicas.COL_MIN,
             TablaTiposDeTecnicas.COL_MAX,
             TablaTiposDeTecnicas.COL_VIEWTYPE};
-
 
     private TecnicasAdapter mAdapter    = null;
     private long mSesionId;
@@ -45,8 +47,8 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
         public void setMin(int min);
         public void setMax(int max);
         public void setParentId(int parentId);
-        public void setLabels(String[] labels);
-        public void setObserv(String observ);
+        public void setmLabels(String[] labels);
+        public void setmObserv(String observ);
     }
 
 
@@ -81,6 +83,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
         //empezamos la carga de datos en paralelo
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
