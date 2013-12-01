@@ -1,31 +1,19 @@
 package dan.android.quirogest.tecnicas;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import java.util.Collection;
-import java.util.Collections;
-
-import dan.android.quirogest.R;
-
 /**
  * Created by dan on 17/11/13.
  */
 public class Tecnica<T extends TecnicasListFragment.itemTecnicable>{
     private static final String REGULAR_EXPRESSION_MATRIX = ",";
 
-    T obj;
+    private T obj;
 
 
     public Tecnica(T o) {
         this.obj = o;
     }
+
+    public Object getView(){return obj;}
 
 
     public void setValue(int idPadre, int min, int max, String v, String labels, String observ) {
@@ -43,7 +31,7 @@ public class Tecnica<T extends TecnicasListFragment.itemTecnicable>{
         obj.setMin(min);
         obj.setMax(max);
         obj.setValue(values);
-        obj.setLabels(labels.split(REGULAR_EXPRESSION_MATRIX));
-        obj.setObserv(observ);
+        obj.setmLabels(labels.split(REGULAR_EXPRESSION_MATRIX));
+        obj.setmObserv(observ);
     }
 }

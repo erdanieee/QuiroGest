@@ -17,8 +17,10 @@ import dan.android.quirogest.database.TablaTiposDeTecnicas;
 public class TecnicasAdapter extends CursorAdapter{
     public static final int VIEWTYPE_CHECKBOX  = 1;
     public static final int VIEWTYPE_NUMBER    = 2;
-    public static final int VIEWTYPE_GRID_6x3 = 3;
-    public static final int VIEWTYPE_COUNT     = 4;    //número de VIEWTYPEs
+    public static final int VIEWTYPE_GRID_3x7 = 3;
+    public static final int VIEWTYPE_GRID_5x12 = 4;
+    public static final int VIEWTYPE_GRID_5x5  = 5;
+    public static final int VIEWTYPE_COUNT     = 6;    //número de VIEWTYPEs
 
 
     public TecnicasAdapter(Context context, Cursor c, boolean autoRequery) {
@@ -62,9 +64,17 @@ public class TecnicasAdapter extends CursorAdapter{
                 vh.mView    = new Tecnica<Num> ((Num) view);
                 break;
 
-            case VIEWTYPE_GRID_6x3:
-                view        = mInflater.inflate(R.layout.tecnica_viewtype_grid, parent,false);
-                vh.mView    = new Tecnica<Grid_6x3> ((Grid_6x3)view);
+            case VIEWTYPE_GRID_3x7:
+                view = new Grid(context,3,7);
+                vh.mView    = new Tecnica<Grid> ((Grid)view);
+                break;
+            case VIEWTYPE_GRID_5x12:
+                view = new Grid(context,5,12);
+                vh.mView    = new Tecnica<Grid> ((Grid)view);
+                break;
+            case VIEWTYPE_GRID_5x5:
+                view = new Grid(context,5,5);
+                vh.mView    = new Tecnica<Grid> ((Grid)view);
                 break;
             
             default:
@@ -96,4 +106,5 @@ public class TecnicasAdapter extends CursorAdapter{
     public static class ViewHolder{
         Tecnica mView;
     }
+
 }

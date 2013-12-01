@@ -46,12 +46,12 @@ public class Cb extends LinearLayout implements TecnicasListFragment.itemTecnica
     public void setParentId(int parentId) {}
 
     @Override
-    public void setLabels(String[] labels) {
+    public void setmLabels(String[] labels) {
         title.setText(labels[0]);
     }
 
     @Override
-    public void setObserv(String o) {
+    public void setmObserv(String o) {
         observ.setText(o);
     }
 }
