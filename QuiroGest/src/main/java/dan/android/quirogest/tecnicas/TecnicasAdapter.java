@@ -17,7 +17,7 @@ import dan.android.quirogest.database.TablaTiposDeTecnicas;
 public class TecnicasAdapter extends CursorAdapter{
     public static final int VIEWTYPE_CHECKBOX  = 1;
     public static final int VIEWTYPE_NUMBER    = 2;
-    public static final int VIEWTYPE_GRID_3x7 = 3;
+    public static final int VIEWTYPE_GRID_3x7  = 3;
     public static final int VIEWTYPE_GRID_5x12 = 4;
     public static final int VIEWTYPE_GRID_5x5  = 5;
     public static final int VIEWTYPE_COUNT     = 6;    //número de VIEWTYPEs
@@ -95,7 +95,7 @@ public class TecnicasAdapter extends CursorAdapter{
         idPadre = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_ID_PARENT));
         min     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_MIN));
         max     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_MAX));
-        value   = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_VALOR));                    //TODO: sugerencia. Cambiar a String para poder hacer concatenaciones (group_concat. ej: http://stackoverflow.com/questions/16269363/joining-multiple-records-in-a-cursoradapter) o usa binarios
+        value   = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_VALOR));              //TODO: sugerencia. Cambiar a String para poder hacer concatenaciones (group_concat. ej: http://stackoverflow.com/questions/16269363/joining-multiple-records-in-a-cursoradapter) o usa binarios
         label   = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_ETIQUETA));    //TODO: ajustar para que las matrices puedan coger todos los labels en una sola casilla
         observ  = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES));
 
