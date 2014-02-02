@@ -1,15 +1,19 @@
 package dan.android.quirogest.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.detailFragments.SesionDetailFragment;
 import dan.android.quirogest.listFragments.SesionesListFragment;
-import dan.android.quirogest.tecnicas.TecnicasListFragment;
+import dan.android.quirogest.listFragments.TecnicasListFragment;
 
 
 public class SesionesListActivity extends Activity implements ListFragmentBase.CallbackItemClicked {
@@ -19,12 +23,14 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
     public static final String MOTIVO_ID = "motivo_id";
     private long mMotivoId, mSesionId;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_3frames_cabecera);
+
+        //añadir back en el action bar
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //añadimos el fragment principal
         mMotivoId = getIntent().getLongExtra(MOTIVO_ID,-1);
@@ -41,6 +47,7 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
+
 
 
     /**
@@ -69,6 +76,31 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
                             .commit();
                 }
                 break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.ejemplo, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                Toast.makeText(this, "añadiendo...", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_compose:
+                Toast.makeText(this, "eliminando...", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">QuiroGest</string>
+    <string name="app_name">Quirostelia</string>
     <string name="title_cliente_detail">Detalles de los contactos</string>
     <string name="telefono">Teléfono</string>
     <string name="email">Email</string>
@@ -22,7 +22,7 @@
     <string name="diagnostico">Diagnóstico</string>
     <string name="postratamiento">Postratamiento</string>
     <string name="numeroSesion">Numero de sesión</string>
-    <string name="precio">Precio</string>
+    <string name="ingreso">Ingreso</string>
     <string name="fecha">Fecha</string>
     <string name="motivoConsulta">Descripción del motivo de consulta</string>
     <string name="comienzoDolor">Comienzo del dolor</string>

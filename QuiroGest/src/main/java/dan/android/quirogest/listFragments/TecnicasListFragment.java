@@ -1,26 +1,36 @@
-package dan.android.quirogest.tecnicas;
+package dan.android.quirogest.listFragments;
 
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
+import dan.android.quirogest.database.TablaEtiquetas;
 import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
+import dan.android.quirogest.tecnicas.TecnicasAdapter;
+import android.app.ActionBar;
+import android.widget.Toast;
 
 /**
  * Created by dan on 17/11/13.
  */
-public class TecnicasListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class TecnicasListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>,  AbsListView.MultiChoiceModeListener{
+    public  static final String PROY_COMB    = "ProyeccionCombinacionDeEtiquetas";
     private static final String TAG          = "TecnicasListFragment";
     private static final String SESION_ID    = "sesion_id";
     private static final int    LOADER_ID    = 79838383;
@@ -33,22 +43,29 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
             TablaTecnicas.COL_OBSERVACIONES,
             TablaTecnicas.COL_VALOR,
             TablaTiposDeTecnicas.COL_ID_PARENT,
-            TablaTiposDeTecnicas.COL_ETIQUETA,
+            TablaTiposDeTecnicas.COL_NUM_COLS,
+            TablaTiposDeTecnicas.COL_NUM_ROWS,
+            TablaTiposDeTecnicas.COL_TITLE,
+            TablaTiposDeTecnicas.COL_LABELS_COLS,
+            TablaTiposDeTecnicas.COL_LABELS_ROWS,
             TablaTiposDeTecnicas.COL_MIN,
             TablaTiposDeTecnicas.COL_MAX,
-            TablaTiposDeTecnicas.COL_VIEWTYPE};
+            TablaTiposDeTecnicas.COL_VIEWTYPE,
+            "(SELECT GROUP_CONCAT(" +
+                    TablaEtiquetas.COL_ID_TIPO_ETIQUETA +
+                    ") FROM " +
+                    TablaEtiquetas.TABLA_ETIQUETAS +
+                    " WHERE " +
+                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + TablaEtiquetas.COL_ID_TECNICA +
+                    ") AS " + PROY_COMB      //TODO: usar group_concat para sacar también las etiquetas. Ej:  SELECT t.*, tt.*, (SELECT GROUP_CONCAT(e.tipoEtiqueta_etiquetas) FROM etiquetas e WHERE t._id=e.idTecnica_etiquetas) AS combinedsolutions FROM tecnicas t left join tiposDeTecnicas tt on tt.idTipoTecnica_tiposDeTecnicas=t.idTipoTecnica_tecnicas
+    };
 
     private TecnicasAdapter mAdapter    = null;
     private long mSesionId;
 
 
     public interface itemTecnicable{
-        public void setValue(int[] value);
-        public void setMin(int min);
-        public void setMax(int max);
-        public void setParentId(int parentId);
-        public void setmLabels(String[] labels);
-        public void setmObserv(String observ);
+        public void setValue(int value);
     }
 
 
@@ -82,13 +99,20 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
 
         //empezamos la carga de datos en paralelo
         getLoaderManager().initLoader(LOADER_ID, null, this);
+
     }
 
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+        //getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
+
+        //borrar elementos de la lista
+        ListView listView = getListView();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(this);
+
     }
 
 
@@ -117,5 +141,51 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mAdapter.swapCursor(null);
+    }
+
+
+
+    //********************************************************************************************//
+    // C O N T E X T U A L   A C T I O N   B A R 
+    //********************************************************************************************//
+    @Override
+    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+        // Here you can do something when items are selected/de-selected,
+        // such as update the title in the CAB
+    }
+
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        // Respond to clicks on the actions in the CAB
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                Toast.makeText(getActivity(),"borrando elementos", Toast.LENGTH_SHORT).show();
+                mode.finish(); // Action picked, so close the CAB
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        // Inflate the menu for the CAB
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.deleteicon, menu);
+        return true;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        // Here you can make any necessary updates to the activity when
+        // the CAB is removed. By default, selected items are deselected/unchecked.
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        // Here you can perform updates to the CAB due to
+        // an invalidate() request
+        return false;
     }
 }

@@ -22,7 +22,7 @@ import dan.android.quirogest.database.TablaSesiones;
 public class SesionDetailFragment extends DetailFragmentBase{
     private static final int    LAYOUT      = R.layout.fragment_sesion_detail;
     private final Uri           QUERY_URI   = QuiroGestProvider.CONTENT_URI_SESIONES;
-    private TextView mDiagnostico, mFecha, mIngresos, mCuantifDolor, mPostrat, mNumSesion;
+    private TextView mDiagnostico, mFecha, mIngresos, mCuantifDolor;
     //private ListView ;
 
     @Override
@@ -51,10 +51,8 @@ public class SesionDetailFragment extends DetailFragmentBase{
         mRootView       = inflater.inflate(LAYOUT, container, false);
         mDiagnostico    = (TextView) mRootView.findViewById(R.id.textViewDiagnostico);
         mFecha          = (TextView) mRootView.findViewById(R.id.textViewFecha);
-        mIngresos = (TextView) mRootView.findViewById(R.id.textViewPrecio);
+        mIngresos       = (TextView) mRootView.findViewById(R.id.textViewPrecio);
         mCuantifDolor   = (TextView) mRootView.findViewById(R.id.textViewCuantificacionDolor);
-        mPostrat        = (TextView) mRootView.findViewById(R.id.textViewPostratamiento);
-        mNumSesion      = (TextView) mRootView.findViewById(R.id.textViewNumSesion);
 
         return mRootView;
     }
@@ -78,9 +76,7 @@ public class SesionDetailFragment extends DetailFragmentBase{
             mFecha.setText(DatabaseHelper.parseSQLiteDate(fecha, new SimpleDateFormat("dd/MM/yyyy")));
             mCuantifDolor.setText(cuantifDolor.toString());
             mDiagnostico.setText(diagnostico);
-            mPostrat.setText(postrat);
             mIngresos.setText(ingresos.toString());
-            mNumSesion.setText(numSesion.toString());
         }
     }
 }

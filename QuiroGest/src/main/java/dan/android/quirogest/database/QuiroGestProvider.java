@@ -21,6 +21,8 @@ public class QuiroGestProvider extends ContentProvider {
     public static final Uri CONTENT_URI_SESIONES        = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaSesiones.TABLA_SESIONES);
     public static final Uri CONTENT_URI_TECNICAS        = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTecnicas.TABLA_TECNICAS);
     public static final Uri CONTENT_URI_TIPOS_TECNICAS  = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
+    public static final Uri CONTENT_URI_ETIQUETAS       = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaEtiquetas.TABLA_ETIQUETAS);
+    public static final Uri CONTENT_URI_TIPO_ETIQUETAS  = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS);
 
 
     //UriMatcher
@@ -34,6 +36,10 @@ public class QuiroGestProvider extends ContentProvider {
     public static final int TECNICAS_ID         = 8;
     public static final int TIPOS_TECNICAS      = 9;
     public static final int TIPOS_TECNICAS_ID   = 10;
+    public static final int ETIQUETAS           = 11;
+    public static final int ETIQUETAS_ID        = 12;
+    public static final int TIPOS_ETIQUETAS     = 13;
+    public static final int TIPOS_ETIQUETAS_ID  = 14;
 
     //inicializamos el UriMatcher
     public static final UriMatcher uriMatcher;
@@ -49,6 +55,10 @@ public class QuiroGestProvider extends ContentProvider {
         uriMatcher.addURI(PROVIDER_NAME, TablaTecnicas.TABLA_TECNICAS + "/#",   TECNICAS_ID);
         uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS,          TIPOS_TECNICAS);
         uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS + "/#",   TIPOS_TECNICAS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, TablaEtiquetas.TABLA_ETIQUETAS,          ETIQUETAS);
+        uriMatcher.addURI(PROVIDER_NAME, TablaEtiquetas.TABLA_ETIQUETAS + "/#",   ETIQUETAS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS,          TIPOS_ETIQUETAS);
+        uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS + "/#",   TIPOS_ETIQUETAS_ID);
 
     }
 
@@ -70,8 +80,6 @@ public class QuiroGestProvider extends ContentProvider {
         String where = selection;
         SQLiteQueryBuilder sqlb = new SQLiteQueryBuilder();
 
-        //if (null!=where)sqlb.appendWhere(selection);
-
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
@@ -91,7 +99,7 @@ public class QuiroGestProvider extends ContentProvider {
                 break;
             case TECNICAS_ID:
                 sqlb.appendWhere(TablaTecnicas._ID + "=" + uri.getLastPathSegment());
-            case TECNICAS:// LEFT JOIN
+            case TECNICAS:// LEFT JOIN      //TODO: usar group_concat para sacar también las etiquetas. Ej:  SELECT t.*, tt.*, (SELECT GROUP_CONCAT(e.tipoEtiqueta_etiquetas) FROM etiquetas e WHERE t._id=e.idTecnica_etiquetas) AS combinedsolutions FROM tecnicas t left join tiposDeTecnicas tt on tt.idTipoTecnica_tiposDeTecnicas=t.idTipoTecnica_tecnicas
                 sqlb.setTables(TablaTecnicas.TABLA_TECNICAS +
                         " LEFT JOIN " +
                         TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS +
@@ -99,12 +107,28 @@ public class QuiroGestProvider extends ContentProvider {
                         TablaTecnicas.COL_ID_TIPO_TECNICA + "=" + TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA +
                         ")");
                 break;
-            case TIPOS_TECNICAS_ID:
+            case TIPOS_ETIQUETAS_ID:
+                sqlb.appendWhere(TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + uri.getLastPathSegment());
+            case TIPOS_ETIQUETAS:
+                sqlb.setTables(TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS);
+                break;
+            /*case TIPOS_TECNICAS_ID:
                 sqlb.appendWhere(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + "=" + uri.getLastPathSegment());
-
             case TIPOS_TECNICAS:
                 sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
                 break;
+            case ETIQUETAS_ID:
+                sqlb.appendWhere(TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + uri.getLastPathSegment());
+            case ETIQUETAS:// LEFT JOIN
+                sqlb.setTables(TablaEtiquetas.TABLA_ETIQUETAS +
+                        " LEFT JOIN " +
+                        TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS +
+                        " ON (" +
+                        TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA +
+                        ")");
+                break;*/
+            default:
+                throw new IllegalStateException ("Query no válida!!") ;
         }
         c= sqlb.query(dbHelper.getReadableDatabase(), projection, where, selectionArgs, null, null, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);
@@ -141,11 +165,13 @@ public class QuiroGestProvider extends ContentProvider {
             case TECNICAS:
                 tabla = TablaTecnicas.TABLA_TECNICAS;
                 break;
-            case TIPOS_TECNICAS_ID:
+          /*case TIPOS_TECNICAS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case TIPOS_TECNICAS:
                 tabla = TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS;
-                break;
+                break;*/
+            default:
+                throw new IllegalStateException ("Delete no válido!!") ;
         }
         rowDeleted = dbHelper.getWritableDatabase().delete(tabla, where, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
@@ -182,11 +208,13 @@ public class QuiroGestProvider extends ContentProvider {
             case TECNICAS:
                 tabla = TablaTecnicas.TABLA_TECNICAS;
                 break;
-            case TIPOS_TECNICAS_ID:
+            /*case TIPOS_TECNICAS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case TIPOS_TECNICAS:
                 tabla = TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS;
-                break;
+                break;*/
+            default:
+                throw new IllegalStateException ("Update no válido!!") ;
         }
         rowUpdated = dbHelper.getWritableDatabase().update(tabla, values, where, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
@@ -223,6 +251,16 @@ public class QuiroGestProvider extends ContentProvider {
                 tabla = TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS;
                 contentUri  = CONTENT_URI_TIPOS_TECNICAS;
                 break;
+            case ETIQUETAS:
+                tabla = TablaEtiquetas.TABLA_ETIQUETAS;
+                contentUri  = CONTENT_URI_ETIQUETAS;
+                break;
+            case TIPOS_ETIQUETAS:
+                tabla = TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS;
+                contentUri  = CONTENT_URI_TIPO_ETIQUETAS;
+                break;
+            default:
+                throw new IllegalStateException ("Insert no válido!!") ;
         }
 
         id = dbHelper.getWritableDatabase().insert(tabla, null, values);
@@ -264,6 +302,8 @@ public class QuiroGestProvider extends ContentProvider {
             case TECNICAS:
                 type = "vnd.android.cursor.dir/vnd.quirogest.tecnicas";
                 break;
+            default:
+                throw new IllegalStateException ("Tipo no válido!!") ;
         }
 
         return type;

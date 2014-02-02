@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
+import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaSesiones;
 
@@ -15,10 +16,10 @@ public class SesionesListFragment extends ListFragmentBase {
     private final static String ARG_MOTIVO_ID   = "motivo_id";
 
     private final Uri QUERY_URI                 = QuiroGestProvider.CONTENT_URI_SESIONES;
-    private final String[] QUERY_PROJECTION     = {BaseColumns._ID, TablaSesiones.COL_DIAGNOSTICO, TablaSesiones.COL_FECHA};
-    private final String[] LAYOUT_DATA_COLUMNS  = {TablaSesiones.COL_FECHA, TablaSesiones.COL_DIAGNOSTICO};
-    private final int[] LAYOUT_VIEW_IDS         = {android.R.id.text1, android.R.id.text2};
-    private final int LAYOUT                    = android.R.layout.simple_list_item_activated_2;
+    private final String[] QUERY_PROJECTION     = {BaseColumns._ID, TablaSesiones.COL_NUM_SESION, TablaSesiones.COL_FECHA};
+    private final String[] LAYOUT_DATA_COLUMNS  = {TablaSesiones.COL_NUM_SESION, TablaSesiones.COL_FECHA};
+    private final int[] LAYOUT_VIEW_IDS         = {R.id.textViewSesion, R.id.textViewFecha};
+    private final int LAYOUT                    = R.layout.listitem_sesion;
 
     private Long mMotivoId = null;
 

@@ -50,39 +50,11 @@
         android:text="prueba(debuj)" />
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Etiqueta"
-        android:text="@string/postratamiento" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/EditTextOff"
-        android:id="@+id/textViewPostratamiento"
-        android:text="prueba(debuj)" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Etiqueta"
-        android:text="@string/numeroSesion" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/EditTextOff"
-        android:id="@+id/textViewNumSesion"
-        android:text="prueba(debuj)" />
-
-    <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/Etiqueta"
-        android:text="@string/precio" />
+        android:text="@string/ingreso" />
 
     <TextView
         android:layout_width="wrap_content"
