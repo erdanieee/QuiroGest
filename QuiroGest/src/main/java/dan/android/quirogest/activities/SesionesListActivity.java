@@ -1,12 +1,14 @@
 package dan.android.quirogest.activities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
@@ -14,6 +16,7 @@ import dan.android.quirogest.R;
 import dan.android.quirogest.detailFragments.SesionDetailFragment;
 import dan.android.quirogest.listFragments.SesionesListFragment;
 import dan.android.quirogest.listFragments.TecnicasListFragment;
+import dan.android.quirogest.tecnicas.Tecnica;
 
 
 public class SesionesListActivity extends Activity implements ListFragmentBase.CallbackItemClicked {
@@ -79,13 +82,8 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.ejemplo, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+
+
 
 
 
@@ -93,14 +91,43 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.action_search:
-                Toast.makeText(this, "añadiendo...", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.action_compose:
-                Toast.makeText(this, "eliminando...", Toast.LENGTH_SHORT).show();
-                return true;
+            case R.id.action_edit:
+                startActionMode(mEditActionBarMode);        //crea los nuevos iconos de añadir, borrar y guardar
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    private ActionMode.Callback mEditActionBarMode = new ActionMode.Callback() {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_add:       //TODO: añadir sesión y también añadir sesión a partir de otra existente
+                    return true;
+                case R.id.action_delete:
+                    return true;
+                case R.id.action_save:
+                    return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+
+        }
+    };
 }

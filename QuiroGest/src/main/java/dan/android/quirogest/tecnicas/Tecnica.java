@@ -1,17 +1,24 @@
 package dan.android.quirogest.tecnicas;
 
-import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.os.Build;
+import android.net.Uri;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -20,8 +27,8 @@ import java.util.HashMap;
 
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
+import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.database.TablaTiposDeEtiquetas;
-import dan.android.quirogest.listFragments.TecnicasListFragment;
 
 import static dan.android.quirogest.listFragments.TecnicasListFragment.itemTecnicable;
 
@@ -29,9 +36,10 @@ import static dan.android.quirogest.listFragments.TecnicasListFragment.itemTecni
  * Created by dan on 17/11/13.
  */
 public class Tecnica extends RelativeLayout{
-    private TextView mTitle, mObserv;
+    private TextView mTitle;
+    private TextView mObserv;           //TODO: crear nueva clase que incluya el onClickListener, setWritable y dialogo de editar
     private TableLayout mTable;
-    private LinearLayout mEtiquetasContainer;
+    private EtiquetasView mEtiquetasContainer;   //TODO: crear clase que gestione añadir/borrar etiquetas con el listener mChangeValueListener
     private ArrayList<TextView> mLabelsCols;
     private ArrayList<TextView> mLabelsRows;
     private ArrayList<itemTecnicable> mViews;
@@ -40,10 +48,14 @@ public class Tecnica extends RelativeLayout{
     private int mCols, mRows;
     private Class type;
     private String etiquetas;
-    private static HashMap<String, TipoEtiqueta> mapIdTipoEtiqueta = null;
+    private ChangeValueListener mChangeValueListener;
+    private ContentValues cv;
+    private StringBuffer sb;
+    private long tecnicaID;
+    //private Uri URI = ContentUris.withAppendedId(QuiroGestProvider.CONTENT_URI_TECNICAS, tecnicaID);
 
 
-    public Tecnica(Context context, int cols, int rows, Class<itemTecnicable> T) throws IllegalAccessException, InstantiationException {
+    public Tecnica(Context context, Class<itemTecnicable> T, int cols, int rows) throws IllegalAccessException, InstantiationException {
         super(context);
 
         mContext    = context;
@@ -55,12 +67,71 @@ public class Tecnica extends RelativeLayout{
         mViews      = new ArrayList<itemTecnicable>(cols * rows);
         type        = T;
 
+        //save changes to database
+        mChangeValueListener = new ChangeValueListener() {
+            @Override
+            public void valueChanged() {    //TODO: unificar la función para CheckBox/EditText y también observaciones y etiquetas. Para ello hacer que esta función tenga parámetro cv
+                cv = new ContentValues();
+                sb = new StringBuffer();
+
+                for (itemTecnicable i : mViews){
+                    sb.append(i.getValue());
+                    sb.append(",");
+                }
+
+                sb.deleteCharAt(sb.length()-1);
+
+                cv.put(TablaTecnicas.COL_VALOR, sb.toString());
+                Log.d("Tecnica.class", "updating tecnicaId: " + tecnicaID + " value: " + cv.toString());
+
+                mContext.getContentResolver().update(ContentUris.withAppendedId(QuiroGestProvider.CONTENT_URI_TECNICAS, tecnicaID), cv, null, null);
+            }
+        };
+
         //create common views
         mInflater.inflate(R.layout.tecnica_viewtype_grid, this);
         mTitle  = (TextView) findViewById(R.id.tecnicaDescripcion);
         mObserv = (TextView) findViewById(R.id.tecnicaObservaciones);
         mTable  = (TableLayout) findViewById(R.id.tecnicaTable);
-        mEtiquetasContainer = (LinearLayout) findViewById(R.id.etiquetasContainer);
+        mEtiquetasContainer = (EtiquetasView) findViewById(R.id.etiquetasContainer);
+        this.setFocusable(false);
+
+        //catch changes in observations
+        mObserv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText t;
+                AlertDialog.Builder d;
+
+                t = new EditText(mContext);
+                t.setInputType(InputType.TYPE_CLASS_TEXT);
+
+                d = new AlertDialog.Builder(mContext);
+                d.setTitle("Introduce el nuevo valor");
+                d.setView(t);
+
+                d.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mObserv.setText(t.getText().toString());
+
+                        cv = new ContentValues();
+
+                        cv.put(TablaTecnicas.COL_OBSERVACIONES, mObserv.getText().toString());
+                        Log.d("Tecnica.class", "updating tecnicaId: " + tecnicaID + " value: " + cv.toString());
+
+                        mContext.getContentResolver().update(ContentUris.withAppendedId(QuiroGestProvider.CONTENT_URI_TECNICAS, tecnicaID), cv, null, null);
+                    }
+                });
+                d.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                d.show();
+            }
+        });
 
         //create columns labels
         TextView cell;
@@ -93,7 +164,7 @@ public class Tecnica extends RelativeLayout{
 
                 try {
                     v = (itemTecnicable) ctt.newInstance(context);
-
+                    v.setChangeValueListener(mChangeValueListener);
 
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -110,6 +181,18 @@ public class Tecnica extends RelativeLayout{
             mTable.addView(tr);
         }
     }
+
+
+    public void setWritable(boolean b){
+        for (itemTecnicable i : mViews){
+            i.setWritable(b);
+        }
+
+        mObserv.setEnabled(b);
+        mObserv.setFocusable(b);
+        mObserv.setFocusableInTouchMode(b);
+    }
+
 
 
     public void setValues(String values) {
@@ -161,6 +244,9 @@ public class Tecnica extends RelativeLayout{
     }
 
 
+    public void setId(long id) { tecnicaID = id;}
+
+
     public void setmObserv(String o) {
         updateTextView(mObserv, o);
     }
@@ -176,57 +262,12 @@ public class Tecnica extends RelativeLayout{
         }
     }
 
-
     public void setEtiquetas(String etiquetas) {
-        if (null != etiquetas && !etiquetas.isEmpty()){
-            for (String s : etiquetas.split(",")){
-                TextView t;
-                TipoEtiqueta tt;
-
-                tt  = getTipoEtiqueta(s);
-                t   = new TextView(mContext);
-
-                t.setText(tt.descript);
-                t.setBackgroundColor(Color.parseColor(tt.color));
-                t.setTextColor(Color.BLACK);
-                t.setMinWidth(40);
-                t.setGravity(1);
-
-                mEtiquetasContainer.addView(t);
-            }
-        }
+        mEtiquetasContainer.loadEtiquetas(etiquetas);
     }
 
 
-    private TipoEtiqueta getTipoEtiqueta(String idEtiqueta){
-        if (mapIdTipoEtiqueta == null){
-            Cursor c;
-            String id, color, descript;
-
-            mapIdTipoEtiqueta = new HashMap<String, TipoEtiqueta>();
-            c = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_TIPO_ETIQUETAS, null, null, null, null);
-
-            while(c.moveToNext()){
-                id          = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA));
-                color       = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_COLOR));
-                descript    = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_DESCRIPCION));
-
-                mapIdTipoEtiqueta.put(id, new TipoEtiqueta(id, color, descript));
-            }
-            c.close();
-        }
-        return mapIdTipoEtiqueta.get(idEtiqueta);
+    public interface ChangeValueListener{
+        public void valueChanged();
     }
-
-
-    class TipoEtiqueta{
-        String id, color, descript;
-
-        public TipoEtiqueta(String id, String color, String descript) {
-            this.id         = id;
-            this.color      = color;
-            this.descript   = descript;
-        }
-    }
-
 }

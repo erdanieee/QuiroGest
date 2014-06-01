@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/NormalText"> <!-- TODO: sustituir por un merge cuando esté acabado-->
+    android:padding="@dimen/NormalText"
+    android:background="@drawable/custom_background"> <!-- TODO: sustituir por un merge cuando esté acabado-->
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -32,9 +33,10 @@
         android:text="@string/test"
         android:id="@+id/tecnicaObservaciones"
         android:layout_below="@+id/tecnicaDescripcion"
+        android:focusable="true"
         android:layout_alignParentLeft="true" />
 
-    <LinearLayout
+    <dan.android.quirogest.tecnicas.EtiquetasView
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
@@ -42,6 +44,6 @@
         android:layout_alignParentRight="true"
         android:id="@+id/etiquetasContainer"
         android:focusableInTouchMode="false"
-        android:divider="@android:color/holo_red_dark"
+        android:divider="@android:color/holo_blue_dark"
         android:dividerPadding="@dimen/NormalText" />
 </RelativeLayout>

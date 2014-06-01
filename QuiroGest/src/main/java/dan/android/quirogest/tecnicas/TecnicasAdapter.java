@@ -2,40 +2,85 @@ package dan.android.quirogest.tecnicas;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
+import java.util.HashMap;
+
+import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
 import dan.android.quirogest.listFragments.TecnicasListFragment;
+
+import static dan.android.quirogest.listFragments.TecnicasListFragment.itemTecnicable;
 
 /**
  * Created by dan on 16/11/13.
  */
 public class TecnicasAdapter extends CursorAdapter{
+    private static final String TAG = "TecnicasAdapter";
+
     public static final int VIEWTYPE_CHECKBOX  = 1;
     public static final int VIEWTYPE_NUMBER    = 2;
     public static final int VIEWTYPE_TEXT      = 3;
     public static final int VIEWTYPE_SECTION   = 4;     //TODO: ver opción automática http://kmansoft.com/2010/11/16/adding-group-headers-to-listview/
     public static final int VIEWTYPE_COUNT     = 4;    //número de VIEWTYPEs
 
+    private Context mContext;
+    private static HashMap<Integer, Integer> mapTecnicasViewType = new HashMap<Integer, Integer>();
+    public static boolean readWriteState = false;
+
 
     public TecnicasAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
+
+        mContext = context;
+    }
+
+
+
+
+    private int getTypeId(int nRows, int nCols, int viewType){
+        return nRows + (nCols*100) + (viewType*10000);
     }
 
 
     @Override
     public int getItemViewType(int position) {
+        int viewType, nCols, nRows, num;
         Cursor cursor = (Cursor) getItem(position);
-        return cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_VIEWTYPE));
+        viewType    = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_VIEWTYPE));
+        nRows       = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_ROWS));
+        nCols       = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_COLS));
+        num         = mapTecnicasViewType.get(getTypeId(nRows,nCols,viewType));
+
+        Log.d(TAG, "Viewtype: " + num);
+
+        return num;
     }
 
 
     @Override
     public int getViewTypeCount() {
-        return VIEWTYPE_COUNT;
+        Cursor c;
+        int viewType, nCols, nRows, num;
+
+        num                 = 0;
+        c                   = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_NUM_VIEWS_TECNICAS,null,null,null,null);
+
+        while (c.moveToNext()){
+            viewType    = c.getInt(c.getColumnIndex(TablaTiposDeTecnicas.COL_VIEWTYPE));
+            nRows       = c.getInt(c.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_ROWS));
+            nCols       = c.getInt(c.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_COLS));
+
+            mapTecnicasViewType.put(getTypeId(nRows,nCols,viewType), num++);
+        }
+        c.close();
+        Log.d(TAG, "Número de vistas: " + num);
+
+        return num;
     }
 
 
@@ -48,9 +93,11 @@ public class TecnicasAdapter extends CursorAdapter{
 
         view        = null;
         //vh          = new ViewHolder();
-        viewType    = getItemViewType(cursor.getPosition());
-        numCols     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_COLS));
+        viewType    = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_VIEWTYPE));
         numRows     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_ROWS));
+        numCols     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_COLS));
+
+        Log.d(TAG, "Nueva tecnica tipo " + viewType + " " + numCols + "x" + numRows);
 
         switch(viewType) {
             case VIEWTYPE_CHECKBOX:
@@ -67,7 +114,7 @@ public class TecnicasAdapter extends CursorAdapter{
 
         try {
             //vh.mView = new Tecnica(context, numCols, numRows, type);
-            view = new Tecnica(context, numCols, numRows, type);
+            view = new Tecnica(context, type, numCols, numRows);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -83,8 +130,11 @@ public class TecnicasAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         int min, max, idPadre;
+        long id;
         String colLabel, rowLabel, observ, title, values, etiquetas;
         //ViewHolder mHolder = (ViewHolder) view.getTag();
+
+        Log.d(TAG, "Bind tecnica");
 
         idPadre     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_ID_PARENT));
         min         = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_MIN));
@@ -95,6 +145,7 @@ public class TecnicasAdapter extends CursorAdapter{
         rowLabel    = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_LABELS_ROWS));
         observ      = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES));
         etiquetas   = cursor.getString(cursor.getColumnIndex(TecnicasListFragment.PROY_COMB));
+        id          = cursor.getLong(cursor.getColumnIndex(TablaTecnicas._ID));
 
         Tecnica t = (Tecnica) view;
 
@@ -107,14 +158,11 @@ public class TecnicasAdapter extends CursorAdapter{
         t.setRowsLabels(rowLabel);
         t.setmObserv(observ);
         t.setEtiquetas(etiquetas);
+        t.setWritable(readWriteState);
+        t.setId(id);
     }
-
 
     public static class ViewHolder{
         Tecnica mView;
     }
-
-
-
-
 }

@@ -15,14 +15,23 @@ import android.util.Log;
  */
 public class QuiroGestProvider extends ContentProvider {
     private static final String TAG = "QuiroGestProvider";
-    public static final String PROVIDER_NAME            = "dan.android.quirogest.provider";
-    public static final Uri CONTENT_URI_CONTACTOS       = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaClientes.TABLA_PACIENTES);
-    public static final Uri CONTENT_URI_MOTIVOS         = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaMotivos.TABLA_MOTIVOS);
-    public static final Uri CONTENT_URI_SESIONES        = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaSesiones.TABLA_SESIONES);
-    public static final Uri CONTENT_URI_TECNICAS        = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTecnicas.TABLA_TECNICAS);
-    public static final Uri CONTENT_URI_TIPOS_TECNICAS  = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
-    public static final Uri CONTENT_URI_ETIQUETAS       = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaEtiquetas.TABLA_ETIQUETAS);
-    public static final Uri CONTENT_URI_TIPO_ETIQUETAS  = Uri.parse("content://" + PROVIDER_NAME + "/" + TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS);
+    public static final String PROVIDER_NAME                = "dan.android.quirogest.provider";
+    public static final String URI_TIPOS_VISTAS_TECNICAS    = "tiposDeVistasParaLasTenicas";
+    public static final String URI_CONTACTOS                = "tablaContactos";
+    public static final String URI_MOTIVOS                  = "tablaMotivos";
+    public static final String URI_SESIONES                 = "tablaSesiones";
+    public static final String URI_TECNICAS                 = "tablaTecnicas";
+    public static final String URI_TIPOS_TECNICAS           = "tablaTiposDeTecnicas";
+    public static final String URI_ETIQUETAS                = "tablaEtiquetas";
+    public static final String URI_TIPOS_ETIQUETAS          = "tablaTiposDeEtiquetas";
+    public static final Uri CONTENT_URI_CONTACTOS           = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_CONTACTOS);
+    public static final Uri CONTENT_URI_MOTIVOS             = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_MOTIVOS);
+    public static final Uri CONTENT_URI_SESIONES            = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_SESIONES);
+    public static final Uri CONTENT_URI_TECNICAS            = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_TECNICAS);
+    public static final Uri CONTENT_URI_TIPOS_TECNICAS      = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_TIPOS_TECNICAS);
+    public static final Uri CONTENT_URI_ETIQUETAS           = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_ETIQUETAS);
+    public static final Uri CONTENT_URI_TIPO_ETIQUETAS      = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_TIPOS_ETIQUETAS);
+    public static final Uri CONTENT_URI_NUM_VIEWS_TECNICAS  = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_TIPOS_VISTAS_TECNICAS);
 
 
     //UriMatcher
@@ -40,26 +49,27 @@ public class QuiroGestProvider extends ContentProvider {
     public static final int ETIQUETAS_ID        = 12;
     public static final int TIPOS_ETIQUETAS     = 13;
     public static final int TIPOS_ETIQUETAS_ID  = 14;
+    public static final int NUM_VIEWS_TECNICAS  = 15;
 
     //inicializamos el UriMatcher
     public static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_PACIENTES,          CONTACTOS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaClientes.TABLA_PACIENTES + "/#",   CONTACTOS_ID);
-        uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS,            MOTIVOS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaMotivos.TABLA_MOTIVOS + "/#",     MOTIVOS_ID);
-        uriMatcher.addURI(PROVIDER_NAME, TablaSesiones.TABLA_SESIONES,          SESIONES);
-        uriMatcher.addURI(PROVIDER_NAME, TablaSesiones.TABLA_SESIONES + "/#",   SESIONES_ID);
-        uriMatcher.addURI(PROVIDER_NAME, TablaTecnicas.TABLA_TECNICAS,          TECNICAS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaTecnicas.TABLA_TECNICAS + "/#",   TECNICAS_ID);
-        uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS,          TIPOS_TECNICAS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS + "/#",   TIPOS_TECNICAS_ID);
-        uriMatcher.addURI(PROVIDER_NAME, TablaEtiquetas.TABLA_ETIQUETAS,          ETIQUETAS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaEtiquetas.TABLA_ETIQUETAS + "/#",   ETIQUETAS_ID);
-        uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS,          TIPOS_ETIQUETAS);
-        uriMatcher.addURI(PROVIDER_NAME, TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS + "/#",   TIPOS_ETIQUETAS_ID);
-
+        uriMatcher.addURI(PROVIDER_NAME, URI_CONTACTOS,                 CONTACTOS);
+        uriMatcher.addURI(PROVIDER_NAME, URI_CONTACTOS + "/#",          CONTACTOS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, URI_MOTIVOS,                   MOTIVOS);
+        uriMatcher.addURI(PROVIDER_NAME, URI_MOTIVOS + "/#",            MOTIVOS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, URI_SESIONES,                  SESIONES);
+        uriMatcher.addURI(PROVIDER_NAME, URI_SESIONES + "/#",           SESIONES_ID);
+        uriMatcher.addURI(PROVIDER_NAME, URI_TECNICAS,                  TECNICAS);
+        uriMatcher.addURI(PROVIDER_NAME, URI_TECNICAS + "/#",           TECNICAS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, URI_TIPOS_TECNICAS,            TIPOS_TECNICAS);
+        uriMatcher.addURI(PROVIDER_NAME, URI_TIPOS_TECNICAS + "/#",     TIPOS_TECNICAS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, URI_ETIQUETAS,                 ETIQUETAS);
+        uriMatcher.addURI(PROVIDER_NAME, URI_ETIQUETAS + "/#",          ETIQUETAS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, URI_TIPOS_ETIQUETAS,           TIPOS_ETIQUETAS);
+        uriMatcher.addURI(PROVIDER_NAME, URI_TIPOS_ETIQUETAS + "/#",    TIPOS_ETIQUETAS_ID);
+        uriMatcher.addURI(PROVIDER_NAME, URI_TIPOS_VISTAS_TECNICAS,     NUM_VIEWS_TECNICAS);
     }
 
     private DatabaseHelper dbHelper;
@@ -76,8 +86,6 @@ public class QuiroGestProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Log.d(TAG, "Query " + uri.toString());
         Cursor c;
-        String tabla=null;
-        String where = selection;
         SQLiteQueryBuilder sqlb = new SQLiteQueryBuilder();
 
         //si es una consulta a un ID concreto construimos el WHERE
@@ -127,10 +135,19 @@ public class QuiroGestProvider extends ContentProvider {
                         TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA +
                         ")");
                 break;*/
+            case NUM_VIEWS_TECNICAS:
+                sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
+                projection      = new String[] {TablaTiposDeTecnicas.COL_VIEWTYPE, TablaTiposDeTecnicas.COL_NUM_ROWS, TablaTiposDeTecnicas.COL_NUM_COLS};
+                selection       = null;
+                selectionArgs   = null;
+                sqlb.setDistinct(true);
+
+                break;
+
             default:
                 throw new IllegalStateException ("Query no válida!!") ;
         }
-        c= sqlb.query(dbHelper.getReadableDatabase(), projection, where, selectionArgs, null, null, sortOrder);
+        c= sqlb.query(dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
     }

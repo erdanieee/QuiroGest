@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,7 @@ import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaEtiquetas;
 import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
+import dan.android.quirogest.tecnicas.Tecnica;
 import dan.android.quirogest.tecnicas.TecnicasAdapter;
 import android.app.ActionBar;
 import android.widget.Toast;
@@ -57,7 +59,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
                     TablaEtiquetas.TABLA_ETIQUETAS +
                     " WHERE " +
                     TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + TablaEtiquetas.COL_ID_TECNICA +
-                    ") AS " + PROY_COMB      //TODO: usar group_concat para sacar también las etiquetas. Ej:  SELECT t.*, tt.*, (SELECT GROUP_CONCAT(e.tipoEtiqueta_etiquetas) FROM etiquetas e WHERE t._id=e.idTecnica_etiquetas) AS combinedsolutions FROM tecnicas t left join tiposDeTecnicas tt on tt.idTipoTecnica_tiposDeTecnicas=t.idTipoTecnica_tecnicas
+                    ") AS " + PROY_COMB
     };
 
     private TecnicasAdapter mAdapter    = null;
@@ -65,7 +67,10 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
 
 
     public interface itemTecnicable{
+        public void setChangeValueListener(Tecnica.ChangeValueListener l);
         public void setValue(int value);
+        public String getValue();
+        public void setWritable(boolean b);
     }
 
 
@@ -95,6 +100,9 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
         mAdapter = new TecnicasAdapter(getActivity(), null, false);
         setListAdapter(mAdapter);
 
+        //necesario para que aparezca el menú
+        setHasOptionsMenu(true);
+
         mSesionId = getArguments().getLong(SESION_ID,-1);
 
         //empezamos la carga de datos en paralelo
@@ -112,7 +120,6 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
         ListView listView = getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(this);
-
     }
 
 
@@ -145,13 +152,25 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
 
 
 
+
+    //TODO: eliminar menu contextual longclick y hacerlo mediante checkboxses que aparezcan cuando se da a editar
     //********************************************************************************************//
     // C O N T E X T U A L   A C T I O N   B A R 
     //********************************************************************************************//
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-        // Here you can do something when items are selected/de-selected,
-        // such as update the title in the CAB
+        final int checkedCount = getListView().getCheckedItemCount();
+        switch (checkedCount) {
+            case 0:
+                mode.setSubtitle(null);
+                break;
+            case 1:
+                mode.setSubtitle("One item selected");
+                break;
+            default:
+                mode.setSubtitle("" + checkedCount + " items selected");
+                break;
+        }
     }
 
 
@@ -160,6 +179,13 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
         // Respond to clicks on the actions in the CAB
         switch (item.getItemId()) {
             case R.id.action_delete:
+                Uri u;
+
+                for(long id : getListView().getCheckedItemIds()){
+                    u = Uri.withAppendedPath(URI, String.valueOf(id));
+                    getActivity().getContentResolver().delete(u,null,null);
+                    mAdapter.notifyDataSetChanged();
+                }
                 Toast.makeText(getActivity(),"borrando elementos", Toast.LENGTH_SHORT).show();
                 mode.finish(); // Action picked, so close the CAB
                 return true;
@@ -173,6 +199,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
         // Inflate the menu for the CAB
         MenuInflater inflater = mode.getMenuInflater();
         inflater.inflate(R.menu.deleteicon, menu);
+        mode.setTitle("Select Items");
         return true;
     }
 
@@ -188,4 +215,64 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
         // an invalidate() request
         return false;
     }
+
+
+
+
+
+
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    //Primero se llama a la activity, y llega aquí solo si la activity no consume el evento (return false)
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                mAdapter.readWriteState = !mAdapter.readWriteState;
+                mAdapter.notifyDataSetInvalidated();
+                Log.d("TecnicasListFragent", "READ/WRITE " + String.valueOf(mAdapter.readWriteState));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    private ActionMode.Callback mEditActionBarMode = new ActionMode.Callback() {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_add:
+                    return true;
+                case R.id.action_delete:
+                    return true;
+                case R.id.action_save:
+                    return true;
+            }
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+
+        }
+    };
 }
