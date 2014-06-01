@@ -130,12 +130,12 @@ public class QuiroGestProvider extends ContentProvider {
                         TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA +
                         ")");
                 break;
-            /*case TIPOS_TECNICAS_ID:
+            case TIPOS_TECNICAS_ID:
                 sqlb.appendWhere(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + "=" + uri.getLastPathSegment());
             case TIPOS_TECNICAS:
                 sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
                 break;
-            */
+
             case NUM_VIEWS_TECNICAS:
                 sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
                 projection      = new String[] {TablaTiposDeTecnicas.COL_VIEWTYPE,

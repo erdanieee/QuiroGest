@@ -87,6 +87,11 @@ public class TypeNum extends TextView implements TecnicasListFragment.itemTecnic
         setFocusableInTouchMode(b);
     }
 
+    @Override
+    public void setDefaultValue() {
+        setValue(0);
+    }
+
 
     /*@Override
     public boolean onTouchEvent(MotionEvent event) {

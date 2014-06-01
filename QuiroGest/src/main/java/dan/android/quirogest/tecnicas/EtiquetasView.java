@@ -23,7 +23,6 @@ public class EtiquetasView extends LinearLayout {
     String SELECTION = TablaEtiquetas.COL_ID_TECNICA + "=?";
     private ArrayList<Etiqueta> listaEtiquetas;
     private Context mContext;
-    private long idTecnica;
     private EtiquetaCallback mCallback;
 
 
@@ -62,7 +61,6 @@ public class EtiquetasView extends LinearLayout {
         removeAllViews();
 
         listaEtiquetas          = new ArrayList<Etiqueta>();
-        this.idTecnica          = idTecnica;
         c                       = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_ETIQUETAS, proyection, SELECTION, selectionArgs, null, null);
 
         while(c.moveToNext()){

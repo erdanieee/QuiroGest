@@ -46,6 +46,11 @@ public class TypeCb extends CheckBox implements TecnicasListFragment.itemTecnica
         }
     }
 
+    @Override
+    public void setDefaultValue() {
+        setValue(0);
+    }
+
 
     public void onValueChanged(){
         if (mChangeValueListener != null){

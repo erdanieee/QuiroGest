@@ -145,8 +145,14 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         cv.put(TablaSesiones.COL_POSTRATAMIENTO, "nada");
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_SESIONES, cv);
 
+
+        cv = new ContentValues();
+        cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 11);
+        cv.put(TablaTiposDeTecnicas.COL_TITLE, "estiramientos");
+        getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
         cv = new ContentValues();
         cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 1);
+        cv.put(TablaTiposDeTecnicas.COL_ID_PARENT, 11);
         cv.put(TablaTiposDeTecnicas.COL_TITLE, "estiramiento de cuello");
         cv.put(TablaTiposDeTecnicas.COL_LABELS_COLS, "");
         cv.put(TablaTiposDeTecnicas.COL_LABELS_ROWS, "");
@@ -158,6 +164,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, cv);
         cv = new ContentValues();
         cv.put(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA, 2);
+        cv.put(TablaTiposDeTecnicas.COL_ID_PARENT, 11);
         cv.put(TablaTiposDeTecnicas.COL_TITLE, "torsión de cuello");
         cv.put(TablaTiposDeTecnicas.COL_LABELS_COLS, "");
         cv.put(TablaTiposDeTecnicas.COL_LABELS_ROWS, "");

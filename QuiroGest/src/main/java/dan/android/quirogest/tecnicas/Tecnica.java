@@ -198,10 +198,17 @@ public class Tecnica extends RelativeLayout{
 
 
     public void setValues(String values) {
-        String[] v = values.split(",");
+        if (values!=null) {
+            String[] v = values.split(",");
 
-        for (int i=0; i< mViews.size();i++){
-            ((itemTecnicable) mViews.get(i)).setValue((Integer.valueOf(v[i])));
+            for (int i = 0; i < mViews.size(); i++) {
+                ((itemTecnicable) mViews.get(i)).setValue((Integer.valueOf(v[i])));
+            }
+
+        } else {
+            for (int i = 0; i < mViews.size(); i++) {
+                ((itemTecnicable) mViews.get(i)).setDefaultValue();
+            }
         }
     }
 
