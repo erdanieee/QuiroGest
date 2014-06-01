@@ -39,7 +39,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
     private static final Uri    URI          = QuiroGestProvider.CONTENT_URI_TECNICAS;
     private static final String SELECTION    = TablaTecnicas.COL_ID_SESION + "=?";
     private static final String ORDER        = "DATE(" + TablaTecnicas.COL_FECHA + ") DESC";
-    private static final String[] PROYECTION = {
+    private static final String[] PROYECTION = {            //TODO: eliminar group_concat cuando la clase etiquetas se encargue de coger ella las etiquetas necesarias ;)
             TablaTecnicas._ID,
             TablaTecnicas.COL_ID_TIPO_TECNICA,
             TablaTecnicas.COL_OBSERVACIONES,

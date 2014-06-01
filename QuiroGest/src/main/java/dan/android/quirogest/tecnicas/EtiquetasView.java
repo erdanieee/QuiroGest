@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -63,20 +65,35 @@ public class EtiquetasView extends LinearLayout {
 
 
 
-    class Etiqueta extends TextView{
-        String id, color, descript;
+    class Etiqueta extends LinearLayout{
+        private String id;
+        private TextView texto;
+        private Button deleteButton;
+        boolean editable = false;
 
         public Etiqueta(Context context, String id, String color, String descript) {
             super(context);
-            this.id         = id;
-            this.color      = color;
-            this.descript   = descript;
 
-            setText(descript);
-            setBackgroundColor(Color.parseColor(color));
-            setTextColor(Color.BLACK);
-            setMinWidth(40);
-            setGravity(1);
+            setOrientation(HORIZONTAL);
+
+            this.id         = id;
+            texto           = new TextView(context);
+            deleteButton    = new Button(context);
+
+            texto.setText(descript);
+            texto.setTextColor(Color.BLACK);
+            texto.setBackgroundColor(Color.parseColor(color));
+            texto.setMinWidth(40);
+            //texto.setGravity(1);
+            deleteButton.setBackgroundResource(android.R.drawable.ic_menu_delete);
+            deleteButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //TODO: callback a Tecnica.java para gestionar el borrado, o hacer que la clase etiqueta sea consciente de la técnica a la que pertenece y hacer ella misma el borrado.
+                }
+            });
+
+
         }
     }
 }
