@@ -3,6 +3,7 @@ package dan.android.quirogest.tecnicas;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
@@ -10,68 +11,105 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import dan.android.quirogest.database.QuiroGestProvider;
+import dan.android.quirogest.database.TablaEtiquetas;
 import dan.android.quirogest.database.TablaTiposDeEtiquetas;
 
 /**
  * Created by dan on 25/05/14.
  */
 public class EtiquetasView extends LinearLayout {
+    String SELECTION = TablaEtiquetas.COL_ID_TECNICA + "=?";
     private ArrayList<Etiqueta> listaEtiquetas;
-    private static HashMap<String, Etiqueta> mapIdEtiquetaDetails;
     private Context mContext;
+    private long idTecnica;
+    private EtiquetaCallback mCallback;
 
 
     public EtiquetasView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-    }
 
+        mCallback = new EtiquetaCallback() {
+            @Override
+            public void deleteEtiqueta(int etiquetaId) {
+                mContext.getContentResolver().delete(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_ETIQUETAS, String.valueOf(etiquetaId)),null,null);
 
-    private Etiqueta getEtiquetaDetails(String idEtiqueta){
-        if (mapIdEtiquetaDetails == null){
-            Cursor c;
-            String id, color, descript;
-
-            mapIdEtiquetaDetails = new HashMap<String, Etiqueta>();
-            c = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_TIPO_ETIQUETAS, null, null, null, null);
-
-            while(c.moveToNext()){
-                id          = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA));
-                color       = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_COLOR));
-                descript    = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_DESCRIPCION));
-
-                mapIdEtiquetaDetails.put(id, new Etiqueta(mContext, id, color, descript));
+                for (int i=0; i<getChildCount(); i++){
+                    if (((Etiqueta)getChildAt(i)).getIdEtiqueta() == etiquetaId){
+                        removeViewAt(i);
+                        break;
+                    }
+                }
             }
-            c.close();
-        }
-        return mapIdEtiquetaDetails.get(idEtiqueta);
+        };
     }
 
 
-    public void loadEtiquetas(String etiquetas) {
-        listaEtiquetas = new ArrayList<Etiqueta>();
+    public void loadEtiquetas(long idTecnica) {
+        Cursor c;
+        String color, descript;
+        int id;
+        Etiqueta e;
+        String[] proyection = {
+            TablaEtiquetas._ID,
+            TablaTiposDeEtiquetas.COL_DESCRIPCION,
+            TablaTiposDeEtiquetas.COL_COLOR
+        };
+        String [] selectionArgs = { String.valueOf(idTecnica) };
+
         removeAllViews();
 
-        if (etiquetas != null) {
-            for (String s : etiquetas.split(",")) {
-                listaEtiquetas.add(getEtiquetaDetails(s));
-                addView(getEtiquetaDetails(s));
-            }
+        listaEtiquetas          = new ArrayList<Etiqueta>();
+        this.idTecnica          = idTecnica;
+        c                       = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_ETIQUETAS, proyection, SELECTION, selectionArgs, null, null);
+
+        while(c.moveToNext()){
+            id          = c.getInt(c.getColumnIndex(TablaEtiquetas._ID));
+            color       = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_COLOR));
+            descript    = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_DESCRIPCION));
+
+            e = new Etiqueta(mContext, id, color, descript);
+            e.setCallback(mCallback);
+
+            addView(e);
+        }
+        c.close();
+    }
+
+
+    public void setWritable(boolean w){
+        for (int i=0; i<getChildCount(); i++){
+            ((Etiqueta)getChildAt(i)).setEditable(w);
         }
     }
+
+
+
+
+
+
+    protected interface EtiquetaCallback {
+        void deleteEtiqueta(int id);
+    }
+
+
+
+
+
 
 
 
     class Etiqueta extends LinearLayout{
-        private String id;
+        public int id;
         private TextView texto;
         private Button deleteButton;
         boolean editable = false;
+        private EtiquetaCallback mCallback;
 
-        public Etiqueta(Context context, String id, String color, String descript) {
+
+        public Etiqueta(Context context, final int id, String color, String descript) {
             super(context);
 
             setOrientation(HORIZONTAL);
@@ -89,11 +127,32 @@ public class EtiquetasView extends LinearLayout {
             deleteButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO: callback a Tecnica.java para gestionar el borrado, o hacer que la clase etiqueta sea consciente de la técnica a la que pertenece y hacer ella misma el borrado.
+                    //TODO: deleteEtiqueta a Tecnica.java para gestionar el borrado, o hacer que la clase etiqueta sea consciente de la técnica a la que pertenece y hacer ella misma el borrado.
+                    if (mCallback != null){
+                        mCallback.deleteEtiqueta(getIdEtiqueta());
+                    }
                 }
             });
 
+            addView(deleteButton);
+            addView(texto);
 
+            setEditable(editable);
+        }
+
+        public int getIdEtiqueta(){ return id;}
+
+        protected void setEditable(boolean editable){
+            if (editable){
+                deleteButton.setVisibility(VISIBLE);
+
+            }else{
+                deleteButton.setVisibility(GONE);
+            }
+        }
+
+        public void setCallback(EtiquetaCallback ecb){
+            mCallback = ecb;
         }
     }
 }

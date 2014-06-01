@@ -32,7 +32,7 @@ import android.widget.Toast;
  * Created by dan on 17/11/13.
  */
 public class TecnicasListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>,  AbsListView.MultiChoiceModeListener{
-    public  static final String PROY_COMB    = "ProyeccionCombinacionDeEtiquetas";
+    //public  static final String PROY_COMB    = "ProyeccionCombinacionDeEtiquetas";
     private static final String TAG          = "TecnicasListFragment";
     private static final String SESION_ID    = "sesion_id";
     private static final int    LOADER_ID    = 79838383;
@@ -52,14 +52,14 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
             TablaTiposDeTecnicas.COL_LABELS_ROWS,
             TablaTiposDeTecnicas.COL_MIN,
             TablaTiposDeTecnicas.COL_MAX,
-            TablaTiposDeTecnicas.COL_VIEWTYPE,
-            "(SELECT GROUP_CONCAT(" +
+            TablaTiposDeTecnicas.COL_VIEWTYPE
+            /*"(SELECT GROUP_CONCAT(" +
                     TablaEtiquetas.COL_ID_TIPO_ETIQUETA +
                     ") FROM " +
                     TablaEtiquetas.TABLA_ETIQUETAS +
                     " WHERE " +
                     TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + TablaEtiquetas.COL_ID_TECNICA +
-                    ") AS " + PROY_COMB
+                    ") AS " + PROY_COMB*/
     };
 
     private TecnicasAdapter mAdapter    = null;

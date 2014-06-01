@@ -131,7 +131,7 @@ public class TecnicasAdapter extends CursorAdapter{
     public void bindView(View view, Context context, Cursor cursor) {
         int min, max, idPadre;
         long id;
-        String colLabel, rowLabel, observ, title, values, etiquetas;
+        String colLabel, rowLabel, observ, title, values;
         //ViewHolder mHolder = (ViewHolder) view.getTag();
 
         Log.d(TAG, "Bind tecnica");
@@ -144,7 +144,7 @@ public class TecnicasAdapter extends CursorAdapter{
         colLabel    = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_LABELS_COLS));
         rowLabel    = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_LABELS_ROWS));
         observ      = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES));
-        etiquetas   = cursor.getString(cursor.getColumnIndex(TecnicasListFragment.PROY_COMB));
+        //etiquetas   = cursor.getString(cursor.getColumnIndex(TecnicasListFragment.PROY_COMB));
         id          = cursor.getLong(cursor.getColumnIndex(TablaTecnicas._ID));
 
         Tecnica t = (Tecnica) view;
@@ -157,7 +157,7 @@ public class TecnicasAdapter extends CursorAdapter{
         t.setColsLabels(colLabel);
         t.setRowsLabels(rowLabel);
         t.setmObserv(observ);
-        t.setEtiquetas(etiquetas);
+        t.setEtiquetas(id);
         t.setWritable(readWriteState);
         t.setId(id);
     }

@@ -120,13 +120,8 @@ public class QuiroGestProvider extends ContentProvider {
             case TIPOS_ETIQUETAS:
                 sqlb.setTables(TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS);
                 break;
-            /*case TIPOS_TECNICAS_ID:
-                sqlb.appendWhere(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + "=" + uri.getLastPathSegment());
-            case TIPOS_TECNICAS:
-                sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
-                break;
-            case ETIQUETAS_ID:
-                sqlb.appendWhere(TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + uri.getLastPathSegment());
+        //    case ETIQUETAS_ID:
+        //        sqlb.appendWhere(TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + uri.getLastPathSegment());
             case ETIQUETAS:// LEFT JOIN
                 sqlb.setTables(TablaEtiquetas.TABLA_ETIQUETAS +
                         " LEFT JOIN " +
@@ -134,10 +129,18 @@ public class QuiroGestProvider extends ContentProvider {
                         " ON (" +
                         TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA +
                         ")");
-                break;*/
+                break;
+            /*case TIPOS_TECNICAS_ID:
+                sqlb.appendWhere(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + "=" + uri.getLastPathSegment());
+            case TIPOS_TECNICAS:
+                sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
+                break;
+            */
             case NUM_VIEWS_TECNICAS:
                 sqlb.setTables(TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS);
-                projection      = new String[] {TablaTiposDeTecnicas.COL_VIEWTYPE, TablaTiposDeTecnicas.COL_NUM_ROWS, TablaTiposDeTecnicas.COL_NUM_COLS};
+                projection      = new String[] {TablaTiposDeTecnicas.COL_VIEWTYPE,
+                                                TablaTiposDeTecnicas.COL_NUM_ROWS,
+                                                TablaTiposDeTecnicas.COL_NUM_COLS};
                 selection       = null;
                 selectionArgs   = null;
                 sqlb.setDistinct(true);
@@ -163,24 +166,29 @@ public class QuiroGestProvider extends ContentProvider {
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+                where = TablaClientes._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
                 tabla = TablaClientes.TABLA_PACIENTES;
                 break;
             case MOTIVOS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+                where = TablaMotivos._ID + "=" + uri.getLastPathSegment();
             case MOTIVOS:
                 tabla = TablaMotivos.TABLA_MOTIVOS;
                 break;
             case SESIONES_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+                where = TablaSesiones._ID + "=" + uri.getLastPathSegment();
             case SESIONES:
                 tabla = TablaSesiones.TABLA_SESIONES;
                 break;
             case TECNICAS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
+                where = TablaTecnicas._ID + "=" + uri.getLastPathSegment();
             case TECNICAS:
                 tabla = TablaTecnicas.TABLA_TECNICAS;
+                break;
+            case ETIQUETAS_ID:
+                where = TablaEtiquetas._ID + "=" + uri.getLastPathSegment();
+            case ETIQUETAS:
+                tabla = TablaEtiquetas.TABLA_ETIQUETAS;
                 break;
           /*case TIPOS_TECNICAS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();

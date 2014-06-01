@@ -191,6 +191,8 @@ public class Tecnica extends RelativeLayout{
         mObserv.setEnabled(b);
         mObserv.setFocusable(b);
         mObserv.setFocusableInTouchMode(b);
+
+        mEtiquetasContainer.setWritable(b);
     }
 
 
@@ -262,8 +264,8 @@ public class Tecnica extends RelativeLayout{
         }
     }
 
-    public void setEtiquetas(String etiquetas) {
-        mEtiquetasContainer.loadEtiquetas(etiquetas);
+    public void setEtiquetas(long idTecnica) {
+        mEtiquetasContainer.loadEtiquetas(idTecnica);
     }
 
 
