@@ -25,6 +25,10 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
     public static final String SESION_ID = "sesion_id";
     public static final String MOTIVO_ID = "motivo_id";
     private long mMotivoId, mSesionId;
+    private SesionesListFragment slf;
+    private SesionDetailFragment sdf;
+    private TecnicasListFragment tlf;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +40,15 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //añadimos el fragment principal
-        mMotivoId = getIntent().getLongExtra(MOTIVO_ID,-1);
-        mSesionId = getIntent().getLongExtra(SESION_ID, -1);
-        SesionDetailFragment sdf = SesionDetailFragment.newInstance(mSesionId);
-        TecnicasListFragment tlf = TecnicasListFragment.newInstance(mSesionId);
+        mMotivoId   = getIntent().getLongExtra(MOTIVO_ID,-1);
+        mSesionId   = getIntent().getLongExtra(SESION_ID, -1);
+        sdf         = SesionDetailFragment.newInstance(mSesionId);
+        tlf         = TecnicasListFragment.newInstance(mSesionId);
+        slf         = SesionesListFragment.newInstance(mMotivoId, mSesionId);
 
-        SesionesListFragment f = SesionesListFragment.newInstance(mMotivoId, mSesionId);
         getFragmentManager()
                 .beginTransaction()
-                .replace(R.id.main_list_container, f)
+                .replace(R.id.main_list_container, slf)
                 .replace(R.id.detail_container, tlf)
                 .replace(R.id.secondary_list_container, sdf)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -60,13 +64,9 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
      */
     @Override
     public void onListItemSelected(ListFragmentBase lfb, long sesionId) {
-        SesionDetailFragment sdf;
-        TecnicasListFragment tlf;
-
         switch (lfb.getListViewType()){
             case LIST_VIEW_SESIONES:
                 mSesionId = sesionId;
-                sdf = (SesionDetailFragment) getFragmentManager().findFragmentById(R.id.secondary_list_container);
 
                 if (sdf == null || sdf.getItemId()!= sesionId){
                     sdf = SesionDetailFragment.newInstance(sesionId);
@@ -81,4 +81,19 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
                 break;
         }
     }
+
+
+    //********************************************************************************************//
+    // M A I N      M E N U
+    //********************************************************************************************//
+    /**
+     * Menú principal que aparece cuando se carga el fragmento
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_tecnicas, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
 }

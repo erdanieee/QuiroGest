@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
@@ -80,5 +81,18 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
                 startActivity(myIntent);
                 break;
         }
+    }
+
+
+    //********************************************************************************************//
+    // M A I N      M E N U
+    //********************************************************************************************//
+    /**
+     * Menú principal que aparece cuando se carga el fragmento
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_tecnicas, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

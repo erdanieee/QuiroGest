@@ -105,6 +105,7 @@ public class Tecnica extends RelativeLayout{
 
                 t = new EditText(mContext);
                 t.setInputType(InputType.TYPE_CLASS_TEXT);
+                t.setText(mObserv.getText());
 
                 d = new AlertDialog.Builder(mContext);
                 d.setTitle("Introduce el nuevo valor");

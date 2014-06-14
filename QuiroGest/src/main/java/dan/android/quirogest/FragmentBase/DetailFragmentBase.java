@@ -11,12 +11,12 @@ import android.os.Bundle;
 public abstract class DetailFragmentBase extends Fragment{
     protected static final String ITEM_ID = "item_id";
     private Cursor mCursor;
-    private long mitemId;
+    private long mItemId;
 
     public abstract Uri         getUri();
     public abstract String[]    getProjection();
 
-    public long         getItemId(){ return mitemId;}
+    public long         getItemId(){ return mItemId;}
     protected Cursor    getCursor(){ return mCursor; }
 
 
@@ -27,7 +27,7 @@ public abstract class DetailFragmentBase extends Fragment{
         if (!getArguments().containsKey(ITEM_ID)){
             throw new IllegalStateException("Se ha intentado crear el fragment sin proporcionar un ID.");
         }
-        mitemId = getArguments().getLong(ITEM_ID, -1);
+        mItemId = getArguments().getLong(ITEM_ID, -1);
     }
 
     @Override

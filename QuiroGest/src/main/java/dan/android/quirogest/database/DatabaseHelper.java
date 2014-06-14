@@ -5,8 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -40,13 +44,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    //TODO: Añadir función para transformar a formato SQL a partir de SimpleDateFormat!!!
+
     /** transforma fechas de SQLite al formato especificado */
-    public static String parseSQLiteDate(String date, SimpleDateFormat format) {
+    public static String parseSQLiteToDateformat(String date, SimpleDateFormat format) {
         String d = null;
         d = format.format(parseSQLiteDate(date));
 
         return d;
     }
+
+
+    public static String parseToSQLite(int year, int month, int day) {
+        SimpleDateFormat sdf;
+        Calendar c;
+
+        c   = Calendar.getInstance();
+        sdf = new SimpleDateFormat(SQLITE_DATE_FORMAT);
+
+        c.set(year, month, day);
+
+        return sdf.format(c.getTime());
+    }
+
 
     public static Date parseSQLiteDate(String date) {
         Date d = null;
@@ -58,5 +78,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return d;
     }
-
 }

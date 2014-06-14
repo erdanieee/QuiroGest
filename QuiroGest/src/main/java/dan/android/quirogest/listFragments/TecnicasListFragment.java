@@ -215,16 +215,6 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
     //********************************************************************************************//
     // M A I N      M E N U
     //********************************************************************************************//
-    /**
-     * Menú principal que aparece cuando se carga el fragmento
-     */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main_tecnicas, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
     @Override
     //Primero se llama a la activity, y llega aquí solo si la activity no consume el evento (return false)
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -234,10 +224,10 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
                 mAdapter.readWriteState = !mAdapter.readWriteState;
                 mAdapter.notifyDataSetInvalidated();
                 Log.d("TecnicasListFragent", "READ/WRITE " + String.valueOf(mAdapter.readWriteState));
-                return true;
+                return false;
             case R.id.mainMenuAddItem:
                 addTecnica(null);
-                return true;
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }

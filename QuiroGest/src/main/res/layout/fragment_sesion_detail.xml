@@ -14,12 +14,13 @@
         android:textAppearance="@style/Etiqueta"
         android:text="@string/diagnostico" />
 
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="false"
         android:textAppearance="@style/EditTextOff"
         android:id="@+id/textViewDiagnostico"
-        android:text="prueba(debug)esta es la prueba de la verdad, a ver si ahora se corta bien la frase esta es la prueba de la verdad, a ver si ahora se corta bien la frase" />
+        android:text="prueba prueba" />
 
     <TextView
         android:id="@+id/textView2"
@@ -28,7 +29,7 @@
         android:textAppearance="@style/Etiqueta"
         android:text="@string/cuantificacionDolor" />
 
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/EditTextOff"
@@ -42,12 +43,12 @@
         android:textAppearance="@style/Etiqueta"
         android:text="@string/observaciones" />
 
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/EditTextOff"
-        android:id="@+id/textViewObsservaciones"
-        android:text="prueba(debuj)" />
+        android:id="@+id/textViewObservaciones"
+        android:text="prussda" />
 
     <TextView
         android:id="@+id/textView6"
@@ -56,7 +57,7 @@
         android:textAppearance="@style/Etiqueta"
         android:text="@string/ingreso" />
 
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/EditTextOff"
@@ -70,7 +71,7 @@
         android:textAppearance="@style/Etiqueta"
         android:text="@string/fecha" />
 
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/EditTextOff"

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:keepScreenOn="true">
 
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewFecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/Etiqueta"
         android:text="@string/motivoConsulta"/>
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewDescripcion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/Etiqueta"
         android:text="@string/comienzoDolor"/>
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewComienzoDolor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/Etiqueta"
         android:text="@string/estadoSalud"/>
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewEstadoSalud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/Etiqueta"
         android:text="@string/activFisica"/>
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewActividadFisica"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/Etiqueta"
         android:text="@string/diagnosticoGeneral"/>
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewDiagnostico"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/Etiqueta"
         android:text="@string/observaciones"/>
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewObservaciones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

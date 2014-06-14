@@ -1,10 +1,21 @@
 package dan.android.quirogest.detailFragments;
 
+import android.app.AlertDialog;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -17,12 +28,15 @@ import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.database.TablaSesiones;
+import dan.android.quirogest.database.TablaTecnicas;
+import dan.android.quirogest.views.LabelModificationListener;
+import dan.android.quirogest.views.LabelView;
 
 
 public class SesionDetailFragment extends DetailFragmentBase{
     private static final int    LAYOUT      = R.layout.fragment_sesion_detail;
     private final Uri           QUERY_URI   = QuiroGestProvider.CONTENT_URI_SESIONES;
-    private TextView mDiagnostico, mFecha, mIngresos, mCuantifDolor;
+    private LabelView mDiagnostico, mFecha, mIngresos, mCuantifDolor, mObservaciones;
     //private ListView ;
 
     @Override
@@ -48,11 +62,36 @@ public class SesionDetailFragment extends DetailFragmentBase{
         super.onCreateView(inflater, container, savedInstanceState);
         View mRootView;
 
+        //necesario para que aparezca el menú
+        setHasOptionsMenu(true);
+
         mRootView       = inflater.inflate(LAYOUT, container, false);
-        mDiagnostico    = (TextView) mRootView.findViewById(R.id.textViewDiagnostico);
-        mFecha          = (TextView) mRootView.findViewById(R.id.textViewFecha);
-        mIngresos       = (TextView) mRootView.findViewById(R.id.textViewPrecio);
-        mCuantifDolor   = (TextView) mRootView.findViewById(R.id.textViewCuantificacionDolor);
+        mDiagnostico    = (LabelView) mRootView.findViewById(R.id.textViewDiagnostico);
+        mFecha          = (LabelView) mRootView.findViewById(R.id.textViewFecha);
+        mIngresos       = (LabelView) mRootView.findViewById(R.id.textViewPrecio);
+        mCuantifDolor   = (LabelView) mRootView.findViewById(R.id.textViewCuantificacionDolor);
+        mObservaciones  = (LabelView) mRootView.findViewById(R.id.textViewObservaciones);
+
+        mDiagnostico.setModificationParams(
+                Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_SESIONES, String.valueOf(getItemId())),
+                TablaSesiones.COL_DIAGNOSTICO,
+                LabelView.TYPE_TEXT);
+        mFecha.setModificationParams(
+                Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_SESIONES, String.valueOf(getItemId())),
+                TablaSesiones.COL_FECHA,
+                LabelView.TYPE_DATE);
+        mIngresos.setModificationParams(
+                Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_SESIONES, String.valueOf(getItemId())),
+                TablaSesiones.COL_INGRESOS,
+                LabelView.TYPE_NUM);
+        mCuantifDolor.setModificationParams(
+                Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_SESIONES, String.valueOf(getItemId())),
+                TablaSesiones.COL_DOLOR,
+                LabelView.TYPE_NUM);
+        mObservaciones.setModificationParams(
+                Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_SESIONES, String.valueOf(getItemId())),
+                TablaSesiones.COL_OBSERVACIONES,
+                LabelView.TYPE_TEXT);
 
         return mRootView;
     }
@@ -62,21 +101,41 @@ public class SesionDetailFragment extends DetailFragmentBase{
         super.onViewCreated(view, savedInstanceState);
 
         if (null!=getCursor() && getCursor().moveToFirst()){
-            String diagnostico, fecha, postrat;
+            String diagnostico, fecha, postrat, observ;
             Integer cuantifDolor, ingresos, numSesion;
 
             diagnostico = getCursor().getString(getCursor().getColumnIndex(TablaSesiones.COL_DIAGNOSTICO));
             fecha       = getCursor().getString(getCursor().getColumnIndex(TablaSesiones.COL_FECHA));
+            observ      = getCursor().getString(getCursor().getColumnIndex(TablaSesiones.COL_OBSERVACIONES));
             postrat     = getCursor().getString(getCursor().getColumnIndex(TablaSesiones.COL_POSTRATAMIENTO));
             cuantifDolor= getCursor().getInt(getCursor().getColumnIndex(TablaSesiones.COL_DOLOR));
             ingresos    = getCursor().getInt(getCursor().getColumnIndex(TablaSesiones.COL_INGRESOS));
             numSesion   = getCursor().getInt(getCursor().getColumnIndex(TablaSesiones.COL_NUM_SESION));
 
-
-            mFecha.setText(DatabaseHelper.parseSQLiteDate(fecha, new SimpleDateFormat("dd/MM/yyyy")));
+            mFecha.setText(fecha);
+            mObservaciones.setText(observ);
             mCuantifDolor.setText(cuantifDolor.toString());
             mDiagnostico.setText(diagnostico);
             mIngresos.setText(ingresos.toString());
+        }
+    }
+
+
+
+    @Override
+    //Primero se llama a la activity, y llega aquí solo si la activity no consume el evento (return false)
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.mainMenuEditItem:
+                mFecha.setEditable(!mFecha.isEditable());
+                mCuantifDolor.setEditable(!mCuantifDolor.isEditable());
+                mDiagnostico.setEditable(!mDiagnostico.isEditable());
+                mIngresos.setEditable(!mIngresos.isEditable());
+                mObservaciones.setEditable(!mObservaciones.isEditable());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
