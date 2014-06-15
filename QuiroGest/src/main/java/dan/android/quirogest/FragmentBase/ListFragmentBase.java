@@ -26,7 +26,7 @@ import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.views.LabelView;
 
 
-public abstract class ListFragmentBase extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, AbsListView.MultiChoiceModeListener{
+public abstract class ListFragmentBase extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String TAG                         = "ListFragmentBase";
     private static final int    LOADER_ID                   = 234237823;
     private static final String STATE_ACTIVATED_POSITION    = "activated_position";
@@ -134,8 +134,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
-        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        getListView().setMultiChoiceModeListener(this);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
    /* @Override
@@ -207,72 +206,6 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     //********************************************************************************************//
     public interface CallbackItemClicked {
         public void onListItemSelected(ListFragmentBase lfb, long id);
-    }
-
-
-
-
-
-
-
-    //********************************************************************************************//
-    // C O N T E X T U A L   A C T I O N   B A R
-    //********************************************************************************************//
-    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        // Here you can perform updates to the CAB due to
-        // an invalidate() request
-        return false;
-    }
-    @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        // Inflate the menu for the CAB
-        MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.contextual_sesiones, menu);
-        mode.setTitle("Select Items");
-        return true;
-    }
-
-    @Override
-    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-        final int checkedCount = getListView().getCheckedItemCount();
-        switch (checkedCount) {
-            case 0:
-                mode.setSubtitle(null);
-                break;
-            case 1:
-                mode.setSubtitle("One item selected");
-                break;
-            default:
-                mode.setSubtitle("" + checkedCount + " items selected");
-                break;
-        }
-    }
-
-
-    @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        // Respond to clicks on the actions in the CAB
-        switch (item.getItemId()) {
-            case R.id.contextualMenuDeleteItem:
-                Uri u;
-
-                for(long id : getListView().getCheckedItemIds()){
-                    u = Uri.withAppendedPath(getUri(), String.valueOf(id));
-                    getActivity().getContentResolver().delete(u,null,null);
-                }
-                mode.finish(); // Action picked, so close the CAB
-                return true;
-            default:
-                return false;
-        }
-    }
-
-
-    @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        // Here you can make any necessary updates to the activity when
-        // the CAB is removed. By default, selected items are deselected/unchecked.
     }
 }
 

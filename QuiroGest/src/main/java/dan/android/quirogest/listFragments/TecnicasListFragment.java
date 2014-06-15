@@ -127,9 +127,9 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
         //getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
 
         //borrar elementos de la lista
- //       ListView listView = getListView();
- //       listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
- //       listView.setMultiChoiceModeListener(this);
+        ListView listView = getListView();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(this);
     }
 
 
