@@ -1,8 +1,10 @@
 package dan.android.quirogest.database;
 
 import android.content.Context;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -77,5 +79,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return d;
+    }
+
+
+    public long count(String table, String selection, String[] selectionArgs){
+        long c;
+        c = DatabaseUtils.queryNumEntries(getReadableDatabase(), table, selection, selectionArgs);
+        return c;
     }
 }

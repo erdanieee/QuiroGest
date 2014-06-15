@@ -2,13 +2,21 @@ package dan.android.quirogest.activities;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+
+import java.util.Calendar;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
+import dan.android.quirogest.database.DatabaseHelper;
+import dan.android.quirogest.database.QuiroGestProvider;
+import dan.android.quirogest.database.TablaSesiones;
 import dan.android.quirogest.detailFragments.MotivoDetailFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
 import dan.android.quirogest.listFragments.SesionesListFragment;
@@ -94,5 +102,40 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_tecnicas, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    //Primero se llama a la activity, y llega aquí solo si la activity no consume el evento (return false)
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.mainMenuAddItem:
+                ContentValues cv;
+                Calendar c;
+                long nSesiones;
+
+                c           = Calendar.getInstance();
+                cv          = new ContentValues();
+                nSesiones   = getContentResolver().query(
+                        QuiroGestProvider.CONTENT_URI_SESIONES,
+                        null,
+                        TablaSesiones.COL_ID_MOTIVO + "=" + mMotivoId,
+                        null,
+                        null
+                        ).getCount();
+
+                cv.put(TablaSesiones.COL_ID_MOTIVO, mMotivoId);
+                cv.put(TablaSesiones.COL_DIAGNOSTICO, "XXX");
+                cv.put(TablaSesiones.COL_DOLOR, TablaSesiones.CuantificacionDolor.DOLOR_5.toSQLite());
+                cv.put(TablaSesiones.COL_FECHA, DatabaseHelper.parseToSQLite(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)));
+                cv.put(TablaSesiones.COL_INGRESOS, 0);
+                cv.put(TablaSesiones.COL_NUM_SESION, nSesiones + 1);
+                cv.put(TablaSesiones.COL_OBSERVACIONES, "XXX");
+                cv.put(TablaSesiones.COL_POSTRATAMIENTO, "XXX");
+                getContentResolver().insert(QuiroGestProvider.CONTENT_URI_SESIONES, cv);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

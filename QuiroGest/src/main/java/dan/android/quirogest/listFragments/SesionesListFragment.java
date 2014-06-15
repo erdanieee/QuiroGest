@@ -3,6 +3,12 @@ package dan.android.quirogest.listFragments;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.Toast;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
@@ -12,7 +18,7 @@ import dan.android.quirogest.database.TablaSesiones;
 /**
  * Created by dan on 4/11/13.
  */
-public class SesionesListFragment extends ListFragmentBase {
+public class SesionesListFragment extends ListFragmentBase{
     private final static String ARG_MOTIVO_ID   = "motivo_id";
 
     private final Uri QUERY_URI                 = QuiroGestProvider.CONTENT_URI_SESIONES;
@@ -67,7 +73,7 @@ public class SesionesListFragment extends ListFragmentBase {
     public String[] getSelectionArgs() { return new String[] {getMotivoId().toString()};}
 
     @Override
-    public String getOrder() { return "DATE(" + TablaSesiones.COL_FECHA + ") DESC"; }
+    public String getOrder() { return "DATE(" + TablaSesiones.COL_NUM_SESION + ") DESC"; }
 
     @Override
     public int getListLayout() { return LAYOUT; }

@@ -25,7 +25,7 @@
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textView2" />
 
-    <TextView
+    <dan.android.quirogest.views.LabelView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"

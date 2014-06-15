@@ -15,15 +15,16 @@ import android.util.Log;
  */
 public class QuiroGestProvider extends ContentProvider {
     private static final String TAG = "QuiroGestProvider";
-    public static final String PROVIDER_NAME                = "dan.android.quirogest.provider";
-    public static final String URI_TIPOS_VISTAS_TECNICAS    = "tiposDeVistasParaLasTenicas";
-    public static final String URI_CONTACTOS                = "tablaContactos";
-    public static final String URI_MOTIVOS                  = "tablaMotivos";
-    public static final String URI_SESIONES                 = "tablaSesiones";
-    public static final String URI_TECNICAS                 = "tablaTecnicas";
-    public static final String URI_TIPOS_TECNICAS           = "tablaTiposDeTecnicas";
-    public static final String URI_ETIQUETAS                = "tablaEtiquetas";
-    public static final String URI_TIPOS_ETIQUETAS          = "tablaTiposDeEtiquetas";
+    private static final String PROVIDER_NAME                = "dan.android.quirogest.provider";
+    private static final String URI_TIPOS_VISTAS_TECNICAS    = "tiposDeVistasParaLasTenicas";
+    private static final String URI_CONTACTOS                = "tablaContactos";
+    private static final String URI_MOTIVOS                  = "tablaMotivos";
+    private static final String URI_SESIONES                 = "tablaSesiones";
+    private static final String URI_TECNICAS                 = "tablaTecnicas";
+    private static final String URI_TIPOS_TECNICAS           = "tablaTiposDeTecnicas";
+    private static final String URI_ETIQUETAS                = "tablaEtiquetas";
+    private static final String URI_TIPOS_ETIQUETAS          = "tablaTiposDeEtiquetas";
+
     public static final Uri CONTENT_URI_CONTACTOS           = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_CONTACTOS);
     public static final Uri CONTENT_URI_MOTIVOS             = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_MOTIVOS);
     public static final Uri CONTENT_URI_SESIONES            = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_SESIONES);
@@ -33,23 +34,22 @@ public class QuiroGestProvider extends ContentProvider {
     public static final Uri CONTENT_URI_TIPO_ETIQUETAS      = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_TIPOS_ETIQUETAS);
     public static final Uri CONTENT_URI_NUM_VIEWS_TECNICAS  = Uri.parse("content://" + PROVIDER_NAME + "/" + URI_TIPOS_VISTAS_TECNICAS);
 
-
     //UriMatcher
-    public static final int CONTACTOS           = 1;
-    public static final int CONTACTOS_ID        = 2;
-    public static final int MOTIVOS             = 3;
-    public static final int MOTIVOS_ID          = 4;
-    public static final int SESIONES            = 5;
-    public static final int SESIONES_ID         = 6;
-    public static final int TECNICAS            = 7;
-    public static final int TECNICAS_ID         = 8;
-    public static final int TIPOS_TECNICAS      = 9;
-    public static final int TIPOS_TECNICAS_ID   = 10;
-    public static final int ETIQUETAS           = 11;
-    public static final int ETIQUETAS_ID        = 12;
-    public static final int TIPOS_ETIQUETAS     = 13;
-    public static final int TIPOS_ETIQUETAS_ID  = 14;
-    public static final int NUM_VIEWS_TECNICAS  = 15;
+    private static final int CONTACTOS           = 1;
+    private static final int CONTACTOS_ID        = 2;
+    private static final int MOTIVOS             = 3;
+    private static final int MOTIVOS_ID          = 4;
+    private static final int SESIONES            = 5;
+    private static final int SESIONES_ID         = 6;
+    private static final int TECNICAS            = 7;
+    private static final int TECNICAS_ID         = 8;
+    private static final int TIPOS_TECNICAS      = 9;
+    private static final int TIPOS_TECNICAS_ID   = 10;
+    private static final int ETIQUETAS           = 11;
+    private static final int ETIQUETAS_ID        = 12;
+    private static final int TIPOS_ETIQUETAS     = 13;
+    private static final int TIPOS_ETIQUETAS_ID  = 14;
+    private static final int NUM_VIEWS_TECNICAS  = 15;
 
     //inicializamos el UriMatcher
     public static final UriMatcher uriMatcher;
@@ -144,7 +144,6 @@ public class QuiroGestProvider extends ContentProvider {
                 selection       = null;
                 selectionArgs   = null;
                 sqlb.setDistinct(true);
-
                 break;
 
             default:

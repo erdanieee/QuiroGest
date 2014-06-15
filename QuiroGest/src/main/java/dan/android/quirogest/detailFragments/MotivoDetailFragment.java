@@ -18,6 +18,7 @@ import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaMotivos;
+import dan.android.quirogest.views.LabelModificationListener;
 import dan.android.quirogest.views.LabelView;
 
 
@@ -111,11 +112,19 @@ public class MotivoDetailFragment extends DetailFragmentBase{
 
             mFecha.setText(fecha);
             mDescripcion.setText(descripcion);
-            mComienzoDolor.setText(comienzo,getElapsedTime(comienzo, fecha));           //TODO: añadir callback al comienzo del dolor para actualizar altText
             mActivFisica.setText(activFisica);
             mDiagnostico.setText(diagnostico);
             mObservaciones.setText(observaciones);
             mEstadoSalud.setText(String.valueOf(estadoSalud));
+
+            mComienzoDolor.setModificationCallback(new LabelModificationListener() {        //FIXME: tiene que asignar el callback antes de definir el texto para que se actualice
+                @Override
+                public void onLabelModification(String t) {
+                    mComienzoDolor.setAltText(getElapsedTime(mComienzoDolor.getText().toString(), mFecha.getText().toString()));
+                }
+            });
+            mComienzoDolor.setText(comienzo);
+
         }
     }
 
@@ -128,8 +137,8 @@ public class MotivoDetailFragment extends DetailFragmentBase{
         boolean temp=false;
 
         try {
-            dateComienzo    = new SimpleDateFormat(DatabaseHelper.SQLITE_DATE_FORMAT).parse(fechaComienzo);
-            dateMotivo      = new SimpleDateFormat(DatabaseHelper.SQLITE_DATE_FORMAT).parse(fechaMotivoConsulta);
+            dateComienzo    = new SimpleDateFormat(LabelView.DATE_FORMAT).parse(fechaComienzo);
+            dateMotivo      = new SimpleDateFormat(LabelView.DATE_FORMAT).parse(fechaMotivoConsulta);
             diff            = dateMotivo.getTime()-dateComienzo.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
