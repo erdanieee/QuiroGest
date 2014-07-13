@@ -91,20 +91,23 @@ public class QuiroGestProvider extends ContentProvider {
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                sqlb.appendWhere(TablaClientes._ID + "=" + uri.getLastPathSegment());
+                sqlb.appendWhere(TablaContactos._ID + "=" + uri.getLastPathSegment());
             case CONTACTOS:
-                sqlb.setTables(TablaClientes.TABLA_PACIENTES);
+                sqlb.setTables(TablaContactos.TABLA_CONTACTOS);
                 break;
+
             case MOTIVOS_ID:
                 sqlb.appendWhere(TablaMotivos._ID + "=" + uri.getLastPathSegment());
             case MOTIVOS:
                 sqlb.setTables(TablaMotivos.TABLA_MOTIVOS);
                 break;
+
             case SESIONES_ID:
                 sqlb.appendWhere(TablaSesiones._ID + "=" + uri.getLastPathSegment());
             case SESIONES:
                 sqlb.setTables(TablaSesiones.TABLA_SESIONES);
                 break;
+
             case TECNICAS_ID:
                 sqlb.appendWhere(TablaTecnicas._ID + "=" + uri.getLastPathSegment());
             case TECNICAS:// LEFT JOIN      //TODO: usar group_concat para sacar también las etiquetas. Ej:  SELECT t.*, tt.*, (SELECT GROUP_CONCAT(e.tipoEtiqueta_etiquetas) FROM etiquetas e WHERE t._id=e.idTecnica_etiquetas) AS combinedsolutions FROM tecnicas t left join tiposDeTecnicas tt on tt.idTipoTecnica_tiposDeTecnicas=t.idTipoTecnica_tecnicas
@@ -115,11 +118,13 @@ public class QuiroGestProvider extends ContentProvider {
                         TablaTecnicas.COL_ID_TIPO_TECNICA + "=" + TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA +
                         ")");
                 break;
+
             case TIPOS_ETIQUETAS_ID:
                 sqlb.appendWhere(TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + uri.getLastPathSegment());
             case TIPOS_ETIQUETAS:
                 sqlb.setTables(TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS);
                 break;
+
         //    case ETIQUETAS_ID:
         //        sqlb.appendWhere(TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + uri.getLastPathSegment());
             case ETIQUETAS:// LEFT JOIN
@@ -130,6 +135,7 @@ public class QuiroGestProvider extends ContentProvider {
                         TablaEtiquetas.COL_ID_TIPO_ETIQUETA + "=" + TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA +
                         ")");
                 break;
+
             case TIPOS_TECNICAS_ID:
                 sqlb.appendWhere(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + "=" + uri.getLastPathSegment());
             case TIPOS_TECNICAS:
@@ -150,14 +156,13 @@ public class QuiroGestProvider extends ContentProvider {
                 throw new IllegalStateException ("Query no válida!!") ;
         }
         c= sqlb.query(dbHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
-        c.setNotificationUri(getContext().getContentResolver(), uri);
+        c.setNotificationUri(getContext().getContentResolver(), uri);   //TODO: comprobar si es necesario esto (!!!???)
         return c;
     }
 
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.d(TAG, "Delete " + uri.toString());
         String tabla=null;
         String where = selection;
         int rowDeleted;
@@ -165,42 +170,70 @@ public class QuiroGestProvider extends ContentProvider {
         //si es una consulta a un ID concreto construimos el WHERE
         switch (uriMatcher.match(uri)){
             case CONTACTOS_ID:
-                where = TablaClientes._ID + "=" + uri.getLastPathSegment();
+                where = TablaContactos._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                tabla = TablaClientes.TABLA_PACIENTES;
+                tabla = TablaContactos.TABLA_CONTACTOS;
+                deleteLeaves(CONTENT_URI_CONTACTOS, TablaContactos._ID, where, selectionArgs, CONTENT_URI_MOTIVOS, TablaMotivos.COL_ID_CONTACTO);
                 break;
+
             case MOTIVOS_ID:
                 where = TablaMotivos._ID + "=" + uri.getLastPathSegment();
             case MOTIVOS:
                 tabla = TablaMotivos.TABLA_MOTIVOS;
+                deleteLeaves(CONTENT_URI_MOTIVOS, TablaMotivos._ID, where, selectionArgs, CONTENT_URI_SESIONES, TablaSesiones.COL_ID_MOTIVO);
                 break;
+
             case SESIONES_ID:
                 where = TablaSesiones._ID + "=" + uri.getLastPathSegment();
             case SESIONES:
                 tabla = TablaSesiones.TABLA_SESIONES;
+                deleteLeaves(CONTENT_URI_SESIONES, TablaSesiones._ID, where, selectionArgs, CONTENT_URI_TECNICAS, TablaTecnicas.COL_ID_SESION);
                 break;
+
             case TECNICAS_ID:
                 where = TablaTecnicas._ID + "=" + uri.getLastPathSegment();
             case TECNICAS:
                 tabla = TablaTecnicas.TABLA_TECNICAS;
+                deleteLeaves(CONTENT_URI_TECNICAS, TablaTecnicas._ID, where, selectionArgs, CONTENT_URI_ETIQUETAS, TablaEtiquetas.COL_ID_TECNICA);
                 break;
+
             case ETIQUETAS_ID:
                 where = TablaEtiquetas._ID + "=" + uri.getLastPathSegment();
             case ETIQUETAS:
                 tabla = TablaEtiquetas.TABLA_ETIQUETAS;
                 break;
-          /*case TIPOS_TECNICAS_ID:
-                where = BaseColumns._ID + "=" + uri.getLastPathSegment();
-            case TIPOS_TECNICAS:
-                tabla = TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS;
-                break;*/
+
             default:
                 throw new IllegalStateException ("Delete no válido!!") ;
         }
         rowDeleted = dbHelper.getWritableDatabase().delete(tabla, where, selectionArgs);
         getContext().getContentResolver().notifyChange(uri, null);
+        Log.d(TAG, "Delete " + rowDeleted + " items on " +  uri.toString());
         return rowDeleted;
     }
+
+
+    private void deleteLeaves(Uri uriOrigen, String colIdOrigen, String where, String[] selectionArgs, Uri uriDestino, String colIdDestino) {
+        Cursor c;
+        long id;
+
+        c = query(
+                uriOrigen,
+                new String[]{colIdOrigen},
+                where,
+                selectionArgs,
+                null);
+
+        while (c.moveToNext()){
+            id = c.getLong(0);
+            delete(
+                    uriDestino,
+                    colIdDestino + "=" + String.valueOf(id),
+                    null);
+        }
+        c.close();
+    }
+
 
 
     @Override
@@ -215,7 +248,7 @@ public class QuiroGestProvider extends ContentProvider {
             case CONTACTOS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
             case CONTACTOS:
-                tabla = TablaClientes.TABLA_PACIENTES;
+                tabla = TablaContactos.TABLA_CONTACTOS;
                 break;
             case MOTIVOS_ID:
                 where = BaseColumns._ID + "=" + uri.getLastPathSegment();
@@ -248,7 +281,6 @@ public class QuiroGestProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        Log.d(TAG, "Insert " + uri.toString() + " " + values.toString());
         Uri contentUri  = null;
         Uri _uri        = null;
         long id         = -1;
@@ -256,7 +288,7 @@ public class QuiroGestProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)){
             case CONTACTOS:
-                tabla = TablaClientes.TABLA_PACIENTES;
+                tabla = TablaContactos.TABLA_CONTACTOS;
                 contentUri  = CONTENT_URI_CONTACTOS;
                 break;
             case MOTIVOS:
@@ -288,6 +320,8 @@ public class QuiroGestProvider extends ContentProvider {
         }
 
         id = dbHelper.getWritableDatabase().insert(tabla, null, values);
+        Log.d(TAG, "Inserted id: " + id + " on " + uri.toString() + " " + values.toString());
+
         if (id > 0){
             _uri = ContentUris.withAppendedId(contentUri, id);
             getContext().getContentResolver().notifyChange(_uri, null);

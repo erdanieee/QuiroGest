@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaEtiquetas;
 import dan.android.quirogest.database.TablaTiposDeEtiquetas;
@@ -122,6 +123,7 @@ public class EtiquetasView extends LinearLayout {
             texto.setMinWidth(40);
             //texto.setGravity(1);
             deleteButton.setBackgroundResource(android.R.drawable.ic_menu_delete);
+            deleteButton.setHighlightColor(getResources().getColor(R.color.elementIsEditable));
             deleteButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {

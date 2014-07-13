@@ -15,11 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
+import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
 
 /**
@@ -51,11 +50,18 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
 
 
     public void setText(String t){
-        if (mType == TYPE_DATE){
-            mText = DatabaseHelper.parseSQLiteToDateformat(t, new SimpleDateFormat(DATE_FORMAT));
+        mText = "";
 
-        } else {
-            mText = t;
+        if (t!=null && !t.equals("") && !t.equals("-1")){
+            switch (mType){
+                case TYPE_DATE:
+                    mText = DatabaseHelper.parseSQLiteToDateformat(t, new SimpleDateFormat(DATE_FORMAT));
+                    break;
+                case TYPE_NUM:
+                case TYPE_TEXT:
+                    mText = t;
+                    break;
+            }
         }
 
         updateText();
@@ -67,11 +73,25 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
 
 
     private void updateText(){
-        if (!isEditable() & mAlternativeText!=null){
-            super.setText(mAlternativeText);
+        if (!isEditable()){
+            super.setText(mAlternativeText!=null?mAlternativeText:mText);
 
         } else {
-            super.setText(mText);
+            if (mText==null || mText.equals("")){
+                switch (mType){
+                    case TYPE_TEXT:
+                        super.setText("XXX");
+                        break;
+                    case TYPE_NUM:
+                        super.setText("0");
+                        break;
+                    case TYPE_DATE:
+                        super.setText(new SimpleDateFormat(DATE_FORMAT).format(Calendar.getInstance().getTime()));
+                        break;
+                }
+            } else {
+                super.setText(mText);
+            }
         }
     }
 
@@ -89,11 +109,14 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
     }
 
 
-    public void setEditable(boolean e) {
-        mEditable = e;
+    public void setWritable(boolean b) {
+        mEditable = b;
 
-        if (e){
-            setBackgroundColor(Color.DKGRAY);
+        setClickable(b);
+        setFocusable(b);
+
+        if (b){
+            setBackgroundColor(getResources().getColor(R.color.elementIsEditable));
 
         }else{
             setBackgroundColor(Color.TRANSPARENT);
@@ -127,6 +150,7 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
                     t = new EditText(getContext());
                     t.setInputType(getInputTypeForEditText(mType));
                     t.setText(getText());
+                    t.setSelection(0,getText().length());
 
                     d = new AlertDialog.Builder(getContext());
                     d.setTitle("Introduce el nuevo valor");

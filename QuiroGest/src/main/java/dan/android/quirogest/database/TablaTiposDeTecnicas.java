@@ -27,5 +27,5 @@ public class TablaTiposDeTecnicas{
             COL_MAX                 + " INTEGER, " +
             COL_LABELS_COLS         + " TEXT, " +
             COL_LABELS_ROWS         + " TEXT, " +
-            COL_TITLE + " TEXT)";
+            COL_TITLE               + " TEXT)";
 }

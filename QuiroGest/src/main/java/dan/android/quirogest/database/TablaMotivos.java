@@ -47,7 +47,7 @@ public class TablaMotivos implements BaseColumns{
             COL_FECHA           + " TEXT DEFAULT CURRENT_DATE, " +
             COL_DESCRIPCION     + " TEXT, " +
             COL_COMIENZO        + " TEXT, " +
-            COL_ESTADO_SALUD    + " INTEGER, " +
+            COL_ESTADO_SALUD    + " INTEGER DEFAULT -1, " +
             COL_ACTIV_FISICA    + " TEXT, " +
             COL_DIAGNOSTICO     + " TEXT, " +
             COL_OBSERVACIONES   + " TEXT)";

@@ -46,10 +46,13 @@ public class TypeNum extends TextView implements TecnicasListFragment.itemTecnic
 
                 t = new EditText(context);
                 t.setInputType(InputType.TYPE_CLASS_NUMBER);
+                t.setText(getText());
+                t.setSelection(0,getText().length());
 
                 d = new AlertDialog.Builder(context);
                 d.setTitle("Introduce el nuevo valor");
                 d.setView(t);
+
 
                 d.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -82,9 +85,15 @@ public class TypeNum extends TextView implements TecnicasListFragment.itemTecnic
 
     @Override
     public void setWritable(boolean b) {
-        setEnabled(b);
+        setClickable(b);
         setFocusable(b);
-        setFocusableInTouchMode(b);
+
+        if (b){
+            setBackgroundColor(getResources().getColor(R.color.elementIsEditable));
+
+        } else {
+            setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     @Override

@@ -22,9 +22,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import dan.android.quirogest.R;
-import dan.android.quirogest.activities.ClienteListActivity;
 import dan.android.quirogest.database.QuiroGestProvider;
+import dan.android.quirogest.database.TablaEtiquetas;
 import dan.android.quirogest.database.TablaTecnicas;
+import dan.android.quirogest.database.TablaTiposDeEtiquetas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
 import dan.android.quirogest.tecnicas.Tecnica;
 import dan.android.quirogest.tecnicas.TecnicasAdapter;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 /**
  * Created by dan on 17/11/13.
  */
-public class TecnicasListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>,  AbsListView.MultiChoiceModeListener{
+public class TecnicasListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>,  AbsListView.MultiChoiceModeListener{ //TODO: unificar tecnicasListFragment con los demás fragmentos!!
     //public  static final String PROY_COMB    = "ProyeccionCombinacionDeEtiquetas";
     private static final String TAG          = "TecnicasListFragment";
     private static final String SESION_ID    = "sesion_id";
@@ -161,8 +162,11 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
     }
 
 
+
+
+
     /**
-     * Añade una tecnica hade forma recursiva hasta que encuentra una tecnica sin hijos
+     * Añade una tecnica de forma recursiva hasta que encuentra una tecnica sin hijos
      */
     private void addTecnica(Integer parentId){
         AlertDialog.Builder ad;
@@ -174,7 +178,7 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
 
         tecnicaIdList   = new ArrayList<Integer>();
         ad              = new AlertDialog.Builder(mContext);
-        a               = new ArrayAdapter<String>(mContext, android.R.layout.select_dialog_singlechoice);
+        a               = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1);
         proyection      = new String[] {
                 TablaTiposDeTecnicas.COL_TITLE,
                 TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA };
@@ -193,7 +197,7 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
             ad.setAdapter(a, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
+                    //dialogInterface.cancel();
                     addTecnica(tecnicaIdList.get(i));
                 }
             });
@@ -204,11 +208,71 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
 
             cv.put(TablaTecnicas.COL_ID_SESION, mSesionId);
             cv.put(TablaTecnicas.COL_ID_TIPO_TECNICA, parentId);
-            cv.put(TablaTecnicas.COL_OBSERVACIONES, "KK");
+            //cv.put(TablaTecnicas.COL_OBSERVACIONES, "KK");
             //cv.put(TablaTecnicas.COL_VALOR, 1);
             mContext.getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
             mAdapter.notifyDataSetInvalidated();
         }
+    }
+
+
+    /**
+     * Añade a las técnicas seleccionadas las etiquetas que se elijan
+     */
+    private void addEtiquetas(final long[] selectedItems){
+        final ArrayList<Integer> etiquetaIdList;
+        AlertDialog.Builder ad;
+        ArrayAdapter<String> a;
+        String[] proyection;
+        String descript;
+        int idEtiqueta;
+        Cursor c;
+
+        etiquetaIdList  = new ArrayList<Integer>();
+        ad              = new AlertDialog.Builder(mContext);
+        a               = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1);
+        proyection      = new String[] {
+                TablaTiposDeEtiquetas.COL_DESCRIPCION,
+                TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA};
+
+        c = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_TIPO_ETIQUETAS, proyection, null, null, null);
+
+        while (c.moveToNext()){
+            descript    = c.getString(c.getColumnIndex(TablaTiposDeEtiquetas.COL_DESCRIPCION));
+            idEtiqueta  = c.getInt(c.getColumnIndex(TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA));
+
+            a.add(descript);
+            etiquetaIdList.add(idEtiqueta);
+        }
+        c.close();
+
+        ad.setAdapter(a, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ContentValues cv = new ContentValues();
+
+                dialogInterface.cancel();
+
+                for (long id : selectedItems) {
+                    cv.put(TablaEtiquetas.COL_ID_TECNICA, id);
+                    cv.put(TablaEtiquetas.COL_ID_TIPO_ETIQUETA, etiquetaIdList.get(i));
+                    mContext.getContentResolver().insert(QuiroGestProvider.CONTENT_URI_ETIQUETAS, cv);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+        }).show();
+
+/*        ad  .setMultiChoiceItems(c, TablaTiposDeEtiquetas.COL_ID_TIPO_ETIQUETA, TablaTiposDeEtiquetas.COL_DESCRIPCION, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which, boolean selected) {
+                if (selected) {
+                    selectedLabels.add(which);
+
+                } else {
+                    selectedLabels.remove(which);
+                }
+            }
+        })*/
     }
 
 
@@ -282,9 +346,16 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
                     getActivity().getContentResolver().delete(u,null,null);
                     mAdapter.notifyDataSetChanged();
                 }
-                Toast.makeText(getActivity(),"borrando elementos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"borrando elementos", Toast.LENGTH_SHORT).show();
+                //mode.finish(); // No es necesario, porque al borrar elementos seleccionados no queda ninguno seleccionado y se cierra solo el CAB
+                return false;
+
+            case R.id.contextualMenuAddLabel:
+                addEtiquetas(getListView().getCheckedItemIds());
                 mode.finish(); // Action picked, so close the CAB
-                return true;
+                return false;
+
+
             default:
                 return false;
         }

@@ -1,5 +1,10 @@
 package dan.android.quirogest.listFragments;
 
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -16,6 +21,7 @@ import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaSesiones;
+import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.tecnicas.TecnicasAdapter;
 
 /**
@@ -94,91 +100,83 @@ public class SesionesListFragment extends ListFragmentBase{//} implements AbsLis
 
 
     //********************************************************************************************//
-    // F R A G M E N T          L I F E C Y C L I N G
-    //********************************************************************************************//
-/*    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //necesario para que aparezca el menú
-        setHasOptionsMenu(true);
-    }
-
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //getListView().setChoiceMode(ListView.CHOICE_MODE_NONE);
-
-        //borrar elementos de la lista
-        ListView listView = getListView();
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setMultiChoiceModeListener(this);
-    }
-*/
-
-
-
-
-    //********************************************************************************************//
     // C O N T E X T U A L   A C T I O N   B A R
     //********************************************************************************************//
-/*    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        // Here you can perform updates to the CAB due to
-        // an invalidate() request
-        return false;
-    }
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        super.onCreateActionMode(mode, menu);
+
         // Inflate the menu for the CAB
         MenuInflater inflater = mode.getMenuInflater();
         inflater.inflate(R.menu.contextual_sesiones, menu);
         mode.setTitle("Select Items");
+
         return true;
     }
 
-    @Override
-    public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-        final int checkedCount = getListView().getCheckedItemCount();
-        switch (checkedCount) {
-            case 0:
-                mode.setSubtitle(null);
-                break;
-            case 1:
-                mode.setSubtitle("One item selected");
-                break;
-            default:
-                mode.setSubtitle("" + checkedCount + " items selected");
-                break;
-        }
-    }
-
 
     @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+    public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+        super.onActionItemClicked(mode, item);
+
         // Respond to clicks on the actions in the CAB
         switch (item.getItemId()) {
-            case R.id.contextualMenuDeleteItem:
-                Uri u;
-
+            case R.id.contextualMenuDuplicateSession:
                 for(long id : getListView().getCheckedItemIds()){
-                    u = Uri.withAppendedPath(getUri(), String.valueOf(id));
-                    getActivity().getContentResolver().delete(u,null,null);
+                    copySesion(getActivity(), id, mMotivoId);
                 }
                 mode.finish(); // Action picked, so close the CAB
-                return true;
+
+                return false;
             default:
                 return false;
         }
     }
 
 
-    @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        // Here you can make any necessary updates to the activity when
-        // the CAB is removed. By default, selected items are deselected/unchecked.
-    }
-*/
+    public static void copySesion(Context context, long idSesion, long idMotivo) {
+        Cursor c;
+        ContentValues cv;
+        Uri uriNuevaSesion;
 
+        cv = new ContentValues();
+
+        c = context.getContentResolver().query(
+                QuiroGestProvider.CONTENT_URI_SESIONES,
+                null,
+                TablaSesiones._ID + "=?",
+                new String[] {String.valueOf(idSesion)},
+                null
+        );
+        while (c.moveToNext()) {
+            cv.put(TablaSesiones.COL_DIAGNOSTICO, c.getString(c.getColumnIndex(TablaSesiones.COL_DIAGNOSTICO)));
+            cv.put(TablaSesiones.COL_DOLOR, c.getString(c.getColumnIndex(TablaSesiones.COL_DOLOR)));
+            cv.put(TablaSesiones.COL_ID_MOTIVO, idMotivo);
+            cv.put(TablaSesiones.COL_INGRESOS, c.getString(c.getColumnIndex(TablaSesiones.COL_INGRESOS)));
+            cv.put(TablaSesiones.COL_OBSERVACIONES, c.getString(c.getColumnIndex(TablaSesiones.COL_OBSERVACIONES)));
+            cv.put(TablaSesiones.COL_POSTRATAMIENTO, c.getString(c.getColumnIndex(TablaSesiones.COL_POSTRATAMIENTO)));
+        }
+        c.close();
+
+        uriNuevaSesion = context.getContentResolver().insert(QuiroGestProvider.CONTENT_URI_SESIONES,cv);
+
+
+        c = context.getContentResolver().query(
+                QuiroGestProvider.CONTENT_URI_TECNICAS,
+                null,
+                TablaTecnicas.COL_ID_SESION + "=?",
+                new String[] {String.valueOf(idSesion)},
+                null
+        );
+        while(c.moveToNext()) {
+            cv.clear();
+            cv.put(TablaTecnicas.COL_ID_SESION, uriNuevaSesion.getLastPathSegment());
+            cv.put(TablaTecnicas.COL_FECHA, c.getString(c.getColumnIndex(TablaTecnicas.COL_FECHA)));
+            cv.put(TablaTecnicas.COL_ID_TIPO_TECNICA, c.getString(c.getColumnIndex(TablaTecnicas.COL_ID_TIPO_TECNICA)));
+            cv.put(TablaTecnicas.COL_OBSERVACIONES, c.getString(c.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES)));
+            cv.put(TablaTecnicas.COL_VALOR, c.getString(c.getColumnIndex(TablaTecnicas.COL_VALOR)));
+            context.getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS,cv);
+        }
+        c.close();
+    }
 }

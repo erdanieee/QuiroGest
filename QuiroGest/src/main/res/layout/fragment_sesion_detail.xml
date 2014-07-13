@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnCount="2"
+    android:orientation="vertical"
     android:keepScreenOn="true">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/Etiqueta"
+        android:text="@string/NúmeroSesion" />
+
+    <dan.android.quirogest.views.LabelView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="false"
+        android:textAppearance="@style/EditTextOff"
+        android:id="@+id/textViewNumeroSesion"
+        android:text="prueba prueba" />
 
     <TextView
         android:id="@+id/textView1"
@@ -80,4 +95,4 @@
 
 
 
-</GridLayout>
+</LinearLayout>

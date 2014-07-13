@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/contextualMenuDeleteItem"
-        android:icon="@android:drawable/ic_menu_delete"
-        android:title="Borrar sesión"
+    <item android:id="@+id/contextualMenuDuplicateSession"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="Duplicar sesión"
         android:showAsAction="ifRoom"/>
 </menu>

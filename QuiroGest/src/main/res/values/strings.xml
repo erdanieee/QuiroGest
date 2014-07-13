@@ -5,7 +5,7 @@
     <string name="title_cliente_detail">Detalles de los contactos</string>
     <string name="telefono">Teléfono</string>
     <string name="email">Email</string>
-    <string name="direccion">Dirección</string>
+    <string name="direccion">Dirección/Localidad/provincia/CP</string>
     <string name="fechaNacimiento">Fecha de Nacimiento</string>
     <string name="profesion">Profesión</string>
     <string name="actividadFisica">Actividad física</string>
@@ -30,5 +30,6 @@
     <string name="activFisica">Actividad física</string>
     <string name="diagnosticoGeneral">Diagnóstico general</string>
     <string name="test">Medium Text</string>
+    <string name="NúmeroSesion">Número de sesión</string>
 
 </resources>

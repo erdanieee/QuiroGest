@@ -67,9 +67,9 @@ public class TablaSesiones  implements BaseColumns {
             COL_ID_MOTIVO       + " INTEGER, " +
             COL_NUM_SESION      + " INTEGER, " +
             COL_FECHA           + " TEXT DEFAULT CURRENT_DATE, " +
-            COL_DOLOR           + " INTEGER, " +
+            COL_DOLOR           + " INTEGER DEFAULT -1, " +
             COL_POSTRATAMIENTO  + " TEXT, " +
             COL_DIAGNOSTICO     + " TEXT, " +
-            COL_INGRESOS        + " INTEGER, " +
+            COL_INGRESOS        + " INTEGER DEFAULT -1, " +
             COL_OBSERVACIONES   + " TEXT)";
 }

@@ -81,19 +81,4 @@ public class SesionesListActivity extends Activity implements ListFragmentBase.C
                 break;
         }
     }
-
-
-    //********************************************************************************************//
-    // M A I N      M E N U
-    //********************************************************************************************//
-    /**
-     * Menú principal que aparece cuando se carga el fragmento
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_tecnicas, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
 }

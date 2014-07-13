@@ -67,8 +67,8 @@ public class TecnicasAdapter extends CursorAdapter{
         Cursor c;
         int viewType, nCols, nRows, num;
 
-        num                 = 0;
-        c                   = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_NUM_VIEWS_TECNICAS,null,null,null,null);
+        num = 0;
+        c   = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_NUM_VIEWS_TECNICAS,null,null,null,null);
 
         while (c.moveToNext()){
             viewType    = c.getInt(c.getColumnIndex(TablaTiposDeTecnicas.COL_VIEWTYPE));
@@ -113,7 +113,6 @@ public class TecnicasAdapter extends CursorAdapter{
         }
 
         try {
-            //vh.mView = new Tecnica(context, numCols, numRows, type);
             view = new Tecnica(context, type, numCols, numRows);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -121,7 +120,7 @@ public class TecnicasAdapter extends CursorAdapter{
             e.printStackTrace();
         }
 
-        //view = vh.mView;
+        //vh.mView = (Tecnica) view;
         //view.setTag(vh);
         return view;
     }
@@ -144,7 +143,7 @@ public class TecnicasAdapter extends CursorAdapter{
         colLabel    = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_LABELS_COLS));
         rowLabel    = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_LABELS_ROWS));
         observ      = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES));
-        //etiquetas   = cursor.getString(cursor.getColumnIndex(TecnicasListFragment.PROY_COMB));
+        //etiquetas  = cursor.getString(cursor.getColumnIndex(TecnicasListFragment.PROY_COMB));
         id          = cursor.getLong(cursor.getColumnIndex(TablaTecnicas._ID));
 
         Tecnica t = (Tecnica) view;

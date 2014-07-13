@@ -1,21 +1,24 @@
 package dan.android.quirogest.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaClientes;
+import dan.android.quirogest.database.TablaContactos;
 import dan.android.quirogest.database.TablaEtiquetas;
 import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.database.TablaSesiones;
@@ -28,9 +31,10 @@ import dan.android.quirogest.listFragments.MotivosListFragment;
 import dan.android.quirogest.tecnicas.TecnicasAdapter;
 
 
-public class ClienteListActivity extends Activity implements ListFragmentBase.CallbackItemClicked{
-    private static final String TAG = "ClienteListActivity";
+public class ContactosListActivity extends Activity implements ListFragmentBase.CallbackItemClicked{
+    private static final String TAG = "ContactosListActivity";
     private long mContactoId, mMotivoId;
+    private Context mContext;
 
 
 
@@ -52,7 +56,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
 
         //////////////// TEMPORAL /////////////////
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaClientes.TABLA_PACIENTES);
+        dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaContactos.TABLA_CONTACTOS);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaMotivos.TABLA_MOTIVOS);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaSesiones.TABLA_SESIONES);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaTecnicas.TABLA_TECNICAS);
@@ -60,7 +64,7 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaEtiquetas.TABLA_ETIQUETAS);
         dbHelper.getWritableDatabase().execSQL("DROP TABLE IF EXISTS " + TablaTiposDeEtiquetas.TABLA_TIPOS_ETIQUETAS);
 
-        dbHelper.getWritableDatabase().execSQL(TablaClientes.sqlCreateTableClientes);
+        dbHelper.getWritableDatabase().execSQL(TablaContactos.sqlCreateTableClientes);
         dbHelper.getWritableDatabase().execSQL(TablaMotivos.sqlCreateTableMotivos);
         dbHelper.getWritableDatabase().execSQL(TablaSesiones.sqlCreateTableSesiones);
         dbHelper.getWritableDatabase().execSQL(TablaTecnicas.sqlCreateTableTecnicas);
@@ -70,33 +74,33 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
 
         //insertamos algunos valores de ejemplo
         ContentValues cv = new ContentValues();
-        cv.put(TablaClientes._ID, 1);
-        cv.put(TablaClientes.COL_NOMBRE, "abejencio");
-        cv.put(TablaClientes.COL_APELLIDO1, "romua");
+        cv.put(TablaContactos._ID, 1);
+        cv.put(TablaContactos.COL_NOMBRE, "abejencio");
+        cv.put(TablaContactos.COL_APELLIDO1, "romua");
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_CONTACTOS, cv);
 
         cv = new ContentValues();
-        cv.put(TablaClientes._ID, 2);
-        cv.put(TablaClientes.COL_NOMBRE, "mostefat");
-        cv.put(TablaClientes.COL_MOVIL, "620587895");
+        cv.put(TablaContactos._ID, 2);
+        cv.put(TablaContactos.COL_NOMBRE, "mostefat");
+        cv.put(TablaContactos.COL_MOVIL, "620587895");
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_CONTACTOS, cv);
 
         cv = new ContentValues();
-        cv.put(TablaClientes._ID, 3);
-        cv.put(TablaClientes.COL_NOMBRE, "Mohamed");
-        cv.put(TablaClientes.COL_APELLIDO1, "Burgarit");
-        cv.put(TablaClientes.COL_APELLIDO2, "San petremari");
-        cv.put(TablaClientes.COL_MOVIL, "+41 365 445 545");
-        cv.put(TablaClientes.COL_FIJO, "+34 91 651 354");
-        cv.put(TablaClientes.COL_DIRECCION, "C/ San mortiburio epto 43, 1ºD");
-        cv.put(TablaClientes.COL_CP, "28100");
-        cv.put(TablaClientes.COL_LOCALIDAD, "Alcobendas");
-        cv.put(TablaClientes.COL_PROVINCIA, "Madrid");
-        cv.put(TablaClientes.COL_FECHA_NAC, "21/08/1981");
-        cv.put(TablaClientes.COL_PROFESION, "Vendedor de barras de mantequilla");
-        cv.put(TablaClientes.COL_ENFERMEDADES, "Aracnofobia");
-        cv.put(TablaClientes.COL_ALERGIAS, "Al agua bendita");
-        cv.put(TablaClientes.COL_OBSERVACIONES, "Me mira de forma cachondona");
+        cv.put(TablaContactos._ID, 3);
+        cv.put(TablaContactos.COL_NOMBRE, "Mohamed");
+        cv.put(TablaContactos.COL_APELLIDO1, "Burgarit");
+        cv.put(TablaContactos.COL_APELLIDO2, "San petremari");
+        cv.put(TablaContactos.COL_MOVIL, "+41 365 445 545");
+        cv.put(TablaContactos.COL_FIJO, "+34 91 651 354");
+        cv.put(TablaContactos.COL_DIRECCION, "C/ San mortiburio epto 43, 1ºD");
+        cv.put(TablaContactos.COL_CP, "28100");
+        cv.put(TablaContactos.COL_LOCALIDAD, "Alcobendas");
+        cv.put(TablaContactos.COL_PROVINCIA, "Madrid");
+        cv.put(TablaContactos.COL_FECHA_NAC, "1981-08-21");
+        cv.put(TablaContactos.COL_PROFESION, "Vendedor de barras de mantequilla");
+        cv.put(TablaContactos.COL_ENFERMEDADES, "Aracnofobia");
+        cv.put(TablaContactos.COL_ALERGIAS, "Al agua bendita");
+        cv.put(TablaContactos.COL_OBSERVACIONES, "Me mira de forma cachondona");
         getContentResolver().insert(QuiroGestProvider.CONTENT_URI_CONTACTOS, cv);
 
         cv = new ContentValues();
@@ -315,6 +319,63 @@ public class ClienteListActivity extends Activity implements ListFragmentBase.Ca
                 myIntent.putExtra(MotivosListActivity.MOTIVO_ID, mMotivoId);           //usado para seleccionar posición por defecto
                 startActivity(myIntent);
                 break;
+        }
+    }
+
+
+    //********************************************************************************************//
+    // M A I N      M E N U
+    //********************************************************************************************//
+    @Override
+    //Primero se llama a la activity, y llega aquí solo si la activity no consume el evento (return false)
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.mainMenuAddItem:      //TODO: en lugar de crear un dialogo, crear un motivo vacio y hacer la transicion para que se empiece a editar... Hacer lo mismo con las sesiones!!
+                ContentValues cv;
+                Uri newMotivoUri;
+                Cursor c;
+
+                cv  = new ContentValues();
+
+                cv.put(TablaMotivos.COL_ID_CONTACTO, mContactoId);
+                cv.put(TablaMotivos.COL_DIAGNOSTICO, "Nuevo Motivo");
+                newMotivoUri = getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
+
+                c = getContentResolver().query(newMotivoUri, new String[]{BaseColumns._ID},null,null,null);
+
+                if (c.moveToFirst()){
+                    mMotivoId = c.getLong(c.getColumnIndex(BaseColumns._ID));
+                    Intent myIntent = new Intent(getApplicationContext(), MotivosListActivity.class);
+                    myIntent.putExtra(MotivosListActivity.CONTACTO_ID, mContactoId);
+                    myIntent.putExtra(MotivosListActivity.MOTIVO_ID, mMotivoId);           //usado para seleccionar posición por defecto
+                    startActivity(myIntent);
+                }
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment f1, f2;
+
+        f1 = getFragmentManager().findFragmentById(R.id.detail_container);
+        f2 = getFragmentManager().findFragmentById(R.id.secondary_list_container);
+
+        if (f1!=null && f2!=null) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .remove(f1)
+                    .remove(f2)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+
+        } else {
+            super.onBackPressed();
         }
     }
 }

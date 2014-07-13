@@ -8,7 +8,7 @@ import android.net.Uri;
  */
 public interface ModificableView {
     public void setModificationParams(Uri uri, String tableColumn, int type);
-    public void setEditable (boolean e);
+    public void setWritable(boolean e);
     public boolean isEditable();
     public void setModificationCallback(LabelModificationListener c);
 }

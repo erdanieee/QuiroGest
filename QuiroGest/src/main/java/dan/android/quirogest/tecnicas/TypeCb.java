@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
+import dan.android.quirogest.R;
 import dan.android.quirogest.listFragments.TecnicasListFragment;
 
 /**
@@ -40,7 +40,7 @@ public class TypeCb extends CheckBox implements TecnicasListFragment.itemTecnica
         setClickable(b);
         setFocusable(b);
         if (b) {
-            setBackgroundColor(Color.DKGRAY);
+            setBackgroundColor(getResources().getColor(R.color.elementIsEditable));
         } else {
             setBackgroundColor(Color.TRANSPARENT);
         }

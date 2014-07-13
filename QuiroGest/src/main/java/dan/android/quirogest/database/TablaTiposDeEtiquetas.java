@@ -1,5 +1,7 @@
 package dan.android.quirogest.database;
 
+import android.provider.BaseColumns;
+
 /**
  * Created by dlopez on 23/10/13.
  */

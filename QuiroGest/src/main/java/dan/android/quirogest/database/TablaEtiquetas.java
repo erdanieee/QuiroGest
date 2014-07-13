@@ -13,6 +13,6 @@ public class TablaEtiquetas implements BaseColumns {
 
     public static final String sqlCreateTableEtiquetas = "CREATE TABLE " + TABLA_ETIQUETAS + " (" +
             _ID             + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COL_ID_TECNICA  + " TEXT, " +
-            COL_ID_TIPO_ETIQUETA + " TEXT)";
+            COL_ID_TECNICA  + " INTEGER, " +
+            COL_ID_TIPO_ETIQUETA + " INTEGER)";
 }

@@ -4,13 +4,8 @@ import android.content.Context;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
 import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.i(this.getClass().getSimpleName(), "Creando base de datos");
-        sqLiteDatabase.execSQL(TablaClientes.sqlCreateTableClientes);
+        sqLiteDatabase.execSQL(TablaContactos.sqlCreateTableClientes);
         //TODO!!
         //sqLiteDatabase.execSQL(sqlCreateTableMotivos);
         //sqLiteDatabase.execSQL(sqlCreateTableSesiones);
@@ -51,22 +46,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /** transforma fechas de SQLite al formato especificado */
     public static String parseSQLiteToDateformat(String date, SimpleDateFormat format) {
         String d = null;
-        d = format.format(parseSQLiteDate(date));
+
+        if (date!=null && format!=null) {
+            d = format.format(parseSQLiteDate(date));
+        }
 
         return d;
     }
 
 
+    public static String parseToSQLite(Date d) {
+        return new SimpleDateFormat(SQLITE_DATE_FORMAT).format(d);
+    }
+
     public static String parseToSQLite(int year, int month, int day) {
-        SimpleDateFormat sdf;
         Calendar c;
 
         c   = Calendar.getInstance();
-        sdf = new SimpleDateFormat(SQLITE_DATE_FORMAT);
-
         c.set(year, month, day);
 
-        return sdf.format(c.getTime());
+        return parseToSQLite(c.getTime());
     }
 
 
@@ -74,7 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Date d = null;
         try {
             d = new SimpleDateFormat(SQLITE_DATE_FORMAT).parse(date);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -1,42 +1,25 @@
 package dan.android.quirogest.detailFragments;
 
-import android.app.AlertDialog;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import dan.android.quirogest.FragmentBase.DetailFragmentBase;
 import dan.android.quirogest.R;
-import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.database.TablaSesiones;
-import dan.android.quirogest.database.TablaTecnicas;
-import dan.android.quirogest.views.LabelModificationListener;
 import dan.android.quirogest.views.LabelView;
 
 
 public class SesionDetailFragment extends DetailFragmentBase{
     private static final int    LAYOUT      = R.layout.fragment_sesion_detail;
     private final Uri           QUERY_URI   = QuiroGestProvider.CONTENT_URI_SESIONES;
-    private LabelView mDiagnostico, mFecha, mIngresos, mCuantifDolor, mObservaciones;
+    private LabelView mDiagnostico, mFecha, mIngresos, mCuantifDolor, mObservaciones, mNumeroSesion;
     //private ListView ;
 
     @Override
@@ -66,11 +49,12 @@ public class SesionDetailFragment extends DetailFragmentBase{
         setHasOptionsMenu(true);
 
         mRootView       = inflater.inflate(LAYOUT, container, false);
-        mDiagnostico    = (LabelView) mRootView.findViewById(R.id.textViewDiagnostico);
         mFecha          = (LabelView) mRootView.findViewById(R.id.textViewFecha);
+        mDiagnostico    = (LabelView) mRootView.findViewById(R.id.textViewDiagnostico);
         mIngresos       = (LabelView) mRootView.findViewById(R.id.textViewPrecio);
         mCuantifDolor   = (LabelView) mRootView.findViewById(R.id.textViewCuantificacionDolor);
         mObservaciones  = (LabelView) mRootView.findViewById(R.id.textViewObservaciones);
+        mNumeroSesion   = (LabelView) mRootView.findViewById(R.id.textViewNumeroSesion);
 
         mDiagnostico.setModificationParams(
                 Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_SESIONES, String.valueOf(getItemId())),
@@ -92,6 +76,10 @@ public class SesionDetailFragment extends DetailFragmentBase{
                 Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_SESIONES, String.valueOf(getItemId())),
                 TablaSesiones.COL_OBSERVACIONES,
                 LabelView.TYPE_TEXT);
+        mNumeroSesion.setModificationParams(
+                Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_SESIONES, String.valueOf(getItemId())),
+                TablaSesiones.COL_NUM_SESION,
+                LabelView.TYPE_NUM);
 
         return mRootView;
     }
@@ -117,9 +105,21 @@ public class SesionDetailFragment extends DetailFragmentBase{
             mCuantifDolor.setText(cuantifDolor.toString());
             mDiagnostico.setText(diagnostico);
             mIngresos.setText(ingresos.toString());
+            mNumeroSesion.setText(numSesion.toString());
         }
     }
 
+
+
+
+    //********************************************************************************************//
+    // M A I N      M E N U
+    //********************************************************************************************//
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main_tecnicas, menu);
+    }
 
 
     @Override
@@ -128,11 +128,12 @@ public class SesionDetailFragment extends DetailFragmentBase{
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.mainMenuEditItem:
-                mFecha.setEditable(!mFecha.isEditable());
-                mCuantifDolor.setEditable(!mCuantifDolor.isEditable());
-                mDiagnostico.setEditable(!mDiagnostico.isEditable());
-                mIngresos.setEditable(!mIngresos.isEditable());
-                mObservaciones.setEditable(!mObservaciones.isEditable());
+                mFecha.setWritable(!mFecha.isEditable());
+                mCuantifDolor.setWritable(!mCuantifDolor.isEditable());
+                mDiagnostico.setWritable(!mDiagnostico.isEditable());
+                mIngresos.setWritable(!mIngresos.isEditable());
+                mObservaciones.setWritable(!mObservaciones.isEditable());
+                mNumeroSesion.setWritable(!mNumeroSesion.isEditable());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

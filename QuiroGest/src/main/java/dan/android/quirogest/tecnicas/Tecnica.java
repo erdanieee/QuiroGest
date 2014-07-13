@@ -1,34 +1,24 @@
 package dan.android.quirogest.tecnicas;
 
-import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaTecnicas;
-import dan.android.quirogest.database.TablaTiposDeEtiquetas;
+import dan.android.quirogest.views.LabelView;
 
 import static dan.android.quirogest.listFragments.TecnicasListFragment.itemTecnicable;
 
@@ -37,7 +27,7 @@ import static dan.android.quirogest.listFragments.TecnicasListFragment.itemTecni
  */
 public class Tecnica extends RelativeLayout{
     private TextView mTitle;
-    private TextView mObserv;           //TODO: crear nueva clase que incluya el onClickListener, setWritable y dialogo de editar
+    private LabelView mObserv;
     private TableLayout mTable;
     private EtiquetasView mEtiquetasContainer;   //TODO: crear clase que gestione añadir/borrar etiquetas con el listener mChangeValueListener
     private ArrayList<TextView> mLabelsCols;
@@ -91,48 +81,15 @@ public class Tecnica extends RelativeLayout{
         //create common views
         mInflater.inflate(R.layout.tecnica_viewtype_grid, this);
         mTitle  = (TextView) findViewById(R.id.tecnicaDescripcion);
-        mObserv = (TextView) findViewById(R.id.tecnicaObservaciones);
+        mObserv = (LabelView) findViewById(R.id.tecnicaObservaciones);
         mTable  = (TableLayout) findViewById(R.id.tecnicaTable);
         mEtiquetasContainer = (EtiquetasView) findViewById(R.id.etiquetasContainer);
         this.setFocusable(false);
 
-        //catch changes in observations
-        mObserv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final EditText t;
-                AlertDialog.Builder d;
-
-                t = new EditText(mContext);
-                t.setInputType(InputType.TYPE_CLASS_TEXT);
-                t.setText(mObserv.getText());
-
-                d = new AlertDialog.Builder(mContext);
-                d.setTitle("Introduce el nuevo valor");
-                d.setView(t);
-
-                d.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mObserv.setText(t.getText().toString());
-
-                        cv = new ContentValues();
-
-                        cv.put(TablaTecnicas.COL_OBSERVACIONES, mObserv.getText().toString());
-                        Log.d("Tecnica.class", "updating tecnicaId: " + tecnicaID + " value: " + cv.toString());
-
-                        mContext.getContentResolver().update(ContentUris.withAppendedId(QuiroGestProvider.CONTENT_URI_TECNICAS, tecnicaID), cv, null, null);
-                    }
-                });
-                d.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                d.show();
-            }
-        });
+        mObserv.setModificationParams(ContentUris.withAppendedId(
+                QuiroGestProvider.CONTENT_URI_TECNICAS, tecnicaID),
+                TablaTecnicas.COL_OBSERVACIONES,
+                LabelView.TYPE_TEXT);
 
         //create columns labels
         TextView cell;
@@ -189,10 +146,7 @@ public class Tecnica extends RelativeLayout{
             i.setWritable(b);
         }
 
-        mObserv.setEnabled(b);
-        mObserv.setFocusable(b);
-        mObserv.setFocusableInTouchMode(b);
-
+        mObserv.setWritable(b);
         mEtiquetasContainer.setWritable(b);
     }
 
@@ -258,7 +212,7 @@ public class Tecnica extends RelativeLayout{
 
 
     public void setmObserv(String o) {
-        updateTextView(mObserv, o);
+        mObserv.setText(o);
     }
 
 

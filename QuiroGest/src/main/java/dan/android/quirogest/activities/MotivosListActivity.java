@@ -95,15 +95,6 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
     //********************************************************************************************//
     // M A I N      M E N U
     //********************************************************************************************//
-    /**
-     * Menú principal que aparece cuando se carga el fragmento
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_tecnicas, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     @Override
     //Primero se llama a la activity, y llega aquí solo si la activity no consume el evento (return false)
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -111,27 +102,19 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
         switch (item.getItemId()) {
             case R.id.mainMenuAddItem:
                 ContentValues cv;
-                Calendar c;
                 long nSesiones;
 
-                c           = Calendar.getInstance();
                 cv          = new ContentValues();
                 nSesiones   = getContentResolver().query(
                         QuiroGestProvider.CONTENT_URI_SESIONES,
-                        null,
-                        TablaSesiones.COL_ID_MOTIVO + "=" + mMotivoId,
-                        null,
+                        new String[] {TablaSesiones._ID},
+                        TablaSesiones.COL_ID_MOTIVO + "=?",
+                        new String[] {String.valueOf(mMotivoId)},
                         null
                         ).getCount();
 
                 cv.put(TablaSesiones.COL_ID_MOTIVO, mMotivoId);
-                cv.put(TablaSesiones.COL_DIAGNOSTICO, "XXX");
-                cv.put(TablaSesiones.COL_DOLOR, TablaSesiones.CuantificacionDolor.DOLOR_5.toSQLite());
-                cv.put(TablaSesiones.COL_FECHA, DatabaseHelper.parseToSQLite(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)));
-                cv.put(TablaSesiones.COL_INGRESOS, 0);
                 cv.put(TablaSesiones.COL_NUM_SESION, nSesiones + 1);
-                cv.put(TablaSesiones.COL_OBSERVACIONES, "XXX");
-                cv.put(TablaSesiones.COL_POSTRATAMIENTO, "XXX");
                 getContentResolver().insert(QuiroGestProvider.CONTENT_URI_SESIONES, cv);
                 return true;
             default:

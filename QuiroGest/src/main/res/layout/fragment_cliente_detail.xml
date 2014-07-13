@@ -16,16 +16,33 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"/>
 
-    <TextView
-        android:id="@+id/textViewNombreCompleto"
+    <dan.android.quirogest.views.LabelView
+        android:id="@+id/textViewNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textIsSelectable="true"
-        android:textAlignment="viewEnd"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@dimen/ExtraLargeText"
+        android:layout_toRightOf="@+id/imageViewFoto"/>
+    <dan.android.quirogest.views.LabelView
+        android:id="@+id/textViewApellido1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/ExtraLargeText"
         android:layout_toRightOf="@+id/imageViewFoto"
-        android:text="Prueba de nombre" />
+        android:layout_below="@+id/textViewNombre"/>
+    <dan.android.quirogest.views.LabelView
+        android:id="@+id/textViewApellido2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@dimen/ExtraLargeText"
+        android:layout_toRightOf="@+id/imageViewFoto"
+        android:layout_below="@+id/textViewApellido1"/>
+    
 
     <ScrollView
             android:layout_width="fill_parent"
@@ -45,12 +62,12 @@
                 android:text="@string/telefono"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextMovil"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextFijo"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
@@ -64,8 +81,7 @@
                 android:text="@string/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextEmail"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
@@ -79,22 +95,22 @@
                 android:text="@string/direccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextDireccion"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextLocalidad"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextProvincia"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextCP"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
@@ -108,7 +124,7 @@
                 android:text="@string/fechaNacimiento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextFechaNacimiento"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
@@ -122,7 +138,7 @@
                 android:text="@string/profesion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextProfesion"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
@@ -136,7 +152,7 @@
                 android:text="@string/enfermedades"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextEnfermedades"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
@@ -150,7 +166,7 @@
                 android:text="@string/alergias"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextAlergias"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
@@ -164,7 +180,7 @@
                 android:text="@string/observaciones"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
+            <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextObservaciones"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"

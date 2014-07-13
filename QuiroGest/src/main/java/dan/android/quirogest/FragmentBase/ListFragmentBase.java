@@ -1,9 +1,13 @@
 package dan.android.quirogest.FragmentBase;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -23,6 +27,7 @@ import java.text.SimpleDateFormat;
 
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
+import dan.android.quirogest.detailFragments.ClienteDetailFragment;
 import dan.android.quirogest.views.LabelView;
 
 
@@ -229,7 +234,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         // Inflate the menu for the CAB
         MenuInflater inflater = mode.getMenuInflater();
-        inflater.inflate(R.menu.contextual_sesiones, menu);
+        inflater.inflate(R.menu.contextual_delete, menu);
         mode.setTitle("Select Items");
         return true;
     }
@@ -252,19 +257,62 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
 
 
     @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+    public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
         // Respond to clicks on the actions in the CAB
         switch (item.getItemId()) {
             case R.id.contextualMenuDeleteItem:
-                Uri u;
+                AlertDialog.Builder adb;
 
-                for(long id : getListView().getCheckedItemIds()){
-                    u = Uri.withAppendedPath(getUri(), String.valueOf(id));
-                    getActivity().getContentResolver().delete(u,null,null);
-                    mAdapter.notifyDataSetChanged();
-                }
-                mode.finish(); // Action picked, so close the CAB
-                return true;
+                adb = new AlertDialog.Builder(getActivity());
+
+                adb.setIcon(android.R.drawable.ic_dialog_alert);
+                adb.setTitle("Confirmación de borrado");
+                adb.setMessage("El borrado será irrecuperable ¿Está seguro de que desea continuar?");
+
+                adb.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Uri u;
+                        Fragment f1, f2;
+                        long idItemShowed;
+                        DetailFragmentBase dfb=null;
+
+                        f1  = getFragmentManager().findFragmentById(R.id.detail_container);
+                        f2  = getFragmentManager().findFragmentById(R.id.secondary_list_container);
+
+                        for(long id : getListView().getCheckedItemIds()){
+                            u = Uri.withAppendedPath(getUri(), String.valueOf(id));
+                            getActivity().getContentResolver().delete(u,null,null);
+                            mAdapter.notifyDataSetChanged();
+
+                            try {
+                                if (f1 instanceof DetailFragmentBase) {
+                                    dfb = (DetailFragmentBase) f1;
+                                } else if (f2 instanceof DetailFragmentBase) {
+                                    dfb = (DetailFragmentBase) f2;
+                                }
+
+                                if (f1 != null && f2 != null && dfb.getItemId() == id) {
+                                    getFragmentManager()
+                                            .beginTransaction()
+                                            .remove(f1)
+                                            .remove(f2)
+                                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                            .commit();
+                                }
+                            } catch (Exception e){
+                                Log.e(this.getClass().toString(), "No se ha podido cerrar la ventana!");
+                            }
+                        }
+                        mode.finish(); // Action picked, so close the CAB
+                    }
+                });
+
+                adb.setNegativeButton(android.R.string.no,null);
+
+                adb.show();
+
+                return false;
             default:
                 return false;
         }
