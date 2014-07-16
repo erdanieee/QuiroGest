@@ -105,7 +105,12 @@ public class TecnicasAdapter extends CursorAdapter{
                 break;
 
             case VIEWTYPE_NUMBER:
-                type = TypeNum.class;
+                type = TypeNum3.class;
+                break;
+
+            case VIEWTYPE_TEXT:
+            case VIEWTYPE_SECTION:
+                type = TypeCb.class; //TODO: implementar!!!
                 break;
 
             default:
@@ -128,7 +133,7 @@ public class TecnicasAdapter extends CursorAdapter{
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        int min, max, idPadre;
+        Integer min, max, idPadre;
         long id;
         String colLabel, rowLabel, observ, title, values;
         //ViewHolder mHolder = (ViewHolder) view.getTag();

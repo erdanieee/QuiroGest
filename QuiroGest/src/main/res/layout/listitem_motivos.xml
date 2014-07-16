@@ -22,4 +22,6 @@ android:padding="10dp">
     android:layout_below="@+id/textViewMotivo"
     android:layout_alignParentLeft="true" />
 
+
+
 </RelativeLayout>

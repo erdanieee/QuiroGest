@@ -58,7 +58,10 @@ public class TypeNum extends TextView implements TecnicasListFragment.itemTecnic
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         setText(t.getText().toString());
-                        onValueChanged();
+                        if (mChangeValueListener != null){
+                            mChangeValueListener.valueChanged();
+                            Log.d("TecnicaNum", "value changed");
+                        }
                     }
                 });
                 d.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -78,9 +81,19 @@ public class TypeNum extends TextView implements TecnicasListFragment.itemTecnic
         this.setText(String.valueOf(value));
     }
 
+    @Override
+    public void setMax(Integer max) {
+
+    }
 
     @Override
-    public String getValue() { return getText().toString(); }
+    public void setMin(Integer min) {
+
+    }
+
+
+    @Override
+    public String getStringValue() { return getText().toString(); }
 
 
     @Override
@@ -99,20 +112,6 @@ public class TypeNum extends TextView implements TecnicasListFragment.itemTecnic
     @Override
     public void setDefaultValue() {
         setValue(0);
-    }
-
-
-    /*@Override
-    public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-        return false;
-    }*/
-
-    public void onValueChanged(){
-        if (mChangeValueListener != null){
-            mChangeValueListener.valueChanged();
-            Log.d("TecnicaNum", "value changed");
-        }
     }
 
 

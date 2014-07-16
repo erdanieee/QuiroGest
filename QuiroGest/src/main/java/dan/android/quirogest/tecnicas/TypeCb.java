@@ -21,7 +21,10 @@ public class TypeCb extends CheckBox implements TecnicasListFragment.itemTecnica
         this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                onValueChanged();
+                if (mChangeValueListener != null){
+                    mChangeValueListener.valueChanged();
+                    Log.d("TecnicaCb", "value changed");
+                }
             }
         });
     }
@@ -33,7 +36,17 @@ public class TypeCb extends CheckBox implements TecnicasListFragment.itemTecnica
     }
 
     @Override
-    public String getValue() { return isChecked()? "1" : "0"; }
+    public void setMax(Integer max) {
+
+    }
+
+    @Override
+    public void setMin(Integer min) {
+
+    }
+
+    @Override
+    public String getStringValue() { return isChecked()? "1" : "0"; }
 
     @Override
     public void setWritable(boolean b) {
@@ -49,14 +62,6 @@ public class TypeCb extends CheckBox implements TecnicasListFragment.itemTecnica
     @Override
     public void setDefaultValue() {
         setValue(0);
-    }
-
-
-    public void onValueChanged(){
-        if (mChangeValueListener != null){
-            mChangeValueListener.valueChanged();
-            Log.d("TecnicaCb", "value changed");
-        }
     }
 
 

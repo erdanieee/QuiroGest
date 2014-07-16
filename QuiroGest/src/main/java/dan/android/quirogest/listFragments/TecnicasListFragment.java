@@ -76,7 +76,9 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
     public interface itemTecnicable{
         public void setChangeValueListener(Tecnica.ChangeValueListener l);
         public void setValue(int value);
-        public String getValue();
+        public void setMax(Integer max);
+        public void setMin(Integer min);
+        public String getStringValue();
         public void setWritable(boolean b);
 
         void setDefaultValue();

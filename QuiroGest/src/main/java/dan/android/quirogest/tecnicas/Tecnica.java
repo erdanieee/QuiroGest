@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -65,7 +66,7 @@ public class Tecnica extends RelativeLayout{
                 sb = new StringBuffer();
 
                 for (itemTecnicable i : mViews){
-                    sb.append(i.getValue());
+                    sb.append(i.getStringValue());
                     sb.append(",");
                 }
 
@@ -86,17 +87,13 @@ public class Tecnica extends RelativeLayout{
         mEtiquetasContainer = (EtiquetasView) findViewById(R.id.etiquetasContainer);
         this.setFocusable(false);
 
-        mObserv.setModificationParams(ContentUris.withAppendedId(
-                QuiroGestProvider.CONTENT_URI_TECNICAS, tecnicaID),
-                TablaTecnicas.COL_OBSERVACIONES,
-                LabelView.TYPE_TEXT);
-
         //create columns labels
         TextView cell;
         TableRow tr = new TableRow(context);
         tr.addView(new TextView(context));
         for (int c=0; c<cols; c++){
             cell = new TextView(context);
+            //cell.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
             mLabelsCols.add(cell);
             tr.addView(cell);
         }
@@ -151,7 +148,6 @@ public class Tecnica extends RelativeLayout{
     }
 
 
-
     public void setValues(String values) {
         if (values!=null) {
             String[] v = values.split(",");
@@ -166,12 +162,6 @@ public class Tecnica extends RelativeLayout{
             }
         }
     }
-
-
-    public void setMin(int min) { } //TODO
-
-
-    public void setMax(int max) { } //TODO
 
 
     public void setParentId(int parentId) { } //TODO
@@ -208,7 +198,14 @@ public class Tecnica extends RelativeLayout{
     }
 
 
-    public void setId(long id) { tecnicaID = id;}
+    public void setId(long id) {
+        tecnicaID = id;
+
+        mObserv.setModificationParams(ContentUris.withAppendedId(
+                        QuiroGestProvider.CONTENT_URI_TECNICAS, tecnicaID),
+                TablaTecnicas.COL_OBSERVACIONES,
+                LabelView.TYPE_TEXT);
+    }
 
 
     public void setmObserv(String o) {
@@ -228,6 +225,18 @@ public class Tecnica extends RelativeLayout{
 
     public void setEtiquetas(long idTecnica) {
         mEtiquetasContainer.loadEtiquetas(idTecnica);
+    }
+
+    public void setMin(int min) {
+        for (int i = 0; i < mViews.size(); i++) {
+            ((itemTecnicable) mViews.get(i)).setMin(min);
+        }
+    }
+
+    public void setMax(int max) {
+        for (int i = 0; i < mViews.size(); i++) {
+            ((itemTecnicable) mViews.get(i)).setMin(max);
+        }
     }
 
 

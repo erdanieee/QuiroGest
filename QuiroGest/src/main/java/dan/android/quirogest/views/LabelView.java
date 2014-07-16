@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -159,14 +160,7 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
                     d.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            String newText;
-
-                            newText = t.getText().toString();
-                            cv      = new ContentValues();
-
-                            cv.put(mColumn, newText);
-                            getContext().getContentResolver().update(mUri, cv, null, null);
-                            setText(newText);
+                            updateDb(t.getText().toString());
                         }
                     });
                     d.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -195,17 +189,8 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
                     dp = new DatePickerDialog(getContext(),new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                            String newText;
+                            updateDb(DatabaseHelper.parseToSQLite(year, month, day));
 
-                            newText = DatabaseHelper.parseToSQLite(year, month, day);
-                            cv      = new ContentValues();
-
-                            cv.put(mColumn, newText);
-                            getContext().getContentResolver().update(mUri, cv, null, null);
-                            setText(newText);
-                            if (mLabelModificationListener!=null){
-                                mLabelModificationListener.onLabelModification(mText);
-                            }
                         }
                     },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
@@ -226,5 +211,16 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
                 t = InputType.TYPE_CLASS_DATETIME;
         }
         return t;
+    }
+
+
+    private void updateDb(String newValue){
+        Log.d(getClass().toString(), "nuevo valor: " + newValue);
+        cv  = new ContentValues();
+
+        cv.put(mColumn, newValue);
+        getContext().getContentResolver().update(mUri, cv, null, null);
+
+        setText(newValue);
     }
 }
