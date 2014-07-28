@@ -1,7 +1,6 @@
 package dan.android.quirogest.detailFragments;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.Inflater;
 
 import dan.android.quirogest.FragmentBase.DetailFragmentBase;
 import dan.android.quirogest.R;
@@ -27,8 +25,6 @@ import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaContactos;
 import dan.android.quirogest.database.TablaMotivos;
 import dan.android.quirogest.database.TablaSesiones;
-import dan.android.quirogest.database.TablaTecnicas;
-import dan.android.quirogest.database.TablaTiposDeTecnicas;
 import dan.android.quirogest.listFragments.SesionesListFragment;
 import dan.android.quirogest.views.LabelModificationListener;
 import dan.android.quirogest.views.LabelView;
@@ -37,7 +33,8 @@ import dan.android.quirogest.views.LabelView;
 public class MotivoDetailFragment extends DetailFragmentBase{
     private static final int    LAYOUT      = R.layout.fragment_motivo_detail;
     private final Uri           QUERY_URI   = QuiroGestProvider.CONTENT_URI_MOTIVOS;
-    private LabelView mFecha, mDescripcion, mComienzoDolor, mEstadoSalud, mActivFisica, mDiagnostico, mObservaciones;
+    private LabelView mFecha, mQue, mDonde, mCuando, mComo, mDesdeCuando, mAparacion, mConcomitancia, mAntecedentes, mActivFisica, mObserv;
+
 
     @Override
     public Uri      getUri()        { return QUERY_URI; }
@@ -73,32 +70,50 @@ public class MotivoDetailFragment extends DetailFragmentBase{
 
         mRootView       = inflater.inflate(LAYOUT, container, false);
         mFecha          = (LabelView) mRootView.findViewById(R.id.textViewFecha);
-        mDescripcion    = (LabelView) mRootView.findViewById(R.id.textViewDescripcion);
-        mComienzoDolor  = (LabelView) mRootView.findViewById(R.id.textViewComienzoDolor);
-        mEstadoSalud    = (LabelView) mRootView.findViewById(R.id.textViewEstadoSalud);
+        mQue            = (LabelView) mRootView.findViewById(R.id.textViewQuePasa);
+        mDonde          = (LabelView) mRootView.findViewById(R.id.textViewDondeDuele);
+        mCuando         = (LabelView) mRootView.findViewById(R.id.textViewCuandoDuele);
+        mComo           = (LabelView) mRootView.findViewById(R.id.textViewFormaDolor);
+        mDesdeCuando    = (LabelView) mRootView.findViewById(R.id.textViewDesdeCuando);
+        mAparacion      = (LabelView) mRootView.findViewById(R.id.textViewAparicion);
+        mConcomitancia  = (LabelView) mRootView.findViewById(R.id.textViewConcomitancia);
+        mAntecedentes   = (LabelView) mRootView.findViewById(R.id.textViewCicatrices);
         mActivFisica    = (LabelView) mRootView.findViewById(R.id.textViewActividadFisica);
-        mDiagnostico    = (LabelView) mRootView.findViewById(R.id.textViewDiagnostico);
-        mObservaciones  = (LabelView) mRootView.findViewById(R.id.textViewObservaciones);
+        mObserv         = (LabelView) mRootView.findViewById(R.id.textViewObservaciones);
+
+
 
         mFecha.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
                 TablaMotivos.COL_FECHA,
                 LabelView.TYPE_DATE);
-        mDescripcion.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
-                TablaMotivos.COL_DESCRIPCION,
+        mQue.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+                TablaMotivos.COL_QUE_PASA,
                 LabelView.TYPE_TEXT);
-        mComienzoDolor.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
-                TablaMotivos.COL_COMIENZO,
+        mDonde.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+                TablaMotivos.COL_DONDE_DUELE,
+                LabelView.TYPE_TEXT);
+        mCuando.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+                TablaMotivos.COL_CUANDO_DUELE,
+                LabelView.TYPE_TEXT);
+        mComo.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+                TablaMotivos.COL_COMO_DUELE,
+                LabelView.TYPE_TEXT);
+        mDesdeCuando.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+                TablaMotivos.COL_DESDE_CUANDO,
                 LabelView.TYPE_DATE);
-        mEstadoSalud.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
-                TablaMotivos.COL_ESTADO_SALUD,
-                LabelView.TYPE_NUM);
+        mAparacion.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+                TablaMotivos.COL_FORMA_APARICION,
+                LabelView.TYPE_TEXT);
+        mConcomitancia.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+                TablaMotivos.COL_CONCOMITANCIA,
+                LabelView.TYPE_TEXT);
+        mAntecedentes.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+                TablaMotivos.COL_ANTECEDENTES,
+                LabelView.TYPE_TEXT);
         mActivFisica.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
                 TablaMotivos.COL_ACTIV_FISICA,
                 LabelView.TYPE_TEXT);
-        mDiagnostico.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
-                TablaMotivos.COL_DIAGNOSTICO,
-                LabelView.TYPE_TEXT);
-        mObservaciones.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
+        mObserv.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_MOTIVOS, String.valueOf(getItemId())),
                 TablaMotivos.COL_OBSERVACIONES,
                 LabelView.TYPE_TEXT);
 
@@ -111,47 +126,55 @@ public class MotivoDetailFragment extends DetailFragmentBase{
         super.onViewCreated(view, savedInstanceState);
 
         if (null!=getCursor() && getCursor().moveToFirst()){
-            String fecha, descripcion, comienzo, activFisica, diagnostico, observaciones;
-            int estadoSalud;
+            String fecha, que, donde, cuando, como, desdeCuando, aparacion, concomitancia, antecedentes, activFisica, observ;
 
             fecha           = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_FECHA));
-            descripcion     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_DESCRIPCION));
-            comienzo        = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_COMIENZO));
+            que             = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_QUE_PASA));
+            donde           = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_DONDE_DUELE));
+            cuando          = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_CUANDO_DUELE));
+            como            = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_COMO_DUELE));
+            desdeCuando     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_DESDE_CUANDO));
+            aparacion       = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_FORMA_APARICION));
+            concomitancia   = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_CONCOMITANCIA));
+            antecedentes    = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_ANTECEDENTES));
             activFisica     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_ACTIV_FISICA));
-            diagnostico     = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_DIAGNOSTICO));
-            observaciones   = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_OBSERVACIONES));
-            estadoSalud     = getCursor().getInt(getCursor().getColumnIndex(TablaMotivos.COL_ESTADO_SALUD));
+            observ          = getCursor().getString(getCursor().getColumnIndex(TablaMotivos.COL_OBSERVACIONES));
 
             mFecha.setText(fecha);
-            mDescripcion.setText(descripcion);
+            mQue.setText(que);
+            mDonde.setText(donde);
+            mCuando.setText(cuando);
+            mComo.setText(como);
+            mDesdeCuando.setText(desdeCuando);
+            mAparacion.setText(aparacion);
+            mConcomitancia.setText(concomitancia);
+            mAntecedentes.setText(antecedentes);
             mActivFisica.setText(activFisica);
-            mDiagnostico.setText(diagnostico);
-            mObservaciones.setText(observaciones);
-            mEstadoSalud.setText(String.valueOf(estadoSalud));
+            mObserv.setText(observ);
 
-            mComienzoDolor.setModificationCallback(new LabelModificationListener() {        //FIXME: tiene que asignar el callback antes de definir el texto para que se actualice
+            mDesdeCuando.setModificationCallback(new LabelModificationListener() {        //FIXME: tiene que asignar el callback antes de definir el texto para que se actualice
                 @Override
                 public void onLabelModification(String t) {
-                    mComienzoDolor.setAltText(getElapsedTime(mComienzoDolor.getText().toString(), mFecha.getText().toString()));
+                    mDesdeCuando.setAltText(getElapsedTime(mDesdeCuando.getText().toString(), mFecha.getText().toString()));
                 }
             });
-            mComienzoDolor.setText(comienzo);
+            mDesdeCuando.setText(desdeCuando);
 
         }
     }
 
 
-    private String getElapsedTime(String fechaComienzo, String fechaMotivoConsulta){
-        Date dateComienzo, dateMotivo;
+    public static String getElapsedTime(String from, String to){
+        Date dateFrom, dateTo;
         long diff=0;
         long dias, semanas, meses, anios, resto;
         String tiempoTranscurrido="";
         boolean temp=false;
 
         try {
-            dateComienzo    = new SimpleDateFormat(LabelView.DATE_FORMAT).parse(fechaComienzo);
-            dateMotivo      = new SimpleDateFormat(LabelView.DATE_FORMAT).parse(fechaMotivoConsulta);
-            diff            = dateMotivo.getTime()-dateComienzo.getTime();
+            dateFrom    = new SimpleDateFormat(LabelView.DATE_FORMAT).parse(from);
+            dateTo      = new SimpleDateFormat(LabelView.DATE_FORMAT).parse(to);
+            diff        = dateTo.getTime()-dateFrom.getTime();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -217,12 +240,16 @@ public class MotivoDetailFragment extends DetailFragmentBase{
         switch (item.getItemId()) {
             case R.id.mainMenuEditItem:
                 mFecha.setWritable(!mFecha.isEditable());
-                mDescripcion.setWritable(!mDescripcion.isEditable());
-                mComienzoDolor.setWritable(!mComienzoDolor.isEditable());
-                mEstadoSalud.setWritable(!mEstadoSalud.isEditable());
+                mQue.setWritable(!mQue.isEditable());
+                mDonde.setWritable(!mDonde.isEditable());
+                mCuando.setWritable(!mCuando.isEditable());
+                mComo.setWritable(!mComo.isEditable());
+                mDesdeCuando.setWritable(!mDesdeCuando.isEditable());
+                mAparacion.setWritable(!mAparacion.isEditable());
+                mConcomitancia.setWritable(!mConcomitancia.isEditable());
+                mAntecedentes.setWritable(!mAntecedentes.isEditable());
                 mActivFisica.setWritable(!mActivFisica.isEditable());
-                mDiagnostico.setWritable(!mDiagnostico.isEditable());
-                mObservaciones.setWritable(!mObservaciones.isEditable());
+                mObserv.setWritable(!mObserv.isEditable());
                 return false;
 
             case R.id.mainMenuCopyItemFrom:
@@ -248,7 +275,7 @@ public class MotivoDetailFragment extends DetailFragmentBase{
                 selections.add(TablaSesiones.COL_ID_MOTIVO + "=?");
 
                 tittles.add(new String[] {TablaContactos.COL_NOMBRE, TablaContactos.COL_APELLIDO1});
-                tittles.add(new String[] {TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_FECHA});
+                tittles.add(new String[] {TablaMotivos.COL_FECHA});
                 tittles.add(new String[] {TablaSesiones.COL_NUM_SESION, TablaSesiones.COL_FECHA});
 
                 getSelectedId(uris,colIds,tittles,selections,null);

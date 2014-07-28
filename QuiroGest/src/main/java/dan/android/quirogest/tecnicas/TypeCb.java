@@ -65,6 +65,7 @@ public class TypeCb extends CheckBox implements TecnicasListFragment.itemTecnica
     }
 
 
+
     public void setChangeValueListener(Tecnica.ChangeValueListener l){
         mChangeValueListener = l;
     }

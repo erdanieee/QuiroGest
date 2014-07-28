@@ -56,6 +56,89 @@
                 android:orientation="vertical"  >
 
 
+            <!--Fecha de nacimiento-->
+            <TextView
+                style="@style/Etiqueta"
+                android:text="@string/fechaNacimiento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                    <dan.android.quirogest.views.LabelView
+                        android:id="@+id/EditTextFechaNacimiento"
+                        style="@style/EditTextOff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/TextViewEdad"
+                        style="@style/Etiqueta"
+                        android:text="no se puede calcular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+
+
+            <!--Enfermedades-->
+            <TextView
+                style="@style/Etiqueta"
+                android:text="@string/enfermedades"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <dan.android.quirogest.views.LabelView
+                android:id="@+id/EditTextEnfermedades"
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+
+            <!--Alergias-->
+            <TextView
+                style="@style/Etiqueta"
+                android:text="@string/alergias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <dan.android.quirogest.views.LabelView
+                android:id="@+id/EditTextAlergias"
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+
+
+            <!--Profesión-->
+            <TextView
+                style="@style/Etiqueta"
+                android:text="@string/profesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <dan.android.quirogest.views.LabelView
+                android:id="@+id/EditTextProfesion"
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+
+            <!--Observaciones-->
+            <TextView
+                style="@style/Etiqueta"
+                android:text="@string/observaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <dan.android.quirogest.views.LabelView
+                android:id="@+id/EditTextObservaciones"
+                style="@style/EditTextOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+
             <!--Telefono-->
             <TextView
                 style="@style/Etiqueta"
@@ -69,20 +152,6 @@
                 android:layout_height="wrap_content"/>
             <dan.android.quirogest.views.LabelView
                 android:id="@+id/EditTextFijo"
-                style="@style/EditTextOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
-
-            <!--email-->
-            <TextView
-                style="@style/Etiqueta"
-                android:text="@string/email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <dan.android.quirogest.views.LabelView
-                android:id="@+id/EditTextEmail"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -118,74 +187,17 @@
 
 
 
-            <!--Fecha de nacimiento-->
+            <!--email-->
             <TextView
                 style="@style/Etiqueta"
-                android:text="@string/fechaNacimiento"
+                android:text="@string/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <dan.android.quirogest.views.LabelView
-                android:id="@+id/EditTextFechaNacimiento"
+                android:id="@+id/EditTextEmail"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
-
-
-            <!--Profesión-->
-            <TextView
-                style="@style/Etiqueta"
-                android:text="@string/profesion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <dan.android.quirogest.views.LabelView
-                android:id="@+id/EditTextProfesion"
-                style="@style/EditTextOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
-
-            <!--Enfermedades-->
-            <TextView
-                style="@style/Etiqueta"
-                android:text="@string/enfermedades"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <dan.android.quirogest.views.LabelView
-                android:id="@+id/EditTextEnfermedades"
-                style="@style/EditTextOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
-
-            <!--Alergias-->
-            <TextView
-                style="@style/Etiqueta"
-                android:text="@string/alergias"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <dan.android.quirogest.views.LabelView
-                android:id="@+id/EditTextAlergias"
-                style="@style/EditTextOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-
-
-            <!--Observaciones-->
-            <TextView
-                style="@style/Etiqueta"
-                android:text="@string/observaciones"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <dan.android.quirogest.views.LabelView
-                android:id="@+id/EditTextObservaciones"
-                style="@style/EditTextOff"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
         </LinearLayout>
     </ScrollView>
 

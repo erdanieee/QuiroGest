@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/contextualMenuMoveUp"
+        android:icon="@android:drawable/arrow_up_float"
+        android:title="Subir"
+        android:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/contextualMenuMoveDown"
+        android:icon="@android:drawable/arrow_down_float"
+        android:title="Bajar"
+        android:showAsAction="ifRoom"/>
+
     <item android:id="@+id/contextualMenuAddLabel"
         android:icon="@android:drawable/ic_input_add"
         android:title="Añadir etiqueta"

@@ -28,7 +28,7 @@ public class TablaContactos implements BaseColumns{
     public static final String COL_FOTO             = "foto"            + "_" + TABLA_CONTACTOS;
 
 
-    public static final String sqlCreateTableClientes = "CREATE TABLE " + TABLA_CONTACTOS + " (" +
+    public static final String sqlCreateTableContactos = "CREATE TABLE " + TABLA_CONTACTOS + " (" +
             _ID                 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COL_NOMBRE          + " TEXT, " +
             COL_APELLIDO1       + " TEXT, " +

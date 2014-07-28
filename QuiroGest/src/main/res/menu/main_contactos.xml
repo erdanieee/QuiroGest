@@ -5,4 +5,13 @@
         android:icon="@android:drawable/ic_menu_myplaces"
         android:title="add item"
         android:showAsAction="ifRoom"/>
+    <item android:id="@+id/mainMenuExportDb"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="export database"
+        android:showAsAction="ifRoom"/>
+    <item android:id="@+id/mainMenuImportDb"
+        android:icon="@android:drawable/stat_sys_download"
+        android:title="import database"
+        android:showAsAction="ifRoom"/>
+
 </menu>

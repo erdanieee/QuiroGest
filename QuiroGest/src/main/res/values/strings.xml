@@ -32,4 +32,9 @@
     <string name="test">Medium Text</string>
     <string name="NúmeroSesion">Número de sesión</string>
 
+    <string-array name="BaseDeDatosNoEncontrada">
+        <item>crear nueva base de datos</item>  <!-- Item num 0 -->
+        <item>importar desde archivo</item>     <!-- Item num 1 -->
+    </string-array>
+
 </resources>

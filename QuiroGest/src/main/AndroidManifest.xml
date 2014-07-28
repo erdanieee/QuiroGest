@@ -34,7 +34,7 @@
         <activity
             android:name=".activities.MotivosListActivity"
             android:screenOrientation="landscape"
-            android:label="Motivos de consulta"/>
+            android:label="Anamnesis"/>
         <activity
             android:name=".activities.SesionesListActivity"
             android:screenOrientation="landscape"

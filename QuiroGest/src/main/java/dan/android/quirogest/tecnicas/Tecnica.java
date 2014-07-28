@@ -6,7 +6,6 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -153,12 +152,12 @@ public class Tecnica extends RelativeLayout{
             String[] v = values.split(",");
 
             for (int i = 0; i < mViews.size(); i++) {
-                ((itemTecnicable) mViews.get(i)).setValue((Integer.valueOf(v[i])));
+                mViews.get(i).setValue((Integer.valueOf(v[i])));
             }
 
         } else {
-            for (int i = 0; i < mViews.size(); i++) {
-                ((itemTecnicable) mViews.get(i)).setDefaultValue();
+            for (itemTecnicable mView : mViews) {
+                mView.setDefaultValue();
             }
         }
     }
@@ -228,14 +227,14 @@ public class Tecnica extends RelativeLayout{
     }
 
     public void setMin(int min) {
-        for (int i = 0; i < mViews.size(); i++) {
-            ((itemTecnicable) mViews.get(i)).setMin(min);
+        for (itemTecnicable mView : mViews) {
+            mView.setMin(min);
         }
     }
 
     public void setMax(int max) {
         for (int i = 0; i < mViews.size(); i++) {
-            ((itemTecnicable) mViews.get(i)).setMin(max);
+            mViews.get(i).setMin(max);
         }
     }
 

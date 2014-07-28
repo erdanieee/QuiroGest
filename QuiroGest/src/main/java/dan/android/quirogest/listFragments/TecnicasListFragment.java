@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,9 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
@@ -29,10 +33,6 @@ import dan.android.quirogest.database.TablaTiposDeEtiquetas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
 import dan.android.quirogest.tecnicas.Tecnica;
 import dan.android.quirogest.tecnicas.TecnicasAdapter;
-
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 /**
  * Created by dan on 17/11/13.
@@ -44,7 +44,7 @@ public class TecnicasListFragment extends ListFragment implements LoaderManager.
     private static final int    LOADER_ID    = 79838383;
     private static final Uri    URI          = QuiroGestProvider.CONTENT_URI_TECNICAS;
     private static final String SELECTION    = TablaTecnicas.COL_ID_SESION + "=?";
-    private static final String ORDER        = "DATE(" + TablaTecnicas.COL_FECHA + ") DESC";
+    private static final String ORDER        = TablaTecnicas.COL_ORDER + " ASC";
     private static final String[] PROYECTION = {            //TODO: eliminar group_concat cuando la clase etiquetas se encargue de coger ella las etiquetas necesarias ;)
             TablaTecnicas._ID,
             TablaTecnicas.COL_ID_TIPO_TECNICA,
@@ -178,7 +178,7 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
         String[] proyection, selectionArg;
         String selection;
 
-        tecnicaIdList   = new ArrayList<Integer>();
+        tecnicaIdList   = new ArrayList<Integer>(); //borrar comentario
         ad              = new AlertDialog.Builder(mContext);
         a               = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1);
         proyection      = new String[] {
@@ -210,10 +210,11 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
 
             cv.put(TablaTecnicas.COL_ID_SESION, mSesionId);
             cv.put(TablaTecnicas.COL_ID_TIPO_TECNICA, parentId);
+            cv.put(TablaTecnicas.COL_ORDER, getListView().getCount());
             //cv.put(TablaTecnicas.COL_OBSERVACIONES, "KK");
             //cv.put(TablaTecnicas.COL_VALOR, 1);
             mContext.getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
-            mAdapter.notifyDataSetInvalidated();
+            mAdapter.notifyDataSetInvalidated();        //FIXME: no necesario porque al insertar se actualiza!
         }
     }
 
@@ -338,18 +339,19 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        SparseBooleanArray sba;
         // Respond to clicks on the actions in the CAB
         switch (item.getItemId()) {
             case R.id.contextualMenuDeleteItem:
                 Uri u;
 
+                Toast.makeText(mContext,"borrando elementos", Toast.LENGTH_SHORT).show();
                 for(long id : getListView().getCheckedItemIds()){
                     u = Uri.withAppendedPath(URI, String.valueOf(id));
                     getActivity().getContentResolver().delete(u,null,null);
                     mAdapter.notifyDataSetChanged();
                 }
-                Toast.makeText(mContext,"borrando elementos", Toast.LENGTH_SHORT).show();
-                //mode.finish(); // No es necesario, porque al borrar elementos seleccionados no queda ninguno seleccionado y se cierra solo el CAB
+                mode.finish(); //FIXME: No es necesario, porque al borrar elementos seleccionados no queda ninguno seleccionado y se cierra solo el CAB
                 return false;
 
             case R.id.contextualMenuAddLabel:
@@ -357,10 +359,82 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
                 mode.finish(); // Action picked, so close the CAB
                 return false;
 
+            case R.id.contextualMenuMoveUp:
+                sba = getListView().getCheckedItemPositions();
+                Log.d(TecnicasListFragment.class.getSimpleName(), sba.toString());
+
+                for (int i=sba.size()-1; i>=0;i--){
+                    if(sba.keyAt(i) > 0) {
+                        long id1 = getListView().getItemIdAtPosition(sba.keyAt(i));
+                        long id2 = getListView().getItemIdAtPosition(sba.keyAt(i) - 1);
+
+                        intercambiaTecnicas(id1, id2);
+                        mAdapter.notifyDataSetChanged();
+                        Log.d(TecnicasListFragment.class.getSimpleName(), "Intercambiando ID:" + String.valueOf(id1) + " con ID:" + String.valueOf(id2));
+                    }
+                }
+                return true;
+
+            case R.id.contextualMenuMoveDown:
+                sba = getListView().getCheckedItemPositions();
+                Log.d(TecnicasListFragment.class.getSimpleName(), sba.toString());
+
+                for (int i=0; i<sba.size();i++){
+                    if(sba.keyAt(i)+1 < getListView().getCount()) {
+                        long id1 = getListView().getItemIdAtPosition(sba.keyAt(i));
+                        long id2 = getListView().getItemIdAtPosition(sba.keyAt(i) + 1);
+
+                        intercambiaTecnicas(id1, id2);
+                        mAdapter.notifyDataSetChanged();
+                        Log.d(TecnicasListFragment.class.getSimpleName(), "Intercambiando ID:" + String.valueOf(id1) + " con ID:" + String.valueOf(id2));
+                    }
+                }
+                return true;
 
             default:
                 return false;
         }
+    }
+
+    private void intercambiaTecnicas(long id1, long id2) {
+        int order1, order2;
+        Uri uri1, uri2;
+        ContentValues cv;
+
+        uri1 = Uri.withAppendedPath(URI,String.valueOf(id1));
+        uri2 = Uri.withAppendedPath(URI,String.valueOf(id2));
+
+        order1 = getItemOrder(uri1);
+        order2 = getItemOrder(uri2);
+
+        Log.d(TecnicasListFragment.class.getSimpleName(), "Intercambiando order:" + order1 + " con order:" + order2);
+
+        cv = new ContentValues();
+        cv.put(TablaTecnicas.COL_ORDER, order2);
+        mContext.getContentResolver().update(uri1, cv, null, null);
+
+        cv.clear();
+        cv.put(TablaTecnicas.COL_ORDER, order1);
+        mContext.getContentResolver().update(uri2, cv, null, null);
+    }
+
+
+    private int getItemOrder(Uri uri){
+        Cursor c;
+        int order;
+        String[] proyection = {TablaTecnicas.COL_ORDER};
+
+        c = mContext.getContentResolver().query(uri,proyection, null,null,null);
+
+        if(c.moveToNext()){
+            order = c.getInt(0);
+
+        } else {
+            order=Integer.parseInt(uri.getLastPathSegment());
+        }
+        c.close();
+
+        return order;
     }
 
 
@@ -369,7 +443,4 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
         // Here you can make any necessary updates to the activity when
         // the CAB is removed. By default, selected items are deselected/unchecked.
     }
-
-
-
 }

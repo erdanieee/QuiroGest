@@ -4,37 +4,31 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.BaseColumns;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
-import dan.android.quirogest.database.TablaContactos;
-import dan.android.quirogest.database.TablaEtiquetas;
 import dan.android.quirogest.database.TablaMotivos;
-import dan.android.quirogest.database.TablaSesiones;
-import dan.android.quirogest.database.TablaTecnicas;
-import dan.android.quirogest.database.TablaTiposDeEtiquetas;
-import dan.android.quirogest.database.TablaTiposDeTecnicas;
 import dan.android.quirogest.detailFragments.ClienteDetailFragment;
 import dan.android.quirogest.listFragments.ClienteListFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
-import dan.android.quirogest.tecnicas.TecnicasAdapter;
 
 
 public class ContactosListActivity extends Activity implements ListFragmentBase.CallbackItemClicked{
     private static final String TAG = "ContactosListActivity";
+    private static final int INTENT_MAIN_MENU_IMPORT_DB = 1;
+    private static final int INTENT_MAIN_MENU_EXPORT_DB = 2;
     private long mContactoId, mMotivoId;
-    private Context mContext;
 
 
 
@@ -71,7 +65,6 @@ public class ContactosListActivity extends Activity implements ListFragmentBase.
         Log.i(TAG, "Item selected " + id + " en ");
         ClienteDetailFragment cdf;
         MotivosListFragment mlf;
-        FragmentTransaction ft;
 
         switch (lfb.getListViewType()){
             case LIST_VIEW_CLIENTES:
@@ -117,7 +110,6 @@ public class ContactosListActivity extends Activity implements ListFragmentBase.
                 cv  = new ContentValues();
 
                 cv.put(TablaMotivos.COL_ID_CONTACTO, mContactoId);
-                cv.put(TablaMotivos.COL_DIAGNOSTICO, "Nuevo Motivo");
                 newMotivoUri = getContentResolver().insert(QuiroGestProvider.CONTENT_URI_MOTIVOS, cv);
 
                 c = getContentResolver().query(newMotivoUri, new String[]{BaseColumns._ID},null,null,null);
@@ -132,10 +124,67 @@ public class ContactosListActivity extends Activity implements ListFragmentBase.
 
                 return true;
 
+            case R.id.mainMenuExportDb:
+/*                Intent i;
+
+                i = new Intent(Intent.ACTION_CREATE_DOCUMENT);      //FIXME: Se ha comentado porque no se puede hacer por intent si la tablet no tiene browser
+                i.addCategory(Intent.CATEGORY_OPENABLE);
+                i.setType(DocumentsContract.Document.MIME_TYPE_DIR);
+                i.putExtra(Intent.EXTRA_TITLE, "Quirogest.db");
+
+                startActivityForResult(i, INTENT_MAIN_MENU_EXPORT_DB);
+*/
+                String file;
+
+                if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+                    file = Environment.getExternalStorageDirectory() + "/" + DatabaseHelper.DATABASE_NAME;
+
+                } else {
+                    file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/" + DatabaseHelper.DATABASE_NAME;
+                }
+
+                if (DatabaseHelper.exportDb(file)){
+                    Toast.makeText(getApplicationContext(), "Guardado correctamente en " + file, Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "¡¡Error!!", Toast.LENGTH_LONG).show();
+                }
+                return true;
+
+            case R.id.mainMenuImportDb:
+                Intent i;
+
+                i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.addCategory(Intent.CATEGORY_OPENABLE);
+                i.setType("file/*");
+
+                startActivityForResult(i, INTENT_MAIN_MENU_IMPORT_DB);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode==Activity.RESULT_OK){
+            switch (requestCode){
+                case INTENT_MAIN_MENU_IMPORT_DB:
+                    if (DatabaseHelper.importDb(data.getData().getPath(), getBaseContext().getDatabasePath(DatabaseHelper.DATABASE_NAME).getAbsolutePath())){
+                        Toast.makeText(getApplicationContext(), "Base de datos importada correctamente " + getApplicationContext().getDatabasePath(DatabaseHelper.DATABASE_NAME), Toast.LENGTH_LONG).show();
+                    }
+                    break;
+                case INTENT_MAIN_MENU_EXPORT_DB:
+                    if (DatabaseHelper.exportDb(data.getData().getPath())){
+                        Toast.makeText(getApplicationContext(), "Guardado correctamente en " + data.getData().getPath(), Toast.LENGTH_LONG).show();
+                    }
+                    break;
+            }
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

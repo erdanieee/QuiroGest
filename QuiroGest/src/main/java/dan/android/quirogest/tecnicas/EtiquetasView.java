@@ -119,7 +119,7 @@ public class EtiquetasView extends LinearLayout {
 
             texto.setText(descript);
             texto.setTextColor(Color.BLACK);
-            texto.setBackgroundColor(Color.parseColor(color));
+            texto.setBackgroundColor(Color.parseColor("#" + color));
             texto.setMinWidth(40);
             //texto.setGravity(1);
             deleteButton.setBackgroundResource(android.R.drawable.ic_menu_delete);
@@ -144,9 +144,11 @@ public class EtiquetasView extends LinearLayout {
 
         protected void setEditable(boolean editable){
             if (editable){
+                //deleteButton.setAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.fade_in));
                 deleteButton.setVisibility(VISIBLE);
 
             }else{
+                //deleteButton.setAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.fade_out));
                 deleteButton.setVisibility(GONE);
             }
         }

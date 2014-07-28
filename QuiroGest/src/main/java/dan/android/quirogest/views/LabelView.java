@@ -215,7 +215,7 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
 
 
     private void updateDb(String newValue){
-        Log.d(getClass().toString(), "nuevo valor: " + newValue);
+        Log.d(LabelView.class.getSimpleName(), "nuevo valor: " + newValue);
         cv  = new ContentValues();
 
         cv.put(mColumn, newValue);

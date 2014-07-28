@@ -27,7 +27,6 @@ import java.text.SimpleDateFormat;
 
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.DatabaseHelper;
-import dan.android.quirogest.detailFragments.ClienteDetailFragment;
 import dan.android.quirogest.views.LabelView;
 
 
@@ -301,7 +300,7 @@ public abstract class ListFragmentBase extends ListFragment implements LoaderMan
                                             .commit();
                                 }
                             } catch (Exception e){
-                                Log.e(this.getClass().toString(), "No se ha podido cerrar la ventana!");
+                                Log.e(ListFragmentBase.class.getSimpleName(), "No se ha podido cerrar la ventana!");
                             }
                         }
                         mode.finish(); // Action picked, so close the CAB

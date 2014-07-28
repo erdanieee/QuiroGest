@@ -7,7 +7,6 @@ import android.util.Log;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
-import dan.android.quirogest.activities.MotivosListActivity;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaMotivos;
 
@@ -17,9 +16,9 @@ public class MotivosListFragment extends ListFragmentBase {
     private final static String ARG_CONTACTO_ID = "contacto_id";
 
     private final Uri       QUERY_URI            = QuiroGestProvider.CONTENT_URI_MOTIVOS;
-    private final String[]  QUERY_PROJECTION     = {BaseColumns._ID, TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_FECHA};
-    private final String[]  LAYOUT_DATA_COLUMNS  = {TablaMotivos.COL_DIAGNOSTICO, TablaMotivos.COL_FECHA};
-    private final int[]     LAYOUT_VIEW_IDS      = {R.id.textViewMotivo, R.id.textViewFecha};
+    private final String[]  QUERY_PROJECTION     = {BaseColumns._ID, TablaMotivos.COL_FECHA};
+    private final String[]  LAYOUT_DATA_COLUMNS  = {TablaMotivos.COL_FECHA};
+    private final int[]     LAYOUT_VIEW_IDS      = {R.id.textViewFecha};
     private final int       LAYOUT               = R.layout.listitem_motivos;
 
     private Long mContactoId;

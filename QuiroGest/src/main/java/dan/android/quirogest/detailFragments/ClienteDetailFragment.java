@@ -16,14 +16,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
+import dan.android.quirogest.FragmentBase.DetailFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaContactos;
-import dan.android.quirogest.FragmentBase.DetailFragmentBase;
+import dan.android.quirogest.views.LabelModificationListener;
 import dan.android.quirogest.views.LabelView;
 
 
@@ -33,6 +37,7 @@ public class ClienteDetailFragment extends DetailFragmentBase{
     private final Uri           QUERY_URI   = QuiroGestProvider.CONTENT_URI_CONTACTOS;
 
     private LabelView mNombre, mApellido1, mApellido2, mMovil, mFijo, mEmail, mDireccion, mCP, mLocalidad, mProvincia, mFechaNac, mProfesion, mEnfermedades, mAlergias, mObservaciones;
+    private TextView mEdad;
     private ImageView mFoto;
 
 
@@ -106,6 +111,26 @@ public class ClienteDetailFragment extends DetailFragmentBase{
         mAlergias       = (LabelView) mRootView.findViewById(R.id.EditTextAlergias);
         mObservaciones  = (LabelView) mRootView.findViewById(R.id.EditTextObservaciones);
         mFoto           = (ImageView) mRootView.findViewById(R.id.imageViewFoto);
+        mEdad           = (TextView) mRootView.findViewById(R.id.TextViewEdad);
+
+        mFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i;
+
+                i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (i.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                }
+            }
+        });
+
+        mFechaNac.setModificationCallback(new LabelModificationListener() {
+            @Override
+            public void onLabelModification(String t) {
+                mEdad.setText(MotivoDetailFragment.getElapsedTime(mFechaNac.getText().toString(), new SimpleDateFormat(LabelView.DATE_FORMAT).format(Calendar.getInstance().getTime())));
+            }
+        });
 
         mNombre.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_CONTACTOS, String.valueOf(getItemId())),
                 TablaContactos.COL_NOMBRE,
@@ -152,24 +177,6 @@ public class ClienteDetailFragment extends DetailFragmentBase{
         mObservaciones.setModificationParams(Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_CONTACTOS, String.valueOf(getItemId())),
                 TablaContactos.COL_OBSERVACIONES,
                 LabelView.TYPE_TEXT);
-
-        mFoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i;
-
-                i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(image));
-                //i.putExtra("aspectX",0);
-                //i.putExtra("aspectY",0);
-                //i.putExtra("outputX",100);
-                //i.putExtra("outputY",100);
-                if (i.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(i, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                }
-            }
-        });
-
 
         return mRootView;
     }

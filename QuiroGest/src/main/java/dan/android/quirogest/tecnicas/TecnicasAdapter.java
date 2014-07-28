@@ -6,15 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaTecnicas;
 import dan.android.quirogest.database.TablaTiposDeTecnicas;
-import dan.android.quirogest.listFragments.TecnicasListFragment;
-
-import static dan.android.quirogest.listFragments.TecnicasListFragment.itemTecnicable;
 
 /**
  * Created by dan on 16/11/13.
@@ -26,7 +24,8 @@ public class TecnicasAdapter extends CursorAdapter{
     public static final int VIEWTYPE_NUMBER    = 2;
     public static final int VIEWTYPE_TEXT      = 3;
     public static final int VIEWTYPE_SECTION   = 4;     //TODO: ver opción automática http://kmansoft.com/2010/11/16/adding-group-headers-to-listview/
-    public static final int VIEWTYPE_COUNT     = 4;    //número de VIEWTYPEs
+    public static final int VIEWTYPE_EMPTY     = 5;
+    public static final int VIEWTYPE_COUNT     = 5;    //número de VIEWTYPEs
 
     private Context mContext;
     private static HashMap<Integer, Integer> mapTecnicasViewType = new HashMap<Integer, Integer>();
@@ -87,6 +86,7 @@ public class TecnicasAdapter extends CursorAdapter{
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         int viewType, numCols, numRows;
+        String tittle;
         View view;
         //ViewHolder vh;
         Class type;
@@ -96,6 +96,7 @@ public class TecnicasAdapter extends CursorAdapter{
         viewType    = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_VIEWTYPE));
         numRows     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_ROWS));
         numCols     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_NUM_COLS));
+        tittle      = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_TITLE));
 
         Log.d(TAG, "Nueva tecnica tipo " + viewType + " " + numCols + "x" + numRows);
 
@@ -108,13 +109,18 @@ public class TecnicasAdapter extends CursorAdapter{
                 type = TypeNum3.class;
                 break;
 
-            case VIEWTYPE_TEXT:
             case VIEWTYPE_SECTION:
+                return new Section(context);
+
+            case VIEWTYPE_TEXT:
+            case VIEWTYPE_EMPTY:
                 type = TypeCb.class; //TODO: implementar!!!
                 break;
 
             default:
-                throw new IllegalStateException ("Should never happend!!") ;
+                Toast.makeText(mContext, "Error en la tabla, no existe tipo de vista para " + tittle + "!!", Toast.LENGTH_LONG).show();
+                type = TypeCb.class;
+                //throw new IllegalStateException ("Should never happend!!") ;
         }
 
         try {
@@ -148,25 +154,28 @@ public class TecnicasAdapter extends CursorAdapter{
         colLabel    = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_LABELS_COLS));
         rowLabel    = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_LABELS_ROWS));
         observ      = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES));
-        //etiquetas  = cursor.getString(cursor.getColumnIndex(TecnicasListFragment.PROY_COMB));
         id          = cursor.getLong(cursor.getColumnIndex(TablaTecnicas._ID));
 
-        Tecnica t = (Tecnica) view;
+        if (view instanceof Tecnica) {
+            Tecnica t = (Tecnica) view;
 
-        t.setParentId(idPadre);
-        t.setMin(min);
-        t.setMax(max);
-        t.setValues(values);
-        t.setTitle(title);
-        t.setColsLabels(colLabel);
-        t.setRowsLabels(rowLabel);
-        t.setmObserv(observ);
-        t.setEtiquetas(id);
-        t.setWritable(readWriteState);
-        t.setId(id);
-    }
+            t.setParentId(idPadre);
+            t.setMin(min);
+            t.setMax(max);
+            t.setValues(values);
+            t.setTitle(title);
+            t.setColsLabels(colLabel);
+            t.setRowsLabels(rowLabel);
+            t.setmObserv(observ);
+            t.setEtiquetas(id);
+            t.setWritable(readWriteState);
+            t.setId(id);
 
-    public static class ViewHolder{
-        Tecnica mView;
+        } else if(view instanceof Section){
+            Section s = (Section) view;
+
+            s.setText(title);
+            s.setId(id);
+        }
     }
 }
