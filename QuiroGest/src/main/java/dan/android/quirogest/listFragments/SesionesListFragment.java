@@ -1,9 +1,7 @@
 package dan.android.quirogest.listFragments;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,17 +10,12 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
 import dan.android.quirogest.database.QuiroGestProvider;
 import dan.android.quirogest.database.TablaSesiones;
 import dan.android.quirogest.database.TablaTecnicas;
-import dan.android.quirogest.tecnicas.TecnicasAdapter;
 
 /**
  * Created by dan on 4/11/13.
@@ -175,6 +168,7 @@ public class SesionesListFragment extends ListFragmentBase{//} implements AbsLis
             cv.put(TablaTecnicas.COL_ID_TIPO_TECNICA, c.getString(c.getColumnIndex(TablaTecnicas.COL_ID_TIPO_TECNICA)));
             cv.put(TablaTecnicas.COL_OBSERVACIONES, c.getString(c.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES)));
             cv.put(TablaTecnicas.COL_VALOR, c.getString(c.getColumnIndex(TablaTecnicas.COL_VALOR)));
+            cv.put(TablaTecnicas.COL_ORDER, c.getString(c.getColumnIndex(TablaTecnicas.COL_ORDER)));
             context.getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS,cv);
         }
         c.close();

@@ -123,6 +123,7 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
             setBackgroundColor(Color.TRANSPARENT);
         }
 
+
         updateText();
     }
 
@@ -157,16 +158,16 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
                     d.setTitle("Introduce el nuevo valor");
                     d.setView(t);
 
-                    d.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            updateDb(t.getText().toString());
-                        }
-                    });
                     d.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.cancel();
+                        }
+                    });
+                    d.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            updateDb(t.getText().toString());
                         }
                     });
                     d.show();
@@ -190,7 +191,6 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
                         @Override
                         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                             updateDb(DatabaseHelper.parseToSQLite(year, month, day));
-
                         }
                     },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
@@ -223,4 +223,7 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
 
         setText(newValue);
     }
+
+
+
 }

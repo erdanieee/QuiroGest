@@ -30,10 +30,11 @@ import dan.android.quirogest.views.LabelModificationListener;
 import dan.android.quirogest.views.LabelView;
 
 
-public class MotivoDetailFragment extends DetailFragmentBase{
+public class MotivoDetailFragment extends DetailFragmentBase{// implements View.OnKeyListener{
     private static final int    LAYOUT      = R.layout.fragment_motivo_detail;
     private final Uri           QUERY_URI   = QuiroGestProvider.CONTENT_URI_MOTIVOS;
     private LabelView mFecha, mQue, mDonde, mCuando, mComo, mDesdeCuando, mAparacion, mConcomitancia, mAntecedentes, mActivFisica, mObserv;
+    private View mRootView;
 
 
     @Override
@@ -66,7 +67,6 @@ public class MotivoDetailFragment extends DetailFragmentBase{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View mRootView;
 
         mRootView       = inflater.inflate(LAYOUT, container, false);
         mFecha          = (LabelView) mRootView.findViewById(R.id.textViewFecha);
@@ -221,6 +221,12 @@ public class MotivoDetailFragment extends DetailFragmentBase{
 
         return tiempoTranscurrido;
     }
+
+
+
+
+
+
 
 
     //********************************************************************************************//

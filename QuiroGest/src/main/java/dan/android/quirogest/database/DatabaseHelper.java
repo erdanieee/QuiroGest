@@ -23,11 +23,12 @@ import java.util.Date;
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME       = "QuiroGest.db";
     public static final String SQLITE_DATE_FORMAT   = "yyyy-MM-dd";  // Usado por SimpleDateFormat. <br>Debe tener el mismo formato que CURRENT_DATE de SQLite
-    private static final int DATABASE_VERSION       = 2;
+    private static final int DATABASE_VERSION       = 4;
     private Context mContext;
 
     //Necesario por las actualizaciones de base de datos
     private static String TABLA_TECNICAS_V1_OLD =   "TablaTecnicas_V1_old";
+    private static String TABLA_TIPO_TECNICAS_V1_OLD =   "TablaTecnicas_V2_old";
 
 
     public DatabaseHelper(Context contexto){
@@ -57,10 +58,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(TablaTiposDeEtiquetas.sqlCreateTableTiposEtiquetas);
         sqLiteDatabase.execSQL(TablaEtiquetas.sqlCreateTableEtiquetas);
 
-        insertTiposEtiquetas(sqLiteDatabase);
-        insertTiposTecnicas(sqLiteDatabase);
+        //insertTiposEtiquetas(sqLiteDatabase);
+        //insertTiposTecnicas(sqLiteDatabase);
 
-        insertContactos(sqLiteDatabase);        //FIXME: PROVISIONAL!!!!
+        //insertContactos(sqLiteDatabase);        //FIXME: PROVISIONAL!!!!
 
 /*        try {
             input  = mContext.getAssets().open(DATABASE_NAME);
@@ -84,9 +85,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String tableTemp;
+
         switch (oldVersion){
             case 1:
-                db.execSQL("ALTER TABLE " + TablaTecnicas.TABLA_TECNICAS + " RENAME TO " + TABLA_TECNICAS_V1_OLD);
+                tableTemp = TABLA_TECNICAS_V1_OLD;
+                db.execSQL("DROP TABLE IF EXISTS " + tableTemp);
+                db.execSQL("ALTER TABLE " + TablaTecnicas.TABLA_TECNICAS + " RENAME TO " + tableTemp);
                 db.execSQL(TablaTecnicas.sqlCreateTableTecnicas);
                 db.execSQL("INSERT INTO "
                         + TablaTecnicas.TABLA_TECNICAS
@@ -103,10 +108,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             + TablaTecnicas.COL_ID_TIPO_TECNICA + ","
                             + TablaTecnicas.COL_OBSERVACIONES + ","
                             + TablaTecnicas.COL_VALOR
-                        + " FROM " + TABLA_TECNICAS_V1_OLD
+                        + " FROM " + tableTemp
                         + " ORDER BY "
                                 + TablaTecnicas.COL_ID_SESION + ","
                                 + TablaTecnicas.COL_FECHA + " DESC"
+                );
+                break;
+
+            case 2:
+            case 3:
+                tableTemp = TABLA_TIPO_TECNICAS_V1_OLD;
+                db.execSQL("DROP TABLE IF EXISTS " + tableTemp);
+                db.execSQL("ALTER TABLE " + TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS + " RENAME TO " + tableTemp);
+                db.execSQL(TablaTiposDeTecnicas.sqlCreateTableTiposTecnicas);
+                db.execSQL("INSERT INTO "
+                                + TablaTiposDeTecnicas.TABLA_TIPOS_TECNICAS
+                                + " ("
+                                    + TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + ","
+                                    + TablaTiposDeTecnicas.COL_ID_PARENT + ","
+                                    + TablaTiposDeTecnicas.COL_LABELS_COLS + ","
+                                    + TablaTiposDeTecnicas.COL_LABELS_ROWS + ","
+                                    + TablaTiposDeTecnicas.COL_MAX + ","
+                                    + TablaTiposDeTecnicas.COL_MIN + ","
+                                    + TablaTiposDeTecnicas.COL_NUM_COLS + ","
+                                    + TablaTiposDeTecnicas.COL_NUM_ROWS + ","
+                                    + TablaTiposDeTecnicas.COL_TITLE + ","
+                                    + TablaTiposDeTecnicas.COL_VIEWTYPE
+                                + ")"
+                                + " SELECT "
+                                    + TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + ","
+                                    + TablaTiposDeTecnicas.COL_ID_PARENT + ","
+                                    + TablaTiposDeTecnicas.COL_LABELS_COLS + ","
+                                    + TablaTiposDeTecnicas.COL_LABELS_ROWS + ","
+                                    + TablaTiposDeTecnicas.COL_MAX + ","
+                                    + TablaTiposDeTecnicas.COL_MIN + ","
+                                    + TablaTiposDeTecnicas.COL_NUM_COLS + ","
+                                    + TablaTiposDeTecnicas.COL_NUM_ROWS + ","
+                                    + TablaTiposDeTecnicas.COL_TITLE + ","
+                                    + TablaTiposDeTecnicas.COL_VIEWTYPE
+                                + " FROM " + tableTemp
+                                + " ORDER BY "
+                                + TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA + " ASC"
                 );
                 break;
         }

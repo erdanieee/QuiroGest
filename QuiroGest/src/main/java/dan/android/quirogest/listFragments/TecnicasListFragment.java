@@ -71,6 +71,7 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
     private TecnicasAdapter mAdapter    = null;
     private long mSesionId;
     public Context mContext;
+    private ArrayList<Integer> tecnicaIdListToInsert;
 
 
     public interface itemTecnicable{
@@ -170,51 +171,80 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
     /**
      * Añade una tecnica de forma recursiva hasta que encuentra una tecnica sin hijos
      */
-    private void addTecnica(Integer parentId){
+    private void addTecnica(Integer parentId, CharSequence parentName){
         AlertDialog.Builder ad;
-        ArrayAdapter<String> a;
-        final ArrayList<Integer> tecnicaIdList;
+        final CharSequence[] items;
+        final int[]   itemsId;
+        boolean[] selected;
         Cursor c;
         String[] proyection, selectionArg;
         String selection;
 
-        tecnicaIdList   = new ArrayList<Integer>(); //borrar comentario
+        if(parentId==null){
+            tecnicaIdListToInsert = new ArrayList<Integer>();
+        }
+
         ad              = new AlertDialog.Builder(mContext);
-        a               = new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1);
-        proyection      = new String[] {
-                TablaTiposDeTecnicas.COL_TITLE,
-                TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA };
+        proyection      = new String[] { TablaTiposDeTecnicas.COL_TITLE, TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA };
         selection       = TablaTiposDeTecnicas.COL_ID_PARENT + "=?";
         selectionArg    = new String[] { parentId==null ? "-1" : String.valueOf(parentId) };
 
         c = mContext.getContentResolver().query(QuiroGestProvider.CONTENT_URI_TIPOS_TECNICAS, proyection, selection, selectionArg, null);
 
+        items       = new CharSequence[c.getCount()];
+        itemsId     = new int[c.getCount()];
+        selected    = new boolean[c.getCount()];
+        int i       = 0;
+
         while (c.moveToNext()){
-            a.add(c.getString(c.getColumnIndex(TablaTiposDeTecnicas.COL_TITLE)));
-            tecnicaIdList.add(c.getInt(c.getColumnIndex(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA)));
+            items[i]    = c.getString(c.getColumnIndex(TablaTiposDeTecnicas.COL_TITLE));
+            itemsId[i]  = c.getInt(c.getColumnIndex(TablaTiposDeTecnicas.COL_ID_TIPO_TECNICA));
+            if (tecnicaIdListToInsert.contains(itemsId[i])){
+                selected[i] = true;
+
+            }else{
+                selected[i] = false;
+            }
+            i++;
         }
         c.close();
 
-        if (a.getCount() > 0) {    //si no es una hoja
-            ad.setAdapter(a, new DialogInterface.OnClickListener() {
+        if (items.length > 0) {
+            ad.setMultiChoiceItems(items, selected, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    //dialogInterface.cancel();
-                    addTecnica(tecnicaIdList.get(i));
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    addTecnica(itemsId[which], items[which]);
                 }
             });
+            if(parentId==null) {
+                ad.setTitle("Selecciona las técnicas");
+                ad.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (Integer i : tecnicaIdListToInsert) {
+                            ContentValues cv = new ContentValues();
+
+                            cv.put(TablaTecnicas.COL_ID_SESION, mSesionId);
+                            cv.put(TablaTecnicas.COL_ID_TIPO_TECNICA, i);
+                            cv.put(TablaTecnicas.COL_ORDER, getListView().getCount());
+                            mContext.getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
+                            getListView().setSelection(getListView().getCount());
+                        }
+                    }
+                });
+
+            } else{
+                ad.setTitle(parentName);
+            }
             ad.show();
 
         } else {
-            ContentValues cv = new ContentValues();
+            if (tecnicaIdListToInsert.contains(parentId)){
+                tecnicaIdListToInsert.remove(tecnicaIdListToInsert.indexOf(parentId));
 
-            cv.put(TablaTecnicas.COL_ID_SESION, mSesionId);
-            cv.put(TablaTecnicas.COL_ID_TIPO_TECNICA, parentId);
-            cv.put(TablaTecnicas.COL_ORDER, getListView().getCount());
-            //cv.put(TablaTecnicas.COL_OBSERVACIONES, "KK");
-            //cv.put(TablaTecnicas.COL_VALOR, 1);
-            mContext.getContentResolver().insert(QuiroGestProvider.CONTENT_URI_TECNICAS, cv);
-            mAdapter.notifyDataSetInvalidated();        //FIXME: no necesario porque al insertar se actualiza!
+            } else {
+                tecnicaIdListToInsert.add(parentId);
+            }
         }
     }
 
@@ -293,7 +323,7 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
                 Log.d("TecnicasListFragent", "READ/WRITE " + String.valueOf(mAdapter.readWriteState));
                 return false;
             case R.id.mainMenuAddItem:
-                addTecnica(null);
+                addTecnica(null,null);
                 return false;
             default:
                 return super.onOptionsItemSelected(item);
@@ -373,6 +403,7 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
                         Log.d(TecnicasListFragment.class.getSimpleName(), "Intercambiando ID:" + String.valueOf(id1) + " con ID:" + String.valueOf(id2));
                     }
                 }
+                getListView().setSelectionFromTop(sba.keyAt(0)-1, getListView().getHeight()/2);
                 return true;
 
             case R.id.contextualMenuMoveDown:
@@ -389,6 +420,7 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
                         Log.d(TecnicasListFragment.class.getSimpleName(), "Intercambiando ID:" + String.valueOf(id1) + " con ID:" + String.valueOf(id2));
                     }
                 }
+                getListView().setSelectionFromTop(sba.keyAt(0)+1, getListView().getHeight()/2);
                 return true;
 
             default:
@@ -407,6 +439,10 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
         order1 = getItemOrder(uri1);
         order2 = getItemOrder(uri2);
 
+        if (order1 == order2){  //just in case
+            order1 = order2 + 1;
+        }
+
         Log.d(TecnicasListFragment.class.getSimpleName(), "Intercambiando order:" + order1 + " con order:" + order2);
 
         cv = new ContentValues();
@@ -421,16 +457,15 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
 
     private int getItemOrder(Uri uri){
         Cursor c;
-        int order;
+        int order = Integer.parseInt(uri.getLastPathSegment());
         String[] proyection = {TablaTecnicas.COL_ORDER};
 
         c = mContext.getContentResolver().query(uri,proyection, null,null,null);
 
         if(c.moveToNext()){
-            order = c.getInt(0);
-
-        } else {
-            order=Integer.parseInt(uri.getLastPathSegment());
+            if (!c.isNull(0)) {
+                order = c.getInt(0);
+            }
         }
         c.close();
 
