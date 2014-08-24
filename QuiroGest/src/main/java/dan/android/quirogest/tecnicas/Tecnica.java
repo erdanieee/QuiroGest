@@ -1,8 +1,10 @@
 package dan.android.quirogest.tecnicas;
 
+import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,7 @@ public class Tecnica extends RelativeLayout{
     //private Uri URI = ContentUris.withAppendedId(QuiroGestProvider.CONTENT_URI_TECNICAS, tecnicaID);
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public Tecnica(Context context, Class<itemTecnicable> T, int cols, int rows) throws IllegalAccessException, InstantiationException {
         super(context);
 
@@ -92,6 +95,7 @@ public class Tecnica extends RelativeLayout{
         tr.addView(new TextView(context));
         for (int c=0; c<cols; c++){
             cell = new TextView(context);
+            cell.setTextAlignment(TEXT_ALIGNMENT_CENTER);
             //cell.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
             mLabelsCols.add(cell);
             tr.addView(cell);

@@ -3,7 +3,8 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:orientation="vertical"
-          android:keepScreenOn="true">
+          android:keepScreenOn="true"
+    android:paddingLeft="10dp">
 
     <ImageView
         android:contentDescription="@string/descripciónFotoPaciente"
@@ -24,7 +25,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/ExtraLargeText"
         android:layout_toRightOf="@+id/imageViewFoto"
-        android:nextFocusDown="@+id/textViewApellido1"/>
+        android:nextFocusDown="@+id/textViewApellido1"
+        android:layout_marginTop="40dp" />
     <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewApellido1"
         android:layout_width="wrap_content"
@@ -42,9 +44,10 @@
         android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/ExtraLargeText"
-        android:layout_toRightOf="@+id/imageViewFoto"
-        android:layout_below="@+id/textViewApellido1"
-        android:nextFocusDown="@+id/EditTextFechaNacimiento"/>
+        android:layout_toRightOf="@+id/textViewApellido1"
+        android:layout_below="@+id/textViewNombre"
+        android:nextFocusDown="@+id/EditTextFechaNacimiento"
+        android:layout_marginLeft="15dp" />
     
 
     <ScrollView
@@ -56,7 +59,7 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"  >
+                android:orientation="vertical">
 
 
             <!--Fecha de nacimiento-->
@@ -69,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                     <dan.android.quirogest.views.LabelView
                         android:id="@+id/EditTextFechaNacimiento"
                         style="@style/EditTextOff"
@@ -79,7 +83,8 @@
                         style="@style/Etiqueta"
                         android:text="no se puede calcular"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"/>
             </LinearLayout>
 
 

@@ -20,12 +20,13 @@ import dan.android.quirogest.database.TablaTiposDeTecnicas;
 public class TecnicasAdapter extends CursorAdapter{
     private static final String TAG = "TecnicasAdapter";
 
-    public static final int VIEWTYPE_CHECKBOX  = 1;
-    public static final int VIEWTYPE_NUMBER    = 2;
-    public static final int VIEWTYPE_TEXT      = 3;
-    public static final int VIEWTYPE_SECTION   = 4;     //TODO: ver opción automática http://kmansoft.com/2010/11/16/adding-group-headers-to-listview/
-    public static final int VIEWTYPE_EMPTY     = 5;
-    public static final int VIEWTYPE_COUNT     = 5;    //número de VIEWTYPEs
+    public static final int VIEWTYPE_CHECKBOX   = 1;
+    public static final int VIEWTYPE_NUMBER     = 2;
+    public static final int VIEWTYPE_TEXT       = 3;
+    public static final int VIEWTYPE_SECTION    = 4;     //TODO: ver opción automática http://kmansoft.com/2010/11/16/adding-group-headers-to-listview/
+    public static final int VIEWTYPE_EMPTY      = 5;
+    public static final int VIEWTYPE_SUBSECCION = 6;
+    public static final int VIEWTYPE_COUNT      = 6;    //número de VIEWTYPEs
 
     private Context mContext;
     private static HashMap<Integer, Integer> mapTecnicasViewType = new HashMap<Integer, Integer>();
@@ -106,11 +107,14 @@ public class TecnicasAdapter extends CursorAdapter{
                 break;
 
             case VIEWTYPE_NUMBER:
-                type = TypeNum3.class;
+                type = TypeNum.class;
                 break;
 
             case VIEWTYPE_SECTION:
                 return new Section(context);
+
+            case VIEWTYPE_SUBSECCION:
+                return new SubSection(context);
 
             case VIEWTYPE_TEXT:
             case VIEWTYPE_EMPTY:
@@ -173,6 +177,12 @@ public class TecnicasAdapter extends CursorAdapter{
 
         } else if(view instanceof Section){
             Section s = (Section) view;
+
+            s.setText(title);
+            s.setId(id);
+
+        } else if(view instanceof SubSection){
+            SubSection s = (SubSection) view;
 
             s.setText(title);
             s.setId(id);

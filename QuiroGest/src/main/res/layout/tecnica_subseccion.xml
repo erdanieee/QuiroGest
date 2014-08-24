@@ -2,9 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:background="#bdd2ffd5"
     android:paddingTop="3dp"
-    android:paddingBottom="3dp">
+    android:clickable="false">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,6 +13,18 @@
         android:id="@+id/Section"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="italic"
-        android:textColor="#ff2ca553" />
+        android:textColor="#ff2ca553"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView"
+        android:layout_below="@+id/Section"
+        android:background="#ff2ca553"
+        android:maxHeight="1dp"
+        android:minHeight="1dp"
+        android:layout_marginTop="2dp" />
+
 </RelativeLayout>

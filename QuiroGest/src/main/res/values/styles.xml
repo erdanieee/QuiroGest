@@ -1,11 +1,10 @@
 <resources>
     <style name="Etiqueta" parent="android:TextAppearance.Small">
-        <item name="android:paddingTop">20dp</item>
-        <item name="android:paddingLeft">20dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textStyle">italic</item>
     </style>
 
     <style name="EditTextOff" parent="android:TextAppearance.Medium">
-        <item name="android:paddingLeft">20dp</item>
         <item name="android:editable">false</item>
     </style>
 

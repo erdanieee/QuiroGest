@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="@dimen/NormalText"
-    android:background="@drawable/custom_background"> <!-- TODO: sustituir por un merge cuando esté acabado-->
-
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tecnicaTable"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
-    </TableLayout>
+    android:background="@drawable/custom_background">
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,8 +13,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/test"
         android:id="@+id/tecnicaDescripcion"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:textIsSelectable="false" />
 
     <dan.android.quirogest.views.LabelView
@@ -32,18 +21,31 @@
         android:textAppearance="@android:style/TextAppearance.Small"
         android:text="@string/test"
         android:id="@+id/tecnicaObservaciones"
-        android:layout_below="@+id/tecnicaDescripcion"
-        android:focusable="true"
-        android:layout_alignParentLeft="true" />
+        android:focusable="true"/>
 
-    <dan.android.quirogest.tecnicas.EtiquetasView
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:id="@+id/etiquetasContainer"
-        android:focusableInTouchMode="false"
-        android:divider="@android:color/holo_blue_dark"
-        android:dividerPadding="@dimen/NormalText" />
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tecnicaTable"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentRight="false"
+            android:layout_centerHorizontal="true">
+        </TableLayout>
+
+        <dan.android.quirogest.tecnicas.EtiquetasView
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/etiquetasContainer"
+            android:focusableInTouchMode="false"
+            android:divider="@android:color/holo_blue_dark"
+            android:dividerPadding="@dimen/NormalText"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+
+</LinearLayout>

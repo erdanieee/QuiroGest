@@ -4,18 +4,17 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.DatabaseUtils;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.Calendar;
+import android.widget.TextView;
 
 import dan.android.quirogest.FragmentBase.ListFragmentBase;
 import dan.android.quirogest.R;
-import dan.android.quirogest.database.DatabaseHelper;
 import dan.android.quirogest.database.QuiroGestProvider;
+import dan.android.quirogest.database.TablaContactos;
 import dan.android.quirogest.database.TablaSesiones;
 import dan.android.quirogest.detailFragments.MotivoDetailFragment;
 import dan.android.quirogest.listFragments.MotivosListFragment;
@@ -28,6 +27,7 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
     public static final String MOTIVO_ID    = "motivo_id";
     public static final String CONTACTO_ID  = "contacto_id";
     private long mContactoId, mMotivoId, mSesionId;
+    private TextView mNombreCabecera;
 
 
     @Override
@@ -50,6 +50,24 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
                 .replace(R.id.secondary_list_container, slf)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
+
+        mNombreCabecera = (TextView) findViewById(R.id.textViewCabecera);
+
+        Cursor c = getContentResolver().query(
+                        Uri.withAppendedPath(QuiroGestProvider.CONTENT_URI_CONTACTOS, String.valueOf(mContactoId)),
+                        new String[]{TablaContactos.COL_NOMBRE, TablaContactos.COL_APELLIDO1, TablaContactos.COL_APELLIDO2},
+                    null,null,null);
+
+        while(c.moveToNext()){
+            String nombre, apellido1, apellido2;
+
+            nombre      = c.getString(0);
+            apellido1   = c.getString(1);
+            apellido2   = c.getString(2);
+
+            mNombreCabecera.setText(nombre + " " + apellido1 + " " + apellido2);
+        }
+
     }
 
 
@@ -86,6 +104,7 @@ public class MotivosListActivity extends Activity implements ListFragmentBase.Ca
                 Intent myIntent = new Intent(this, SesionesListActivity.class);
                 myIntent.putExtra(SesionesListActivity.MOTIVO_ID, mMotivoId);
                 myIntent.putExtra(SesionesListActivity.SESION_ID, mSesionId);  //usado para seleccionar posición por defecto
+                myIntent.putExtra(SesionesListActivity.CONTACTO_NAME, mNombreCabecera.getText());
                 startActivity(myIntent);
                 break;
         }

@@ -9,7 +9,7 @@
     <string name="fechaNacimiento">Fecha de Nacimiento</string>
     <string name="profesion">Profesión</string>
     <string name="actividadFisica">Actividad física</string>
-    <string name="alergias">Alérgias</string>
+    <string name="alergias">Alergias</string>
     <string name="observaciones">Observaciones</string>
     <string name="motivosDeConsulta">Motivos de consulta</string>
     <string name="cp">Código postal</string>

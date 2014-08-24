@@ -17,10 +17,10 @@ import dan.android.quirogest.database.TablaContactos;
 public class ClienteListFragment extends ListFragmentBase {
     private static final String TAG             = "MotivosListFragment";
     private final Uri       QUERY_URI           = QuiroGestProvider.CONTENT_URI_CONTACTOS;
-    private final String[]  QUERY_PROJECTION    = {BaseColumns._ID, TablaContactos.COL_NOMBRE, TablaContactos.COL_APELLIDO1};     //TODO: añadir otros campos para mostrar en la lista
+    private final String[]  QUERY_PROJECTION    = {BaseColumns._ID, TablaContactos.COL_NOMBRE, TablaContactos.COL_APELLIDO1};
     private final String[]  LAYOUT_DATA_COLUMNS = {TablaContactos.COL_NOMBRE, TablaContactos.COL_APELLIDO1};
-    private final int[]     LAYOUT_VIEW_IDS     = {android.R.id.text1, android.R.id.text2};
-    private final int       LAYOUT              = android.R.layout.simple_list_item_2;
+    private final int[]     LAYOUT_VIEW_IDS     = {R.id.text1, R.id.text2};
+    private final int       LAYOUT              = R.layout.listitem_cliente;
 
 
     @Override
