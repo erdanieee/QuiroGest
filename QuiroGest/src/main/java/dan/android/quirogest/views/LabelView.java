@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,7 +26,7 @@ import dan.android.quirogest.database.DatabaseHelper;
 /**
  * Created by dan on 8/06/14.
  */
-public class LabelView extends TextView implements ModificableView, View.OnClickListener {
+public class LabelView extends TextView implements ModificableView, View.OnClickListener, View.OnKeyListener{
     public static final String DATE_FORMAT  = "dd/MM/yyyy";
     public static final int TYPE_TEXT       = 0;
     public static final int TYPE_NUM        = 1;
@@ -99,6 +100,7 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
 
     private void init(){
         setOnClickListener(this);
+        setBackgroundResource(android.R.drawable.list_selector_background);
     }
 
 
@@ -117,12 +119,16 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
         setFocusable(b);
 
         if (b){
-            setBackgroundColor(getResources().getColor(R.color.elementIsEditable));
+            /*ObjectAnimator o;
+            o = ObjectAnimator.ofObject(this, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.elementIsEditable), 0x00000000);
+            //setBackgroundColor(getResources().getColor(R.color.elementIsEditable));
+            o.setDuration(450);
+            o.start();*/
+            setTextColor(getResources().getColor(R.color.elementIsEditable));
 
         }else{
-            setBackgroundColor(Color.TRANSPARENT);
+            setTextColor(Color.BLACK);
         }
-
 
         updateText();
     }
@@ -158,16 +164,29 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
                     d.setTitle("Introduce el nuevo valor");
                     d.setView(t);
 
-                    d.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    d.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
                         }
                     });
-                    d.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    d.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                        public void onClick(DialogInterface dialog, int which) {
                             updateDb(t.getText().toString());
+                        }
+                    });
+                    d.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                        @Override
+                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                            switch (keyCode){
+                                case KeyEvent.KEYCODE_ENTER:
+                                case KeyEvent.KEYCODE_TAB:
+                                    updateDb(t.getText().toString());
+                                    dialog.dismiss();
+                                    break;
+                            }
+                            return false;
                         }
                     });
                     d.show();
@@ -193,10 +212,10 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
                             updateDb(DatabaseHelper.parseToSQLite(year, month, day));
                         }
                     },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-
                     dp.show();
                     break;
             }
+            requestFocusFromTouch();
         }
     }
 
@@ -225,5 +244,11 @@ public class LabelView extends TextView implements ModificableView, View.OnClick
     }
 
 
-
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        //if(isFocused()){
+            callOnClick();
+        //}
+        return true;
+    }
 }

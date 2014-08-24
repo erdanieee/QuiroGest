@@ -23,7 +23,8 @@
         android:textIsSelectable="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/ExtraLargeText"
-        android:layout_toRightOf="@+id/imageViewFoto"/>
+        android:layout_toRightOf="@+id/imageViewFoto"
+        android:nextFocusDown="@+id/textViewApellido1"/>
     <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewApellido1"
         android:layout_width="wrap_content"
@@ -32,7 +33,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/ExtraLargeText"
         android:layout_toRightOf="@+id/imageViewFoto"
-        android:layout_below="@+id/textViewNombre"/>
+        android:layout_below="@+id/textViewNombre"
+        android:nextFocusDown="@+id/textViewApellido2"/>
     <dan.android.quirogest.views.LabelView
         android:id="@+id/textViewApellido2"
         android:layout_width="wrap_content"
@@ -41,7 +43,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="@dimen/ExtraLargeText"
         android:layout_toRightOf="@+id/imageViewFoto"
-        android:layout_below="@+id/textViewApellido1"/>
+        android:layout_below="@+id/textViewApellido1"
+        android:nextFocusDown="@+id/EditTextFechaNacimiento"/>
     
 
     <ScrollView
@@ -197,7 +200,8 @@
                 android:id="@+id/EditTextEmail"
                 style="@style/EditTextOff"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:nextFocusDown="@+id/EditTextFechaNacimiento"/>
         </LinearLayout>
     </ScrollView>
 
