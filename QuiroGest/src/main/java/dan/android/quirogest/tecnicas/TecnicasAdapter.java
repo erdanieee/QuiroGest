@@ -148,8 +148,6 @@ public class TecnicasAdapter extends CursorAdapter{
         String colLabel, rowLabel, observ, title, values;
         //ViewHolder mHolder = (ViewHolder) view.getTag();
 
-        Log.d(TAG, "Bind tecnica");
-
         idPadre     = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_ID_PARENT));
         min         = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_MIN));
         max         = cursor.getInt(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_MAX));
@@ -159,6 +157,12 @@ public class TecnicasAdapter extends CursorAdapter{
         rowLabel    = cursor.getString(cursor.getColumnIndex(TablaTiposDeTecnicas.COL_LABELS_ROWS));
         observ      = cursor.getString(cursor.getColumnIndex(TablaTecnicas.COL_OBSERVACIONES));
         id          = cursor.getLong(cursor.getColumnIndex(TablaTecnicas._ID));
+
+        Log.d(TAG, "Binding técnica: id: " + id + " title:" + title);
+
+        if (title==null || title.equals("")){
+            Toast.makeText(mContext, "No existe título para la técnica con " + TablaTecnicas._ID + ":" + id, Toast.LENGTH_LONG).show();
+        }
 
         if (view instanceof Tecnica) {
             Tecnica t = (Tecnica) view;

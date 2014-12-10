@@ -217,7 +217,7 @@ public class Tecnica extends RelativeLayout{
 
 
     private void updateTextView(TextView t, String s){
-        if(!s.isEmpty()){
+        if(s!=null && !s.isEmpty()){
             t.setVisibility(View.VISIBLE);
             t.setText(s);
 

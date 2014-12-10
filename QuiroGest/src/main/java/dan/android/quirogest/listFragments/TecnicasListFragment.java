@@ -318,8 +318,10 @@ f                    TablaTecnicas.TABLA_TECNICAS+"."+TablaTecnicas._ID + "=" + 
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.mainMenuEditItem:
+                int p = getListView().getLastVisiblePosition();
                 mAdapter.readWriteState = !mAdapter.readWriteState;
                 mAdapter.notifyDataSetInvalidated();
+                getListView().setSelection(p);
                 Log.d("TecnicasListFragent", "READ/WRITE " + String.valueOf(mAdapter.readWriteState));
                 return false;
             case R.id.mainMenuAddItem:
